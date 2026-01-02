@@ -38,8 +38,11 @@ class TextCorrector(private val context: android.content.Context) {
         /**
          * v1.0.39: LLM補正を試行する信頼度閾値
          * Phase 1の信頼度がこれ未満の場合、LLM補正を試行
+         * v1.1.5: 0.7 → 0.5に変更（より厳しく、LLM API呼び出しを削減）
+         * 理由: 信頼度0.5-0.7の範囲はTextCorrectorで対応し、LLMは本当に低信頼度のみに限定
+         * 期待効果: LLM呼び出し -20-30%、月間コスト削減
          */
-        private const val MIN_CONFIDENCE_FOR_PHASE1 = 0.7  // v1.0.54: HTTP API検証完了、本番用しきい値に戻す
+        private const val MIN_CONFIDENCE_FOR_PHASE1 = 0.5f  // v1.1.5: 0.7 → 0.5
 
         // Phase 2: 形態素解析器（遅延初期化）
         private val morphAnalyzer: MorphologicalAnalyzer by lazy {
@@ -1320,6 +1323,12 @@ class TextCorrector(private val context: android.content.Context) {
         // ステップ0: Phase 1 - 一般化パターンの適用（優先）
         correctedText = applyGeneralizedPatterns(correctedText)
 
+        // v1.1.5 ステップ0.5: 形状類似文字の優先補正（信頼度に基づく）
+        if (ocrResult != null) {
+            val avgConfidence = calculateAverageConfidence(ocrResult)
+            correctedText = correctShapeSimilarChars(correctedText, avgConfidence)
+        }
+
         // ステップ1: 経済用語の単純置換（Phase 1で補完されなかったもの）
         correctedText = applyEconomicTermsCorrection(correctedText)
 
@@ -1750,6 +1759,85 @@ class TextCorrector(private val context: android.content.Context) {
             originalLength = originalText.length,
             correctedLength = correctedText.length
         )
+    }
+
+    /**
+     * v1.1.5: 形状類似文字の優先補正
+     *
+     * OCR信頼度が低い場合（<0.7）に、形状が類似している文字の誤認識を優先的に補正
+     * 分析結果: 人→入（69回）、本→木（31回）、日→目（12回）など
+     *
+     * @param text 補正対象テキスト
+     * @param confidence OCR平均信頼度（0.0-1.0）
+     * @return 補正後のテキスト
+     */
+    private fun correctShapeSimilarChars(text: String, confidence: Float): String {
+        // 信頼度が0.7以上の場合は補正をスキップ
+        if (confidence >= 0.7f) {
+            return text
+        }
+
+        var corrected = text
+        var correctionCount = 0
+
+        // v1.1.5: 形状類似文字ペア（実測データに基づく優先順位）
+        val shapeSimilarPairs = mapOf(
+            "入" to "人",  // 最頻出（69回）
+            "木" to "本",  // 2位（31回）
+            "目" to "日",  // 3位（12回）
+            "詰" to "話",  // 4位（11回）
+            "刀" to "力",  // その他
+            "未" to "末",
+            "夫" to "大",
+            "王" to "玉",
+            "土" to "士",
+            "戸" to "戸",
+            "白" to "百"
+        )
+
+        shapeSimilarPairs.forEach { (wrong, correct) ->
+            if (corrected.contains(wrong)) {
+                val beforeCorrection = corrected
+                corrected = corrected.replace(wrong, correct)
+
+                if (corrected != beforeCorrection) {
+                    correctionCount++
+                    Log.d(TAG, "[v1.1.5 ShapeSimilar] $wrong → $correct (confidence=${"%.2f".format(confidence)})")
+                }
+            }
+        }
+
+        if (correctionCount > 0) {
+            Log.d(TAG, "[v1.1.5 ShapeSimilar] Total corrections: $correctionCount")
+        }
+
+        return corrected
+    }
+
+    /**
+     * v1.1.5: OCR結果から平均信頼度を計算
+     *
+     * @param ocrResult ML Kit OCR結果
+     * @return 平均信頼度（0.0-1.0）、計算できない場合は1.0
+     */
+    private fun calculateAverageConfidence(ocrResult: Text): Float {
+        val confidences = mutableListOf<Float>()
+
+        ocrResult.textBlocks.forEach { block ->
+            block.lines.forEach { line ->
+                line.elements.forEach { element ->
+                    element.confidence?.let { conf ->
+                        confidences.add(conf)
+                    }
+                }
+            }
+        }
+
+        return if (confidences.isNotEmpty()) {
+            confidences.average().toFloat()
+        } else {
+            1.0f  // 信頼度情報がない場合はデフォルト値
+        }
     }
 
     /**

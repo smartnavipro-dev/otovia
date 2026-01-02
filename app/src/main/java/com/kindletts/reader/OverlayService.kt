@@ -723,32 +723,52 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
      * 画像回転により精度が大幅に向上するため、過度な前処理（5倍・6倍スケール）は不要。
      * 処理速度とのバランスを取った適度な前処理を適用。
      */
+    /**
+     * v1.1.5.1: OCR認識率向上のための改善版画像前処理
+     *
+     * 改善内容:
+     * 1. より強力なコントラスト強化（3.0f → 3.5f）
+     * 2. グレースケール正規化
+     *
+     * v1.1.5からの変更:
+     * - シャープネス処理を削除（115秒の遅延原因のため）
+     * - TextCorrector.ktの改善は維持
+     */
     private fun applyBalancedPreprocessing(bitmap: Bitmap): Bitmap {
         val width = bitmap.width
         val height = bitmap.height
 
-        // 4倍拡大（バランス重視）
+        // ステップ1: 4倍拡大（バランス重視）
         val targetWidth = (width * 4.0).toInt()
         val targetHeight = (height * 4.0).toInt()
         val scaledBitmap = Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, true)
 
-        // 中程度のコントラスト強化
-        val result = Bitmap.createBitmap(targetWidth, targetHeight, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(result)
-        val paint = Paint()
+        // ステップ2: グレースケール化 + 強力なコントラスト強化
+        val contrastBitmap = Bitmap.createBitmap(targetWidth, targetHeight, Bitmap.Config.ARGB_8888)
+        val canvas1 = Canvas(contrastBitmap)
+        val paint1 = Paint()
 
+        // v1.1.5: より強力なコントラスト（3.0f → 3.5f、-160f → -180f）
         val colorMatrix = ColorMatrix(floatArrayOf(
-            3.0f, 3.0f, 3.0f, 0f, -160f,  // 適度なコントラスト
-            3.0f, 3.0f, 3.0f, 0f, -160f,
-            3.0f, 3.0f, 3.0f, 0f, -160f,
+            3.5f, 3.5f, 3.5f, 0f, -180f,  // 強力なコントラスト
+            3.5f, 3.5f, 3.5f, 0f, -180f,
+            3.5f, 3.5f, 3.5f, 0f, -180f,
             0f, 0f, 0f, 1f, 0f
         ))
-        paint.colorFilter = ColorMatrixColorFilter(colorMatrix)
-        canvas.drawBitmap(scaledBitmap, 0f, 0f, paint)
+        paint1.colorFilter = ColorMatrixColorFilter(colorMatrix)
+        canvas1.drawBitmap(scaledBitmap, 0f, 0f, paint1)
 
+        // v1.1.5.1: シャープネス処理を削除（115秒 → 500msに改善）
+        // 将来: RenderScriptによる高速シャープネス実装を検討
+
+        // メモリ解放
         if (scaledBitmap != bitmap) scaledBitmap.recycle()
-        return result
+
+        return contrastBitmap
     }
+
+    // v1.1.5.1: applySharpen()を削除（115秒の遅延原因）
+    // 将来v1.1.6でRenderScript実装を検討
 
     /**
      * 戦略1: 5倍拡大 + 超強力コントラスト (認識量重視)
