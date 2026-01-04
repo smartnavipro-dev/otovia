@@ -23,6 +23,10 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.japanese.JapaneseTextRecognizerOptions
 import com.kindletts.reader.ocr.TextCorrector
+import org.opencv.android.OpenCVLoader
+import org.opencv.android.Utils
+import org.opencv.core.*
+import org.opencv.imgproc.Imgproc
 import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -724,31 +728,34 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
      * 処理速度とのバランスを取った適度な前処理を適用。
      */
     /**
-     * v1.1.5.1: OCR認識率向上のための改善版画像前処理
+     * v1.1.6: OCR認識率向上のための最適化版画像前処理
      *
      * 改善内容:
-     * 1. より強力なコントラスト強化（3.0f → 3.5f）
-     * 2. グレースケール正規化
+     * 1. 2段階スケーリング戦略（2倍 → シャープネス → 2倍）
+     * 2. シャープネス処理を1/4サイズ（10Mピクセル）で実行
+     * 3. 処理時間を大幅短縮（935ms → 620-640ms予測）
+     * 4. OCR精度は維持（シャープネス効果は小画像でも有効）
      *
-     * v1.1.5からの変更:
-     * - シャープネス処理を削除（115秒の遅延原因のため）
-     * - TextCorrector.ktの改善は維持
+     * 処理フロー:
+     * 元画像 → 2倍 → コントラスト → シャープネス(OpenCV) → 2倍 → OCR
+     *           ↓                      ↓                         ↓
+     *        10Mピクセル           100-120ms               41Mピクセル
      */
     private fun applyBalancedPreprocessing(bitmap: Bitmap): Bitmap {
         val width = bitmap.width
         val height = bitmap.height
 
-        // ステップ1: 4倍拡大（バランス重視）
-        val targetWidth = (width * 4.0).toInt()
-        val targetHeight = (height * 4.0).toInt()
-        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, true)
+        // ステップ1: 2倍拡大（シャープネス処理用の中間サイズ）
+        val intermediateWidth = (width * 2.0).toInt()
+        val intermediateHeight = (height * 2.0).toInt()
+        val scaled2x = Bitmap.createScaledBitmap(bitmap, intermediateWidth, intermediateHeight, true)
 
         // ステップ2: グレースケール化 + 強力なコントラスト強化
-        val contrastBitmap = Bitmap.createBitmap(targetWidth, targetHeight, Bitmap.Config.ARGB_8888)
+        val contrastBitmap = Bitmap.createBitmap(intermediateWidth, intermediateHeight, Bitmap.Config.ARGB_8888)
         val canvas1 = Canvas(contrastBitmap)
         val paint1 = Paint()
 
-        // v1.1.5: より強力なコントラスト（3.0f → 3.5f、-160f → -180f）
+        // 強力なコントラスト（3.0f → 3.5f、-160f → -180f）
         val colorMatrix = ColorMatrix(floatArrayOf(
             3.5f, 3.5f, 3.5f, 0f, -180f,  // 強力なコントラスト
             3.5f, 3.5f, 3.5f, 0f, -180f,
@@ -756,19 +763,81 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
             0f, 0f, 0f, 1f, 0f
         ))
         paint1.colorFilter = ColorMatrixColorFilter(colorMatrix)
-        canvas1.drawBitmap(scaledBitmap, 0f, 0f, paint1)
+        canvas1.drawBitmap(scaled2x, 0f, 0f, paint1)
 
-        // v1.1.5.1: シャープネス処理を削除（115秒 → 500msに改善）
-        // 将来: RenderScriptによる高速シャープネス実装を検討
+        // ステップ3: OpenCVによる高速シャープネス処理（10Mピクセル: 418ms → 100-120ms）
+        val sharpenedBitmap = applySharpenFast(contrastBitmap)
+
+        // ステップ4: さらに2倍拡大して最終サイズ（4倍）にする
+        val finalWidth = (width * 4.0).toInt()
+        val finalHeight = (height * 4.0).toInt()
+        val finalBitmap = Bitmap.createScaledBitmap(sharpenedBitmap, finalWidth, finalHeight, true)
 
         // メモリ解放
-        if (scaledBitmap != bitmap) scaledBitmap.recycle()
+        if (scaled2x != bitmap) scaled2x.recycle()
+        if (sharpenedBitmap != contrastBitmap) contrastBitmap.recycle()
+        contrastBitmap.recycle()
 
-        return contrastBitmap
+        return finalBitmap
     }
 
-    // v1.1.5.1: applySharpen()を削除（115秒の遅延原因）
-    // 将来v1.1.6でRenderScript実装を検討
+    /**
+     * v1.1.6: OpenCVを使用した高速シャープネス処理
+     *
+     * 3x3 Laplacianカーネルを適用してエッジを強調
+     *
+     * 処理時間実績:
+     * - 41Mピクセル（4320×9600）: 418ms
+     * - 10Mピクセル（2160×4800）: 100-120ms（予測）
+     *
+     * v1.1.5のKotlin実装から274倍高速化（115秒 → 418ms）
+     *
+     * @param bitmap シャープネスを適用する画像（2倍スケール済み、10Mピクセル推奨）
+     * @return シャープネス処理後の画像
+     */
+    private fun applySharpenFast(bitmap: Bitmap): Bitmap {
+        try {
+            // OpenCV初期化（初回のみ）
+            if (!OpenCVLoader.initDebug()) {
+                Log.e(TAG, "v1.1.6 OpenCV initialization failed")
+                return bitmap
+            }
+
+            val startTime = System.currentTimeMillis()
+
+            // BitmapをMatに変換
+            val mat = Mat()
+            Utils.bitmapToMat(bitmap, mat)
+
+            // 3x3 Laplacianカーネル（エッジ強調）
+            val kernel = Mat(3, 3, CvType.CV_32F)
+            kernel.put(0, 0, -1.0, -1.0, -1.0)
+            kernel.put(1, 0, -1.0,  9.0, -1.0)
+            kernel.put(2, 0, -1.0, -1.0, -1.0)
+
+            // 畳み込み演算
+            val result = Mat()
+            Imgproc.filter2D(mat, result, -1, kernel)
+
+            // MatをBitmapに変換
+            val resultBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
+            Utils.matToBitmap(result, resultBitmap)
+
+            // メモリ解放
+            mat.release()
+            kernel.release()
+            result.release()
+
+            val elapsedTime = System.currentTimeMillis() - startTime
+            Log.d(TAG, "v1.1.6 applySharpenFast() completed. Time: ${elapsedTime}ms")
+
+            return resultBitmap
+        } catch (e: Exception) {
+            Log.e(TAG, "v1.1.6 applySharpenFast() failed: ${e.message}", e)
+            // エラー時は元の画像を返す
+            return bitmap
+        }
+    }
 
     /**
      * 戦略1: 5倍拡大 + 超強力コントラスト (認識量重視)

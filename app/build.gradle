@@ -11,8 +11,8 @@ android {
         applicationId "com.kindletts.reader"
         minSdk 21
         targetSdk 34
-        versionCode 94
-        versionName "1.1.5.1"
+        versionCode 95
+        versionName "1.1.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -36,6 +36,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+
+            // v1.1.6: 実機用ABIのみに限定（APKサイズ削減）
+            ndk {
+                abiFilters 'arm64-v8a', 'armeabi-v7a'
+            }
         }
     }
 
@@ -95,6 +100,9 @@ dependencies {
 
     // v1.1.0: AndroidX Preference for settings screen
     implementation 'androidx.preference:preference-ktx:1.2.1'
+
+    // v1.1.6: OpenCV for Android (native image processing)
+    implementation 'org.opencv:opencv:4.12.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
