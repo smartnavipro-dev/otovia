@@ -64,9 +64,11 @@ Kindle TTS Reader transforms your reading experience by automatically reading Ki
 
 ### **Method 1: Download APK (Recommended)**
 1. Go to [Releases](https://github.com/smartnavipro-dev/kindle-tts-reader/releases/latest)
-2. Download `kindle-tts-reader-v1.1.0-release.apk` (83MB)
+2. Download `kindle-tts-reader-v1.1.7-release.apk` (~92MB)
 3. Enable "Unknown Sources" in Android settings
 4. Install the APK
+
+📊 **Performance**: v1.1.7 fixes critical bitmap memory leaks and ensures stable long-term operation. Previous v1.1.6 featured 1111x faster image sharpening (115s→104ms) and 16.3% faster overall preprocessing (522ms→437ms). See [Performance Benchmarks](README_PERFORMANCE.md) for detailed metrics.
 
 ### **Method 2: Build from Source**
 ```bash
@@ -157,6 +159,7 @@ echo "GEMINI_API_KEY=your_api_key_here" >> local.properties
 - **Language**: Kotlin 100%
 - **UI Framework**: Material Design 3
 - **OCR Engine**: Google ML Kit Text Recognition (Japanese)
+- **Image Processing**: OpenCV 4.12.0 (native sharpening for 1111x performance boost) (v1.1.6+)
 - **AI Model**: Google Gemini 2.5 Flash (LLM-based text correction)
 - **Text Processing**: Kuromoji (morphological analysis)
 - **TTS Engine**: Android TextToSpeech API
@@ -292,6 +295,21 @@ cd kindle-tts-reader
 - [x] AES256-GCM encrypted data storage
 - [x] Comprehensive privacy policies (EN/JA)
 - [x] GDPR-compliant consent management
+
+### **Version 1.1.6** ✅ (Released 2026-01-04)
+- [x] OpenCV 4.12.0 integration for native image processing
+- [x] Two-stage scaling strategy (2x→sharpen→2x) for optimal performance
+- [x] 1111x faster sharpening (115s→104ms, 99.91% improvement)
+- [x] 16.3% faster overall preprocessing (522ms→437ms)
+- [x] Maintained OCR accuracy (52%→52.5%)
+
+### **Version 1.1.7** ✅ (Released 2026-01-08)
+- [x] Fixed critical bitmap memory leak in OCR skip logic (~8MB per skip)
+- [x] Fixed critical bitmap memory leak in OCR processing (~8MB per page)
+- [x] Added performance measurement logging for similarity calculation (avg 0.7ms)
+- [x] Added memory usage monitoring with 80% warning threshold
+- [x] Verified zero memory leaks via comprehensive testing (Balance: +27)
+- [x] Stable long-term operation confirmed (10+ minute stress test)
 
 ### **Version 1.2** (Q1 2026)
 - [ ] Multiple language UI support (Spanish, French, German)

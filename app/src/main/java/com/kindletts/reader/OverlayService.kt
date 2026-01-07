@@ -71,6 +71,12 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     // v1.0.17: テキスト補正機能, v1.0.39: contextパラメータ追加
     private val textCorrector by lazy { TextCorrector(this) }
 
+    // v1.1.7: 画面変化検出と重複削減
+    private var previousBitmap: Bitmap? = null
+    private var lastPageTurnTime = 0L
+    private val PAGE_TURN_SETTLE_TIME = 3000L  // 3秒：ページターン後の待機時間
+    private val SCREEN_CHANGE_THRESHOLD = 0.90f  // 90%以上類似なら同じページ
+
     // 状態管理
     private data class AppState(
         var isReading: Boolean = false,
@@ -496,6 +502,123 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         // 新しいExecutorは必要時のみ作成（startAutoOCRで作成）
     }
 
+    /**
+     * v1.1.7: 画面変化検出（ヒストグラム比較）
+     * @return 類似度（0.0～1.0、1.0は完全一致）
+     */
+    private fun calculateScreenSimilarity(bitmap1: Bitmap, bitmap2: Bitmap): Float {
+        val startTime = System.currentTimeMillis()
+        try {
+            // 小さいサイズに縮小して比較（高速化）
+            val width = 100
+            val height = 100
+            val resized1 = Bitmap.createScaledBitmap(bitmap1, width, height, false)
+            val resized2 = Bitmap.createScaledBitmap(bitmap2, width, height, false)
+
+            val mat1 = Mat()
+            val mat2 = Mat()
+            Utils.bitmapToMat(resized1, mat1)
+            Utils.bitmapToMat(resized2, mat2)
+
+            // グレースケール化
+            val gray1 = Mat()
+            val gray2 = Mat()
+            Imgproc.cvtColor(mat1, gray1, Imgproc.COLOR_RGBA2GRAY)
+            Imgproc.cvtColor(mat2, gray2, Imgproc.COLOR_RGBA2GRAY)
+
+            // ヒストグラムを計算
+            val hist1 = Mat()
+            val hist2 = Mat()
+            val histSize = MatOfInt(256)
+            val ranges = MatOfFloat(0f, 256f)
+
+            Imgproc.calcHist(listOf(gray1), MatOfInt(0), Mat(), hist1, histSize, ranges)
+            Imgproc.calcHist(listOf(gray2), MatOfInt(0), Mat(), hist2, histSize, ranges)
+
+            // 正規化
+            Core.normalize(hist1, hist1, 0.0, 1.0, Core.NORM_MINMAX)
+            Core.normalize(hist2, hist2, 0.0, 1.0, Core.NORM_MINMAX)
+
+            // ヒストグラムを比較（相関係数）
+            val similarity = Imgproc.compareHist(hist1, hist2, Imgproc.CV_COMP_CORREL)
+
+            // リソースを解放
+            resized1.recycle()
+            resized2.recycle()
+            mat1.release()
+            mat2.release()
+            gray1.release()
+            gray2.release()
+            hist1.release()
+            hist2.release()
+
+            val elapsed = System.currentTimeMillis() - startTime
+            debugLog("[v1.1.7] Similarity calculation", "Time: ${elapsed}ms, Result: ${"%.3f".format(similarity)}")
+
+            return similarity.toFloat()
+        } catch (e: Exception) {
+            val elapsed = System.currentTimeMillis() - startTime
+            Log.e(TAG, "[v1.1.7] Screen similarity calculation failed (${elapsed}ms)", e)
+            return 0f  // エラー時は変化ありと判定
+        }
+    }
+
+    /**
+     * v1.1.7: メモリ使用量のモニタリングとログ出力
+     */
+    private fun logMemoryUsage(context: String = "") {
+        try {
+            val runtime = Runtime.getRuntime()
+            val usedMemory = (runtime.totalMemory() - runtime.freeMemory()) / 1024 / 1024
+            val maxMemory = runtime.maxMemory() / 1024 / 1024
+            val totalMemory = runtime.totalMemory() / 1024 / 1024
+            val freeMemory = runtime.freeMemory() / 1024 / 1024
+            val usagePercent = (usedMemory.toFloat() / maxMemory.toFloat() * 100).toInt()
+
+            val memoryInfo = """
+                ${if (context.isNotEmpty()) "[$context] " else ""}
+                Used: ${usedMemory}MB / Max: ${maxMemory}MB (${usagePercent}%)
+                Total: ${totalMemory}MB, Free: ${freeMemory}MB
+            """.trimIndent()
+
+            debugLog("[v1.1.7] Memory", memoryInfo)
+
+            // 警告：メモリ使用率が80%を超えた場合
+            if (usagePercent >= 80) {
+                Log.w(TAG, "[v1.1.7] ⚠️ High memory usage: ${usagePercent}% - Consider stopping reading")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "[v1.1.7] Failed to log memory usage", e)
+        }
+    }
+
+    /**
+     * v1.1.7: OCR実行可否のチェック
+     * @return true: OCR実行可, false: スキップ
+     */
+    private fun shouldPerformOCR(currentBitmap: Bitmap): Boolean {
+        val now = System.currentTimeMillis()
+
+        // 1. ページターン後の待機時間チェック
+        if (now - lastPageTurnTime < PAGE_TURN_SETTLE_TIME) {
+            debugLog("[v1.1.7] OCR skipped", "Waiting for page turn to settle (${now - lastPageTurnTime}ms < ${PAGE_TURN_SETTLE_TIME}ms)")
+            return false
+        }
+
+        // 2. 画面変化チェック
+        previousBitmap?.let { prevBitmap ->
+            val similarity = calculateScreenSimilarity(currentBitmap, prevBitmap)
+            if (similarity >= SCREEN_CHANGE_THRESHOLD) {
+                debugLog("[v1.1.7] OCR skipped", "Screen not changed (similarity: ${"%.3f".format(similarity)})")
+                return false
+            } else {
+                debugLog("[v1.1.7] Screen changed", "Similarity: ${"%.3f".format(similarity)}")
+            }
+        }
+
+        return true
+    }
+
     private fun performOCR() {
         if (isCapturing || imageReader == null) {
             debugLog("performOCR skipped", "isCapturing: $isCapturing, imageReader: ${imageReader != null}")
@@ -504,6 +627,11 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
 
         isCapturing = true
         debugLog("Performing OCR")
+
+        // v1.1.7: 定期的なメモリ使用量チェック（10回に1回）
+        if (appState.currentPage % 10 == 0) {
+            logMemoryUsage("OCR Start - Page ${appState.currentPage}")
+        }
 
         try {
             // v1.0.83: まずキャッシュされた画像を使用、なければ直接取得
@@ -530,6 +658,14 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 debugLog("Bitmap created", "bitmap: ${bitmap != null}, size: ${bitmap?.width}x${bitmap?.height}")
 
                 if (bitmap != null) {
+                    // v1.1.7: 画面変化チェック
+                    if (!shouldPerformOCR(bitmap)) {
+                        debugLog("[v1.1.7] Bitmap recycled", "OCR skipped, bitmap released")
+                        bitmap.recycle()  // ✅ FIX: OCRスキップ時にbitmapを解放
+                        isCapturing = false
+                        return
+                    }
+
                     processOCRImage(bitmap)
                 } else {
                     debugLog("Bitmap conversion failed")
@@ -1224,6 +1360,12 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 // ✨ v1.0.17: 補正後のテキストを使用
                 if (correctedText.isNotEmpty() && correctedText != lastRecognizedText && isReading && !isPaused) {
                     lastRecognizedText = correctedText
+
+                    // v1.1.7: OCR成功時に画面を保存（次回の変化検出用）
+                    previousBitmap?.recycle()  // 古いビットマップを解放
+                    previousBitmap = bitmap.copy(bitmap.config, false)  // 新しいビットマップを保存
+                    debugLog("[v1.1.7] Screen saved", "Bitmap saved for next comparison")
+
                     val sentences = splitIntoSentences(correctedText)
                     if (sentences.isNotEmpty()) {
                         debugLog("Speaking", "Total sentences: ${sentences.size}")
@@ -1237,11 +1379,20 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                     debugLog("OCR duplicate", "Same text as previous capture")
                 }
 
+                // ✅ v1.1.7 FIX: 元のbitmapを解放（コピー後）
+                bitmap.recycle()
+                debugLog("[v1.1.7] Bitmap recycled", "Original bitmap released after OCR success")
+
                 isCapturing = false
             }
             .addOnFailureListener { e ->
                 debugLog("OCR failed", e.message)
                 handleError("OCRエラー", e)
+
+                // ✅ v1.1.7 FIX: OCR失敗時もbitmapを解放
+                bitmap.recycle()
+                debugLog("[v1.1.7] Bitmap recycled", "Bitmap released after OCR failure")
+
                 isCapturing = false
             }
     }
@@ -1533,6 +1684,10 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         debugLog("Next page", "direction: $pageDirection")
         appState.currentPage++
 
+        // v1.1.7: ページターン開始時刻を記録（画面安定待機用）
+        lastPageTurnTime = System.currentTimeMillis()
+        debugLog("[v1.1.7] Page turn started", "OCR will wait ${PAGE_TURN_SETTLE_TIME}ms for screen to settle")
+
         // ✅ FIX: ページ変更時に状態をリセット（TTS継続の問題を修正）
         lastRecognizedText = ""
         currentSentences = emptyList()  // 古い文のリストをクリア
@@ -1555,6 +1710,10 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     private fun previousPage() {
         debugLog("Previous page", "direction: $pageDirection")
         appState.currentPage--
+
+        // v1.1.7: ページターン開始時刻を記録（画面安定待機用）
+        lastPageTurnTime = System.currentTimeMillis()
+        debugLog("[v1.1.7] Page turn started", "OCR will wait ${PAGE_TURN_SETTLE_TIME}ms for screen to settle")
 
         // ✅ FIX: ページ変更時に状態をリセット（TTS継続の問題を修正）
         lastRecognizedText = ""
@@ -1763,6 +1922,14 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
             debugLog("Error closing ImageReader", e.message)
         }
 // v1.0.83: latestImage解放        try {            latestImage?.close()            latestImage = null        } catch (e: Exception) {            debugLog("Error closing latestImage", e.message)        }
+
+        // v1.1.7: previousBitmapを解放
+        try {
+            previousBitmap?.recycle()
+            previousBitmap = null
+        } catch (e: Exception) {
+            debugLog("Error releasing previousBitmap", e.message)
+        }
 
         // 状態リセット
         appState.screenCaptureActive = false
