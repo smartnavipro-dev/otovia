@@ -1698,7 +1698,8 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
 
         // ページめくり方向に応じてジェスチャーを選択
         val intent = Intent(this, AutoPageTurnService::class.java)
-        intent.action = if (pageDirection == "right_to_next") "NEXT_PAGE" else "PREVIOUS_PAGE"
+        // ✅ v1.1.8 FIX: nextPage() always sends NEXT_PAGE (removed wrong pageDirection logic)
+        intent.action = "NEXT_PAGE"
         intent.putExtra("page_direction", pageDirection)
         startService(intent)
 
@@ -1725,7 +1726,8 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
 
         // ページめくり方向に応じてジェスチャーを選択
         val intent = Intent(this, AutoPageTurnService::class.java)
-        intent.action = if (pageDirection == "right_to_next") "PREVIOUS_PAGE" else "NEXT_PAGE"
+        // ✅ v1.1.8 FIX: previousPage() always sends PREVIOUS_PAGE (removed wrong pageDirection logic)
+        intent.action = "PREVIOUS_PAGE"
         intent.putExtra("page_direction", pageDirection)
         startService(intent)
 
