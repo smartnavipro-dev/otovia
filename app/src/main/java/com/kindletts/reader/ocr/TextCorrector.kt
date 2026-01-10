@@ -723,6 +723,87 @@ class TextCorrector(private val context: android.content.Context) {
                 pattern = Regex("(?<=[0-9])S(?=[0-9])"),
                 correct = "5",
                 description = "数字5の誤認識"
+            ),
+
+            // ============================================================
+            // v1.1.13: 実機ログから検出された新規誤認識パターン
+            // ============================================================
+
+            // 宿題の誤認識（有題）
+            GeneralizedRule(
+                pattern = Regex("有題"),
+                correct = "宿題",
+                description = "宿題の誤認識"
+            ),
+
+            // 知識の誤認識（知無）
+            GeneralizedRule(
+                pattern = Regex("知無"),
+                correct = "知識",
+                description = "知識の誤認識"
+            ),
+
+            // 推奨の誤認識（推製）
+            GeneralizedRule(
+                pattern = Regex("推製"),
+                correct = "推奨",
+                description = "推奨の誤認識"
+            ),
+
+            // 国家の誤認識（印家）
+            GeneralizedRule(
+                pattern = Regex("印家"),
+                correct = "国家",
+                description = "国家の誤認識"
+            ),
+
+            // 危機の誤認識（華梨）
+            GeneralizedRule(
+                pattern = Regex("華梨"),
+                correct = "危機",
+                description = "危機の誤認識"
+            ),
+
+            // 経済の重複文字（経済済）
+            GeneralizedRule(
+                pattern = Regex("経済済"),
+                correct = "経済",
+                description = "経済の重複文字"
+            ),
+
+            // 基本の不完全認識（基本定）
+            GeneralizedRule(
+                pattern = Regex("基本定"),
+                correct = "基本",
+                description = "基本の不完全認識"
+            ),
+
+            // 年代表記の数字混入（1一）
+            GeneralizedRule(
+                pattern = Regex("1一"),
+                correct = "一",
+                description = "年代表記の数字混入"
+            ),
+
+            // 10の誤認識（11〇, 1〇）
+            GeneralizedRule(
+                pattern = Regex("11〇"),
+                correct = "10",
+                description = "10%の誤認識"
+            ),
+
+            // インフレの不要なスペース
+            GeneralizedRule(
+                pattern = Regex("イン\\s+フレ"),
+                correct = "インフレ",
+                description = "インフレのスペース誤認識"
+            ),
+
+            // 苦しめられたの誤認識（苦しゆられた）
+            GeneralizedRule(
+                pattern = Regex("苦しゆられた"),
+                correct = "苦しめられた",
+                description = "苦しめられたの誤認識"
             )
         )
 
@@ -1364,7 +1445,8 @@ class TextCorrector(private val context: android.content.Context) {
                     // v1.0.75: 検出結果を保存
                     phase3DetectionResult = detectionResult
 
-                    val particleCorrected = particleDetector.applyCorrections(detectionResult, minConfidence = 0.7)
+                    // v1.1.13: 閾値を0.7→0.45に下げて、より多くの助詞検出を適用
+                    val particleCorrected = particleDetector.applyCorrections(detectionResult, minConfidence = 0.45)
                     if (particleCorrected != correctedText) {
                         Log.d(TAG, "[v1.0.64 Phase3] Particle corrections applied")
                         correctedText = particleCorrected

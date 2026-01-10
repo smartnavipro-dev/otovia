@@ -1,0 +1,500 @@
+01-10 22:11:56.043 22175 22175 D KindleTTS_LLMCorrector: [LLM] API key length: 17, starts with: YOUR_A...
+01-10 22:11:56.043 22175 22175 W KindleTTS_LLMCorrector: [LLM] API key not configured, skipping LLM correction
+01-10 22:11:56.043 22175 22175 W KindleTTS_LLMCorrector: [LLM] LLM returned empty, using original text
+01-10 22:11:56.043 22175 22175 D KindleTTS_TextCorrector: [v1.0.39] LLM correction rejected (confidence: 0.3)
+01-10 22:11:56.044 22175 22175 D KindleTTS_Service: [KindleTTS_Service] OCR success : TextLength: 284,
+01-10 22:11:56.044 22175 22175 D KindleTTS_Service: Preview: イングランド銀行総裁による序文 | 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平日は ロウソクを灯し | て有題をしたこと、11〇以上のイン フレに苦しゆられたことを覚えている。当時の,
+01-10 22:11:56.044 22175 22175 D KindleTTS_Service: Changed: false,
+01-10 22:11:56.044 22175 22175 D KindleTTS_Service: Corrections: 0 (Economic: 0, Katakana: 0)
+01-10 22:11:56.044 22175 22175 D KindleTTS_Service: [KindleTTS_Service] OCR duplicate : Same text as previous capture
+01-10 22:11:56.065 22175 22175 D KindleTTS_Service: [KindleTTS_Service] [v1.1.12] Bitmap recycled after OCR success 
+01-10 22:11:57.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 22:11:57.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 22:11:57.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 22:11:57.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 22:11:59.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 22:11:59.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 22:11:59.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 22:11:59.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 22:11:59.375 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 22:12:00.047 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 22:12:01.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 22:12:01.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 22:12:01.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 22:12:01.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 22:12:01.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 22:12:01.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 22:12:01.160 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 22:12:01.160 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 12ms
+01-10 22:12:01.172 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 24ms, Size: 1080x2400
+01-10 22:12:01.172 22175 22944 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 22:12:01.405 22175 22944 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 101ms
+01-10 22:12:01.591 22175 22944 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 419ms
+01-10 22:12:01.591 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 443ms
+01-10 22:12:01.591 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 22:12:01.971 22175 22175 D KindleTTS_Service: [KindleTTS_Service] OCR confidence stats : Blocks: 8,
+01-10 22:12:01.971 22175 22175 D KindleTTS_Service: Elements: 12,
+01-10 22:12:01.971 22175 22175 D KindleTTS_Service: HighConf: 12 (100%),
+01-10 22:12:01.971 22175 22175 D KindleTTS_Service: AvgConf: 0.62
+01-10 22:12:01.971 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #0 coords : L:736, T:858, R:918, B:9072, W:182, H:8214, Ratio:45.13
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #0 text : (量的級和)といつた略語の意味を理解できるようになるし、経済が成長する理由や停滞する理
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #1 coords : L:1063, T:839, R:1592, B:9416, W:529, H:8577, Ratio:16.21
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #1 text : 的な知無を身につけるだけでも役に立つ。身近なところで言えば、CDP(国内総生産)やQEを\nそんな私が経済学の学習を熱心に推製するのは当然のなりゆきと言えるだろう。経済学の基本定
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #2 coords : L:232, T:9206, R:1771, B:9385, W:1539, H:179, Ratio:0.12
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #2 text : 読書の速さを測定中
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #3 coords : L:2062, T:750, R:2256, B:9148, W:194, H:8398, Ratio:43.29
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #3 text : だったため、経済済が人 々の生活にいかに重大な影響をおよぼすかということが心に焼きつけられ
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #4 coords : L:2403, T:791, R:2597, B:9135, W:194, H:8344, Ratio:43.01
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #4 text : て有題をしたこと、11〇以上のイン フレに苦しゆられたことを覚えている。当時の印家が華梨
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #5 coords : L:2751, T:984, R:2941, B:9124, W:190, H:8140, Ratio:42.84
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #5 text : 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平日は ロウソクを灯し
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #6 coords : L:3462, T:852, R:3675, B:4125, W:213, H:3273, Ratio:15.37
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #6 text : イングランド銀行総裁による序文
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #7 coords : L:3775, T:9242, R:3974, B:9356, W:199, H:114, Ratio:0.57
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #7 text : 2%
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Text orientation : Vertical: true, MedianRatio: 42.84, Blocks: 8
+01-10 22:12:01.972 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Filter : Original: 8, Filtered: 6
+01-10 22:12:01.973 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Block split : Block width:529, Lines:2 → Split into 2 items
+01-10 22:12:01.973 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Columns : Detected 7 columns
+01-10 22:12:01.973 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Sorted order : [0] Right:3675, Y:852, Text:イングランド銀行総裁 | [1] Right:2941, Y:984, Text:私が中学生だった1一 | [2] Right:2597, Y:791, Text:て有題をしたこと、1 | [3] Right:2256, Y:750, Text:だったため、経済済が | [4] Right:1592, Y:1041, Text:そんな私が経済学の学 | [5] Right:1248, Y:839, Text:的な知無を身につける | [6] Right:918, Y:858, Text:(量的級和)といつた
+01-10 22:12:01.977 22175 22175 D KindleTTS_TextCorrector: [Phase1] Generalized patterns applied: generalized:経済の誤認識(5件), generalized:経済学の誤認識(2件), generalized:影響の誤認識(1件), generalized:経済の誤認識(5件), generalized:経済学の誤認識(2件), generalized:生産の誤認識(1件), generalized:影響の誤認識(1件)
+01-10 22:12:01.981 22175 22175 D KindleTTS_TextCorrector: [Phase1] Contextual patterns applied: 1 corrections
+01-10 22:12:01.989 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Analyzing 193 tokens for particle missing
+01-10 22:12:01.990 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: 'イングランド【の】銀行' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.990 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '銀行【の】総裁' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.991 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '1【の】一' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.991 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '一【の】九' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.992 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '九【の】七' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.992 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '不調【が】に' (conf=0.46, 名詞＋助動詞（主格）)
+01-10 22:12:01.993 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '1【の】1' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.993 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '1【の】〇' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.994 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '〇【の】以上' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.994 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '華【の】梨' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.995 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '基本【の】定' (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:01.996 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '知【の】無' (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:01.996 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '理解【が】できる' (conf=0.44, 名詞＋動詞（格助詞）)
+01-10 22:12:01.997 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '成長【を】する' (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:01.997 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '停滞【を】する' (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:01.997 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3 UniDic] Detected 15 particle missing patterns
+01-10 22:12:01.997 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] イングランド【の】銀行 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.998 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 銀行【の】総裁 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.998 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 1【の】一 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.998 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 一【の】九 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.998 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 九【の】七 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.998 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 不調【が】に (conf=0.46, 名詞＋助動詞（主格）)
+01-10 22:12:01.998 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 1【の】1 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.998 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 1【の】〇 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.998 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 〇【の】以上 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.998 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 華【の】梨 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:01.998 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 基本【の】定 (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:01.998 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 知【の】無 (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:01.998 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 理解【が】できる (conf=0.44, 名詞＋動詞（格助詞）)
+01-10 22:12:01.998 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 成長【を】する (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:01.998 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 停滞【を】する (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:01.998 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Corrections applied: 0/15
+01-10 22:12:02.001 22175 22175 D KindleTTS_OkuriganaCorrector: [v1.0.65] Analyzing 193 tokens for okurigana errors
+01-10 22:12:02.002 22175 22175 D KindleTTS_SokuonChoon: [v1.0.69] Analyzing 193 tokens for choon errors (Phase 1+2)
+01-10 22:12:02.002 22175 22175 D KindleTTS_SokuonChoon: [v1.0.69 Phase3b] 'いつ' → 'いった' (conf=0.77, dist=1)
+01-10 22:12:02.002 22175 22175 D KindleTTS_SokuonChoon: [v1.0.69] Found 0 Phase1 + 0 Phase2 + 1 Phase3 patterns
+01-10 22:12:02.002 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 Phase3 SokuonChoon Detection] Found 1 patterns (detection only)
+01-10 22:12:02.002 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 SokuonChoon] 'いつ' → 'いった' (conf=0.77)
+01-10 22:12:02.004 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] Analyzing 193 tokens for kanji shape errors
+01-10 22:12:02.004 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] '平日' → '平目' (日→目) conf=0.89, 縦線の位置
+01-10 22:12:02.004 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] '人' → '入' (人→入) conf=0.86, ノとハの違い
+01-10 22:12:02.004 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] '基本' → '基木' (本→木) conf=0.66, 横線の有無
+01-10 22:12:02.004 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] Found 3 kanji shape patterns in 2ms
+01-10 22:12:02.004 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 Phase3 KanjiShape Detection] Found 3 patterns (detection only)
+01-10 22:12:02.004 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 KanjiShape] '平日' → '平目' (日→目, conf=0.89)
+01-10 22:12:02.004 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 KanjiShape] '人' → '入' (人→入, conf=0.86)
+01-10 22:12:02.004 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 KanjiShape] '基本' → '基木' (本→木, conf=0.66)
+01-10 22:12:02.004 22175 22175 D KindleTTS_TextCorrector: [v1.0.39] Phase 1 confidence: 0.3 (patterns: 8)
+01-10 22:12:02.004 22175 22175 D KindleTTS_TextCorrector: [v1.0.39] Phase 1 confidence low (0.3), trying LLM correction
+01-10 22:12:02.004 22175 22175 D KindleTTS_TextCorrector: [v1.0.78 Phase3Hints] Generated 6 hints: particle=3, okurigana=0, choon=1, kanji=2
+01-10 22:12:02.004 22175 22175 D KindleTTS_LLMCorrector: [v1.0.82] API Quota: 20/20 remaining
+01-10 22:12:02.004 22175 22175 D KindleTTS_LLMCorrector: [LLM] Cache MISS, starting LLM correction for: 'イングランド銀行総裁による序文
+01-10 22:12:02.004 22175 22175 D KindleTTS_LLMCorrector: 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平...'
+01-10 22:12:02.004 22175 22175 D KindleTTS_LLMCorrector: [v1.0.75] Phase 3 hints: イングランド[の]銀行, 銀行[の]総裁, 1[の]一, いつ→いった, 日→目, 人→入
+01-10 22:12:02.005 22175 22175 D KindleTTS_LLMCorrector: [v1.0.78 TokenMetrics] Prompt length: 581 chars, Estimated tokens: ~1452
+01-10 22:12:02.005 22175 22175 D KindleTTS_LLMCorrector: [v1.0.78 TokenMetrics] Phase3Hints length: 45 chars (~112 tokens)
+01-10 22:12:02.006 22175 22175 D KindleTTS_LLMCorrector: [LLM] API key length: 17, starts with: YOUR_A...
+01-10 22:12:02.006 22175 22175 W KindleTTS_LLMCorrector: [LLM] API key not configured, skipping LLM correction
+01-10 22:12:02.006 22175 22175 W KindleTTS_LLMCorrector: [LLM] LLM returned empty, using original text
+01-10 22:12:02.006 22175 22175 D KindleTTS_TextCorrector: [v1.0.39] LLM correction rejected (confidence: 0.3)
+01-10 22:12:02.006 22175 22175 D KindleTTS_Service: [KindleTTS_Service] OCR success : TextLength: 284,
+01-10 22:12:02.006 22175 22175 D KindleTTS_Service: Preview: イングランド銀行総裁による序文 | 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平日は ロウソクを灯し | て有題をしたこと、11〇以上のイン フレに苦しゆられたことを覚えている。当時の,
+01-10 22:12:02.006 22175 22175 D KindleTTS_Service: Changed: false,
+01-10 22:12:02.006 22175 22175 D KindleTTS_Service: Corrections: 0 (Economic: 0, Katakana: 0)
+01-10 22:12:02.006 22175 22175 D KindleTTS_Service: [KindleTTS_Service] OCR duplicate : Same text as previous capture
+01-10 22:12:02.028 22175 22175 D KindleTTS_Service: [KindleTTS_Service] [v1.1.12] Bitmap recycled after OCR success 
+01-10 22:12:03.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 22:12:03.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 22:12:03.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 22:12:03.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 22:12:05.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 22:12:05.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 22:12:05.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 22:12:05.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 22:12:07.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 22:12:07.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 22:12:07.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 22:12:07.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 22:12:09.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 22:12:09.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 22:12:09.150 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 22:12:09.150 22175 22944 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 22:12:11.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 22:12:11.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 22:12:11.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 22:12:11.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 22:12:11.667 22175 22184 D KindleTTS_Service: [KindleTTS_Service] TTS completed : 2
+01-10 22:12:12.168 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Speaking sentence : 3: 経済学の基本定
+01-10 22:12:12.168 22175 22175 D KindleTTS_Service: 的な知無を身につけるだけでも役に立つ
+01-10 22:12:12.175 22175 22184 D KindleTTS_Service: [KindleTTS_Service] TTS started : 3
+01-10 22:12:12.226 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 22:12:13.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 22:12:13.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 22:12:13.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 22:12:13.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 22:12:13.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 22:12:13.150 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 22:12:13.165 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 22:12:13.165 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 17ms
+01-10 22:12:13.184 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 36ms, Size: 1080x2400
+01-10 22:12:13.184 22175 22944 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 22:12:13.433 22175 22944 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 100ms
+01-10 22:12:13.619 22175 22944 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 435ms
+01-10 22:12:13.619 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 471ms
+01-10 22:12:13.619 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 22:12:14.051 22175 22175 D KindleTTS_Service: [KindleTTS_Service] OCR confidence stats : Blocks: 8,
+01-10 22:12:14.051 22175 22175 D KindleTTS_Service: Elements: 12,
+01-10 22:12:14.051 22175 22175 D KindleTTS_Service: HighConf: 12 (100%),
+01-10 22:12:14.051 22175 22175 D KindleTTS_Service: AvgConf: 0.62
+01-10 22:12:14.051 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #0 coords : L:736, T:858, R:918, B:9072, W:182, H:8214, Ratio:45.13
+01-10 22:12:14.051 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #0 text : (量的級和)といつた略語の意味を理解できるようになるし、経済が成長する理由や停滞する理
+01-10 22:12:14.051 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #1 coords : L:1063, T:839, R:1592, B:9416, W:529, H:8577, Ratio:16.21
+01-10 22:12:14.051 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #1 text : 的な知無を身につけるだけでも役に立つ。身近なところで言えば、CDP(国内総生産)やQEを\nそんな私が経済学の学習を熱心に推製するのは当然のなりゆきと言えるだろう。経済学の基本定
+01-10 22:12:14.052 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #2 coords : L:232, T:9206, R:1771, B:9385, W:1539, H:179, Ratio:0.12
+01-10 22:12:14.052 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #2 text : 読書の速さを測定中
+01-10 22:12:14.052 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #3 coords : L:2062, T:750, R:2256, B:9148, W:194, H:8398, Ratio:43.29
+01-10 22:12:14.052 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #3 text : だったため、経済済が人 々の生活にいかに重大な影響をおよぼすかということが心に焼きつけられ
+01-10 22:12:14.052 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #4 coords : L:2403, T:791, R:2597, B:9135, W:194, H:8344, Ratio:43.01
+01-10 22:12:14.052 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #4 text : て有題をしたこと、11〇以上のイン フレに苦しゆられたことを覚えている。当時の印家が華梨
+01-10 22:12:14.052 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #5 coords : L:2751, T:984, R:2941, B:9124, W:190, H:8140, Ratio:42.84
+01-10 22:12:14.052 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #5 text : 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平日は ロウソクを灯し
+01-10 22:12:14.052 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #6 coords : L:3462, T:852, R:3675, B:4125, W:213, H:3273, Ratio:15.37
+01-10 22:12:14.052 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #6 text : イングランド銀行総裁による序文
+01-10 22:12:14.052 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #7 coords : L:3775, T:9242, R:3974, B:9356, W:199, H:114, Ratio:0.57
+01-10 22:12:14.052 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #7 text : 2%
+01-10 22:12:14.052 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Text orientation : Vertical: true, MedianRatio: 42.84, Blocks: 8
+01-10 22:12:14.052 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Filter : Original: 8, Filtered: 6
+01-10 22:12:14.053 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Block split : Block width:529, Lines:2 → Split into 2 items
+01-10 22:12:14.053 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Columns : Detected 7 columns
+01-10 22:12:14.053 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Sorted order : [0] Right:3675, Y:852, Text:イングランド銀行総裁 | [1] Right:2941, Y:984, Text:私が中学生だった1一 | [2] Right:2597, Y:791, Text:て有題をしたこと、1 | [3] Right:2256, Y:750, Text:だったため、経済済が | [4] Right:1592, Y:1041, Text:そんな私が経済学の学 | [5] Right:1248, Y:839, Text:的な知無を身につける | [6] Right:918, Y:858, Text:(量的級和)といつた
+01-10 22:12:14.057 22175 22175 D KindleTTS_TextCorrector: [Phase1] Generalized patterns applied: generalized:経済の誤認識(5件), generalized:経済学の誤認識(2件), generalized:影響の誤認識(1件), generalized:経済の誤認識(5件), generalized:経済学の誤認識(2件), generalized:生産の誤認識(1件), generalized:影響の誤認識(1件)
+01-10 22:12:14.060 22175 22175 D KindleTTS_TextCorrector: [Phase1] Contextual patterns applied: 1 corrections
+01-10 22:12:14.069 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Analyzing 193 tokens for particle missing
+01-10 22:12:14.070 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: 'イングランド【の】銀行' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.070 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '銀行【の】総裁' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.071 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '1【の】一' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.071 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '一【の】九' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.071 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '九【の】七' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.071 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '不調【が】に' (conf=0.46, 名詞＋助動詞（主格）)
+01-10 22:12:14.072 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '1【の】1' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.072 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '1【の】〇' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.073 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '〇【の】以上' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.073 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '華【の】梨' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.074 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '基本【の】定' (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:14.074 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '知【の】無' (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:14.076 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '理解【が】できる' (conf=0.44, 名詞＋動詞（格助詞）)
+01-10 22:12:14.076 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '成長【を】する' (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:14.076 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '停滞【を】する' (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:14.076 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3 UniDic] Detected 15 particle missing patterns
+01-10 22:12:14.076 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] イングランド【の】銀行 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.077 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 銀行【の】総裁 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.077 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 1【の】一 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.077 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 一【の】九 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.077 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 九【の】七 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.077 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 不調【が】に (conf=0.46, 名詞＋助動詞（主格）)
+01-10 22:12:14.077 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 1【の】1 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.077 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 1【の】〇 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.077 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 〇【の】以上 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.077 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 華【の】梨 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:14.077 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 基本【の】定 (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:14.077 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 知【の】無 (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:14.077 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 理解【が】できる (conf=0.44, 名詞＋動詞（格助詞）)
+01-10 22:12:14.077 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 成長【を】する (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:14.077 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 停滞【を】する (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:14.077 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Corrections applied: 0/15
+01-10 22:12:14.081 22175 22175 D KindleTTS_OkuriganaCorrector: [v1.0.65] Analyzing 193 tokens for okurigana errors
+01-10 22:12:14.083 22175 22175 D KindleTTS_SokuonChoon: [v1.0.69] Analyzing 193 tokens for choon errors (Phase 1+2)
+01-10 22:12:14.083 22175 22175 D KindleTTS_SokuonChoon: [v1.0.69 Phase3b] 'いつ' → 'いった' (conf=0.77, dist=1)
+01-10 22:12:14.083 22175 22175 D KindleTTS_SokuonChoon: [v1.0.69] Found 0 Phase1 + 0 Phase2 + 1 Phase3 patterns
+01-10 22:12:14.083 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 Phase3 SokuonChoon Detection] Found 1 patterns (detection only)
+01-10 22:12:14.083 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 SokuonChoon] 'いつ' → 'いった' (conf=0.77)
+01-10 22:12:14.084 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] Analyzing 193 tokens for kanji shape errors
+01-10 22:12:14.084 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] '平日' → '平目' (日→目) conf=0.89, 縦線の位置
+01-10 22:12:14.084 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] '人' → '入' (人→入) conf=0.86, ノとハの違い
+01-10 22:12:14.085 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] '基本' → '基木' (本→木) conf=0.66, 横線の有無
+01-10 22:12:14.085 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] Found 3 kanji shape patterns in 2ms
+01-10 22:12:14.085 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 Phase3 KanjiShape Detection] Found 3 patterns (detection only)
+01-10 22:12:14.085 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 KanjiShape] '平日' → '平目' (日→目, conf=0.89)
+01-10 22:12:14.085 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 KanjiShape] '人' → '入' (人→入, conf=0.86)
+01-10 22:12:14.085 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 KanjiShape] '基本' → '基木' (本→木, conf=0.66)
+01-10 22:12:14.085 22175 22175 D KindleTTS_TextCorrector: [v1.0.39] Phase 1 confidence: 0.3 (patterns: 8)
+01-10 22:12:14.085 22175 22175 D KindleTTS_TextCorrector: [v1.0.39] Phase 1 confidence low (0.3), trying LLM correction
+01-10 22:12:14.085 22175 22175 D KindleTTS_TextCorrector: [v1.0.78 Phase3Hints] Generated 6 hints: particle=3, okurigana=0, choon=1, kanji=2
+01-10 22:12:14.085 22175 22175 D KindleTTS_LLMCorrector: [v1.0.82] API Quota: 20/20 remaining
+01-10 22:12:14.085 22175 22175 D KindleTTS_LLMCorrector: [LLM] Cache MISS, starting LLM correction for: 'イングランド銀行総裁による序文
+01-10 22:12:14.085 22175 22175 D KindleTTS_LLMCorrector: 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平...'
+01-10 22:12:14.085 22175 22175 D KindleTTS_LLMCorrector: [v1.0.75] Phase 3 hints: イングランド[の]銀行, 銀行[の]総裁, 1[の]一, いつ→いった, 日→目, 人→入
+01-10 22:12:14.085 22175 22175 D KindleTTS_LLMCorrector: [v1.0.78 TokenMetrics] Prompt length: 581 chars, Estimated tokens: ~1452
+01-10 22:12:14.085 22175 22175 D KindleTTS_LLMCorrector: [v1.0.78 TokenMetrics] Phase3Hints length: 45 chars (~112 tokens)
+01-10 22:12:14.086 22175 22175 D KindleTTS_LLMCorrector: [LLM] API key length: 17, starts with: YOUR_A...
+01-10 22:12:14.086 22175 22175 W KindleTTS_LLMCorrector: [LLM] API key not configured, skipping LLM correction
+01-10 22:12:14.086 22175 22175 W KindleTTS_LLMCorrector: [LLM] LLM returned empty, using original text
+01-10 22:12:14.086 22175 22175 D KindleTTS_TextCorrector: [v1.0.39] LLM correction rejected (confidence: 0.3)
+01-10 22:12:14.086 22175 22175 D KindleTTS_Service: [KindleTTS_Service] OCR success : TextLength: 284,
+01-10 22:12:14.086 22175 22175 D KindleTTS_Service: Preview: イングランド銀行総裁による序文 | 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平日は ロウソクを灯し | て有題をしたこと、11〇以上のイン フレに苦しゆられたことを覚えている。当時の,
+01-10 22:12:14.086 22175 22175 D KindleTTS_Service: Changed: false,
+01-10 22:12:14.086 22175 22175 D KindleTTS_Service: Corrections: 0 (Economic: 0, Katakana: 0)
+01-10 22:12:14.086 22175 22175 D KindleTTS_Service: [KindleTTS_Service] OCR duplicate : Same text as previous capture
+01-10 22:12:14.107 22175 22175 D KindleTTS_Service: [KindleTTS_Service] [v1.1.12] Bitmap recycled after OCR success 
+01-10 22:12:15.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 22:12:15.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 22:12:15.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 22:12:15.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 22:12:17.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 22:12:17.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 22:12:17.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 22:12:17.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 22:12:17.233 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 22:12:17.855 22175 22184 D KindleTTS_Service: [KindleTTS_Service] TTS completed : 3
+01-10 22:12:18.356 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Speaking sentence : 4: 身近なところで言えば、CDP(国内総生産)やQEを
+01-10 22:12:18.356 22175 22175 D KindleTTS_Service: (量的級和)といつた略語の意味を理解できるようになるし、経済が成長する理由や停滞する理
+01-10 22:12:18.406 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 22:12:18.490 22175 23051 D KindleTTS_Service: [KindleTTS_Service] TTS started : 4
+01-10 22:12:19.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 22:12:19.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 22:12:19.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 22:12:19.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 22:12:19.148 22175 22944 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 22:12:19.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 22:12:19.159 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 22:12:19.159 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 11ms
+01-10 22:12:19.170 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 22ms, Size: 1080x2400
+01-10 22:12:19.170 22175 22944 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 22:12:19.420 22175 22944 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 102ms
+01-10 22:12:19.611 22175 22944 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 441ms
+01-10 22:12:19.611 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 463ms
+01-10 22:12:19.611 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 22:12:19.996 22175 22175 D KindleTTS_Service: [KindleTTS_Service] OCR confidence stats : Blocks: 8,
+01-10 22:12:19.996 22175 22175 D KindleTTS_Service: Elements: 12,
+01-10 22:12:19.996 22175 22175 D KindleTTS_Service: HighConf: 12 (100%),
+01-10 22:12:19.996 22175 22175 D KindleTTS_Service: AvgConf: 0.62
+01-10 22:12:19.996 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #0 coords : L:736, T:858, R:918, B:9072, W:182, H:8214, Ratio:45.13
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #0 text : (量的級和)といつた略語の意味を理解できるようになるし、経済が成長する理由や停滞する理
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #1 coords : L:1063, T:839, R:1592, B:9416, W:529, H:8577, Ratio:16.21
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #1 text : 的な知無を身につけるだけでも役に立つ。身近なところで言えば、CDP(国内総生産)やQEを\nそんな私が経済学の学習を熱心に推製するのは当然のなりゆきと言えるだろう。経済学の基本定
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #2 coords : L:232, T:9206, R:1771, B:9385, W:1539, H:179, Ratio:0.12
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #2 text : 読書の速さを測定中
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #3 coords : L:2062, T:750, R:2256, B:9148, W:194, H:8398, Ratio:43.29
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #3 text : だったため、経済済が人 々の生活にいかに重大な影響をおよぼすかということが心に焼きつけられ
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #4 coords : L:2403, T:791, R:2597, B:9135, W:194, H:8344, Ratio:43.01
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #4 text : て有題をしたこと、11〇以上のイン フレに苦しゆられたことを覚えている。当時の印家が華梨
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #5 coords : L:2751, T:984, R:2941, B:9124, W:190, H:8140, Ratio:42.84
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #5 text : 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平日は ロウソクを灯し
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #6 coords : L:3462, T:852, R:3675, B:4125, W:213, H:3273, Ratio:15.37
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #6 text : イングランド銀行総裁による序文
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #7 coords : L:3775, T:9242, R:3974, B:9356, W:199, H:114, Ratio:0.57
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #7 text : 2%
+01-10 22:12:19.997 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Text orientation : Vertical: true, MedianRatio: 42.84, Blocks: 8
+01-10 22:12:19.998 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Filter : Original: 8, Filtered: 6
+01-10 22:12:19.998 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Block split : Block width:529, Lines:2 → Split into 2 items
+01-10 22:12:19.998 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Columns : Detected 7 columns
+01-10 22:12:19.998 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Sorted order : [0] Right:3675, Y:852, Text:イングランド銀行総裁 | [1] Right:2941, Y:984, Text:私が中学生だった1一 | [2] Right:2597, Y:791, Text:て有題をしたこと、1 | [3] Right:2256, Y:750, Text:だったため、経済済が | [4] Right:1592, Y:1041, Text:そんな私が経済学の学 | [5] Right:1248, Y:839, Text:的な知無を身につける | [6] Right:918, Y:858, Text:(量的級和)といつた
+01-10 22:12:20.002 22175 22175 D KindleTTS_TextCorrector: [Phase1] Generalized patterns applied: generalized:経済の誤認識(5件), generalized:経済学の誤認識(2件), generalized:影響の誤認識(1件), generalized:経済の誤認識(5件), generalized:経済学の誤認識(2件), generalized:生産の誤認識(1件), generalized:影響の誤認識(1件)
+01-10 22:12:20.005 22175 22175 D KindleTTS_TextCorrector: [Phase1] Contextual patterns applied: 1 corrections
+01-10 22:12:20.013 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Analyzing 193 tokens for particle missing
+01-10 22:12:20.013 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: 'イングランド【の】銀行' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.014 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '銀行【の】総裁' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.014 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '1【の】一' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.014 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '一【の】九' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.015 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '九【の】七' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.015 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '不調【が】に' (conf=0.46, 名詞＋助動詞（主格）)
+01-10 22:12:20.016 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '1【の】1' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.016 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '1【の】〇' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.016 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '〇【の】以上' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.017 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '華【の】梨' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.018 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '基本【の】定' (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:20.018 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '知【の】無' (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:20.019 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '理解【が】できる' (conf=0.44, 名詞＋動詞（格助詞）)
+01-10 22:12:20.020 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '成長【を】する' (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:20.020 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '停滞【を】する' (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:20.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3 UniDic] Detected 15 particle missing patterns
+01-10 22:12:20.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] イングランド【の】銀行 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 銀行【の】総裁 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 1【の】一 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 一【の】九 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 九【の】七 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 不調【が】に (conf=0.46, 名詞＋助動詞（主格）)
+01-10 22:12:20.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 1【の】1 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 1【の】〇 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 〇【の】以上 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 華【の】梨 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:20.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 基本【の】定 (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:20.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 知【の】無 (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:20.021 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 理解【が】できる (conf=0.44, 名詞＋動詞（格助詞）)
+01-10 22:12:20.021 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 成長【を】する (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:20.021 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 停滞【を】する (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:20.021 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Corrections applied: 0/15
+01-10 22:12:20.026 22175 22175 D KindleTTS_OkuriganaCorrector: [v1.0.65] Analyzing 193 tokens for okurigana errors
+01-10 22:12:20.032 22175 22175 D KindleTTS_SokuonChoon: [v1.0.69] Analyzing 193 tokens for choon errors (Phase 1+2)
+01-10 22:12:20.032 22175 22175 D KindleTTS_SokuonChoon: [v1.0.69 Phase3b] 'いつ' → 'いった' (conf=0.77, dist=1)
+01-10 22:12:20.032 22175 22175 D KindleTTS_SokuonChoon: [v1.0.69] Found 0 Phase1 + 0 Phase2 + 1 Phase3 patterns
+01-10 22:12:20.032 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 Phase3 SokuonChoon Detection] Found 1 patterns (detection only)
+01-10 22:12:20.032 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 SokuonChoon] 'いつ' → 'いった' (conf=0.77)
+01-10 22:12:20.034 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] Analyzing 193 tokens for kanji shape errors
+01-10 22:12:20.034 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] '平日' → '平目' (日→目) conf=0.89, 縦線の位置
+01-10 22:12:20.034 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] '人' → '入' (人→入) conf=0.86, ノとハの違い
+01-10 22:12:20.034 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] '基本' → '基木' (本→木) conf=0.66, 横線の有無
+01-10 22:12:20.034 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] Found 3 kanji shape patterns in 2ms
+01-10 22:12:20.034 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 Phase3 KanjiShape Detection] Found 3 patterns (detection only)
+01-10 22:12:20.034 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 KanjiShape] '平日' → '平目' (日→目, conf=0.89)
+01-10 22:12:20.034 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 KanjiShape] '人' → '入' (人→入, conf=0.86)
+01-10 22:12:20.034 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 KanjiShape] '基本' → '基木' (本→木, conf=0.66)
+01-10 22:12:20.034 22175 22175 D KindleTTS_TextCorrector: [v1.0.39] Phase 1 confidence: 0.3 (patterns: 8)
+01-10 22:12:20.034 22175 22175 D KindleTTS_TextCorrector: [v1.0.39] Phase 1 confidence low (0.3), trying LLM correction
+01-10 22:12:20.034 22175 22175 D KindleTTS_TextCorrector: [v1.0.78 Phase3Hints] Generated 6 hints: particle=3, okurigana=0, choon=1, kanji=2
+01-10 22:12:20.034 22175 22175 D KindleTTS_LLMCorrector: [v1.0.82] API Quota: 20/20 remaining
+01-10 22:12:20.034 22175 22175 D KindleTTS_LLMCorrector: [LLM] Cache MISS, starting LLM correction for: 'イングランド銀行総裁による序文
+01-10 22:12:20.034 22175 22175 D KindleTTS_LLMCorrector: 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平...'
+01-10 22:12:20.034 22175 22175 D KindleTTS_LLMCorrector: [v1.0.75] Phase 3 hints: イングランド[の]銀行, 銀行[の]総裁, 1[の]一, いつ→いった, 日→目, 人→入
+01-10 22:12:20.035 22175 22175 D KindleTTS_LLMCorrector: [v1.0.78 TokenMetrics] Prompt length: 581 chars, Estimated tokens: ~1452
+01-10 22:12:20.035 22175 22175 D KindleTTS_LLMCorrector: [v1.0.78 TokenMetrics] Phase3Hints length: 45 chars (~112 tokens)
+01-10 22:12:20.036 22175 22175 D KindleTTS_LLMCorrector: [LLM] API key length: 17, starts with: YOUR_A...
+01-10 22:12:20.036 22175 22175 W KindleTTS_LLMCorrector: [LLM] API key not configured, skipping LLM correction
+01-10 22:12:20.036 22175 22175 W KindleTTS_LLMCorrector: [LLM] LLM returned empty, using original text
+01-10 22:12:20.036 22175 22175 D KindleTTS_TextCorrector: [v1.0.39] LLM correction rejected (confidence: 0.3)
+01-10 22:12:20.036 22175 22175 D KindleTTS_Service: [KindleTTS_Service] OCR success : TextLength: 284,
+01-10 22:12:20.036 22175 22175 D KindleTTS_Service: Preview: イングランド銀行総裁による序文 | 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平日は ロウソクを灯し | て有題をしたこと、11〇以上のイン フレに苦しゆられたことを覚えている。当時の,
+01-10 22:12:20.036 22175 22175 D KindleTTS_Service: Changed: false,
+01-10 22:12:20.036 22175 22175 D KindleTTS_Service: Corrections: 0 (Economic: 0, Katakana: 0)
+01-10 22:12:20.036 22175 22175 D KindleTTS_Service: [KindleTTS_Service] OCR duplicate : Same text as previous capture
+01-10 22:12:20.058 22175 22175 D KindleTTS_Service: [KindleTTS_Service] [v1.1.12] Bitmap recycled after OCR success 
+01-10 22:12:21.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 22:12:21.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 22:12:21.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 22:12:21.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 22:12:23.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 22:12:23.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 22:12:23.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 22:12:23.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 22:12:23.392 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 22:12:25.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 22:12:25.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 22:12:25.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 22:12:25.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 22:12:25.149 22175 22944 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 22:12:25.151 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 22:12:25.161 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 22:12:25.161 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 12ms
+01-10 22:12:25.169 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 20ms, Size: 1080x2400
+01-10 22:12:25.169 22175 22944 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 22:12:25.401 22175 22944 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 101ms
+01-10 22:12:25.593 22175 22944 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 424ms
+01-10 22:12:25.593 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 444ms
+01-10 22:12:25.593 22175 22944 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 22:12:25.988 22175 22175 D KindleTTS_Service: [KindleTTS_Service] OCR confidence stats : Blocks: 8,
+01-10 22:12:25.988 22175 22175 D KindleTTS_Service: Elements: 12,
+01-10 22:12:25.988 22175 22175 D KindleTTS_Service: HighConf: 12 (100%),
+01-10 22:12:25.988 22175 22175 D KindleTTS_Service: AvgConf: 0.62
+01-10 22:12:25.988 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #0 coords : L:736, T:858, R:918, B:9072, W:182, H:8214, Ratio:45.13
+01-10 22:12:25.988 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #0 text : (量的級和)といつた略語の意味を理解できるようになるし、経済が成長する理由や停滞する理
+01-10 22:12:25.988 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #1 coords : L:1063, T:839, R:1592, B:9416, W:529, H:8577, Ratio:16.21
+01-10 22:12:25.988 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #1 text : 的な知無を身につけるだけでも役に立つ。身近なところで言えば、CDP(国内総生産)やQEを\nそんな私が経済学の学習を熱心に推製するのは当然のなりゆきと言えるだろう。経済学の基本定
+01-10 22:12:25.988 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #2 coords : L:232, T:9206, R:1771, B:9385, W:1539, H:179, Ratio:0.12
+01-10 22:12:25.988 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #2 text : 読書の速さを測定中
+01-10 22:12:25.988 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #3 coords : L:2062, T:750, R:2256, B:9148, W:194, H:8398, Ratio:43.29
+01-10 22:12:25.988 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #3 text : だったため、経済済が人 々の生活にいかに重大な影響をおよぼすかということが心に焼きつけられ
+01-10 22:12:25.988 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #4 coords : L:2403, T:791, R:2597, B:9135, W:194, H:8344, Ratio:43.01
+01-10 22:12:25.989 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #4 text : て有題をしたこと、11〇以上のイン フレに苦しゆられたことを覚えている。当時の印家が華梨
+01-10 22:12:25.989 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #5 coords : L:2751, T:984, R:2941, B:9124, W:190, H:8140, Ratio:42.84
+01-10 22:12:25.989 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #5 text : 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平日は ロウソクを灯し
+01-10 22:12:25.989 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #6 coords : L:3462, T:852, R:3675, B:4125, W:213, H:3273, Ratio:15.37
+01-10 22:12:25.989 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #6 text : イングランド銀行総裁による序文
+01-10 22:12:25.989 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #7 coords : L:3775, T:9242, R:3974, B:9356, W:199, H:114, Ratio:0.57
+01-10 22:12:25.989 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Block #7 text : 2%
+01-10 22:12:25.989 22175 22175 D KindleTTS_Service: [KindleTTS_Service] Text orientation : Vertical: true, MedianRatio: 42.84, Blocks: 8
+01-10 22:12:25.989 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Filter : Original: 8, Filtered: 6
+01-10 22:12:25.989 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Block split : Block width:529, Lines:2 → Split into 2 items
+01-10 22:12:25.990 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Columns : Detected 7 columns
+01-10 22:12:25.990 22175 22175 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Sorted order : [0] Right:3675, Y:852, Text:イングランド銀行総裁 | [1] Right:2941, Y:984, Text:私が中学生だった1一 | [2] Right:2597, Y:791, Text:て有題をしたこと、1 | [3] Right:2256, Y:750, Text:だったため、経済済が | [4] Right:1592, Y:1041, Text:そんな私が経済学の学 | [5] Right:1248, Y:839, Text:的な知無を身につける | [6] Right:918, Y:858, Text:(量的級和)といつた
+01-10 22:12:25.993 22175 22175 D KindleTTS_TextCorrector: [Phase1] Generalized patterns applied: generalized:経済の誤認識(5件), generalized:経済学の誤認識(2件), generalized:影響の誤認識(1件), generalized:経済の誤認識(5件), generalized:経済学の誤認識(2件), generalized:生産の誤認識(1件), generalized:影響の誤認識(1件)
+01-10 22:12:25.996 22175 22175 D KindleTTS_TextCorrector: [Phase1] Contextual patterns applied: 1 corrections
+01-10 22:12:26.005 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Analyzing 193 tokens for particle missing
+01-10 22:12:26.006 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: 'イングランド【の】銀行' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.006 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '銀行【の】総裁' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.007 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '1【の】一' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.007 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '一【の】九' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.007 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '九【の】七' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.008 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '不調【が】に' (conf=0.46, 名詞＋助動詞（主格）)
+01-10 22:12:26.008 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '1【の】1' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.009 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '1【の】〇' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.009 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '〇【の】以上' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.009 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '華【の】梨' (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.010 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '基本【の】定' (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:26.011 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '知【の】無' (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:26.012 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '理解【が】できる' (conf=0.44, 名詞＋動詞（格助詞）)
+01-10 22:12:26.012 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '成長【を】する' (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:26.012 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '停滞【を】する' (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:26.012 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3 UniDic] Detected 15 particle missing patterns
+01-10 22:12:26.012 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] イングランド【の】銀行 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.013 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 銀行【の】総裁 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.013 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 1【の】一 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.013 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 一【の】九 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.013 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 九【の】七 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.013 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 不調【が】に (conf=0.46, 名詞＋助動詞（主格）)
+01-10 22:12:26.013 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 1【の】1 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.013 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 1【の】〇 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.013 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 〇【の】以上 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.013 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 華【の】梨 (conf=0.55, 名詞連続（所有・並列）)
+01-10 22:12:26.013 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 基本【の】定 (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:26.013 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 知【の】無 (conf=0.50, 名詞連続（所有・並列）)
+01-10 22:12:26.013 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 理解【が】できる (conf=0.44, 名詞＋動詞（格助詞）)
+01-10 22:12:26.013 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 成長【を】する (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:26.013 22175 22175 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 停滞【を】する (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 22:12:26.013 22175 22175 D KindleTTS_ParticleDetector: [Phase3] Corrections applied: 0/15
+01-10 22:12:26.017 22175 22175 D KindleTTS_OkuriganaCorrector: [v1.0.65] Analyzing 193 tokens for okurigana errors
+01-10 22:12:26.018 22175 22175 D KindleTTS_SokuonChoon: [v1.0.69] Analyzing 193 tokens for choon errors (Phase 1+2)
+01-10 22:12:26.018 22175 22175 D KindleTTS_SokuonChoon: [v1.0.69 Phase3b] 'いつ' → 'いった' (conf=0.77, dist=1)
+01-10 22:12:26.018 22175 22175 D KindleTTS_SokuonChoon: [v1.0.69] Found 0 Phase1 + 0 Phase2 + 1 Phase3 patterns
+01-10 22:12:26.019 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 Phase3 SokuonChoon Detection] Found 1 patterns (detection only)
+01-10 22:12:26.019 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 SokuonChoon] 'いつ' → 'いった' (conf=0.77)
+01-10 22:12:26.020 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] Analyzing 193 tokens for kanji shape errors
+01-10 22:12:26.020 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] '平日' → '平目' (日→目) conf=0.89, 縦線の位置
+01-10 22:12:26.020 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] '人' → '入' (人→入) conf=0.86, ノとハの違い
+01-10 22:12:26.020 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] '基本' → '基木' (本→木) conf=0.66, 横線の有無
+01-10 22:12:26.020 22175 22175 D KindleTTS_KanjiShape: [v1.0.68] Found 3 kanji shape patterns in 1ms
+01-10 22:12:26.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 Phase3 KanjiShape Detection] Found 3 patterns (detection only)
+01-10 22:12:26.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 KanjiShape] '平日' → '平目' (日→目, conf=0.89)
+01-10 22:12:26.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 KanjiShape] '人' → '入' (人→入, conf=0.86)
+01-10 22:12:26.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.76 KanjiShape] '基本' → '基木' (本→木, conf=0.66)
+01-10 22:12:26.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.39] Phase 1 confidence: 0.3 (patterns: 8)
+01-10 22:12:26.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.39] Phase 1 confidence low (0.3), trying LLM correction
+01-10 22:12:26.020 22175 22175 D KindleTTS_TextCorrector: [v1.0.78 Phase3Hints] Generated 6 hints: particle=3, okurigana=0, choon=1, kanji=2
+01-10 22:12:26.020 22175 22175 D KindleTTS_LLMCorrector: [v1.0.82] API Quota: 20/20 remaining
+01-10 22:12:26.020 22175 22175 D KindleTTS_LLMCorrector: [LLM] Cache MISS, starting LLM correction for: 'イングランド銀行総裁による序文
+01-10 22:12:26.020 22175 22175 D KindleTTS_LLMCorrector: 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平...'
+01-10 22:12:26.020 22175 22175 D KindleTTS_LLMCorrector: [v1.0.75] Phase 3 hints: イングランド[の]銀行, 銀行[の]総裁, 1[の]一, いつ→いった, 日→目, 人→入
+01-10 22:12:26.021 22175 22175 D KindleTTS_LLMCorrector: [v1.0.78 TokenMetrics] Prompt length: 581 chars, Estimated tokens: ~1452
+01-10 22:12:26.021 22175 22175 D KindleTTS_LLMCorrector: [v1.0.78 TokenMetrics] Phase3Hints length: 45 chars (~112 tokens)
+01-10 22:12:26.021 22175 22175 D KindleTTS_LLMCorrector: [LLM] API key length: 17, starts with: YOUR_A...
+01-10 22:12:26.021 22175 22175 W KindleTTS_LLMCorrector: [LLM] API key not configured, skipping LLM correction
+01-10 22:12:26.021 22175 22175 W KindleTTS_LLMCorrector: [LLM] LLM returned empty, using original text
+01-10 22:12:26.021 22175 22175 D KindleTTS_TextCorrector: [v1.0.39] LLM correction rejected (confidence: 0.3)
+01-10 22:12:26.022 22175 22175 D KindleTTS_Service: [KindleTTS_Service] OCR success : TextLength: 284,
+01-10 22:12:26.022 22175 22175 D KindleTTS_Service: Preview: イングランド銀行総裁による序文 | 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平日は ロウソクを灯し | て有題をしたこと、11〇以上のイン フレに苦しゆられたことを覚えている。当時の,
+01-10 22:12:26.022 22175 22175 D KindleTTS_Service: Changed: false,
+01-10 22:12:26.022 22175 22175 D KindleTTS_Service: Corrections: 0 (Economic: 0, Katakana: 0)
+01-10 22:12:26.022 22175 22175 D KindleTTS_Service: [KindleTTS_Service] OCR duplicate : Same text as previous capture
+01-10 22:12:26.043 22175 22175 D KindleTTS_Service: [KindleTTS_Service] [v1.1.12] Bitmap recycled after OCR success 
