@@ -1237,11 +1237,20 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                     debugLog("OCR duplicate", "Same text as previous capture")
                 }
 
+                // ✅ v1.1.12 FIX: bitmapを解放（メモリリーク防止）
+                bitmap.recycle()
+                debugLog("[v1.1.12] Bitmap recycled after OCR success")
+
                 isCapturing = false
             }
             .addOnFailureListener { e ->
                 debugLog("OCR failed", e.message)
                 handleError("OCRエラー", e)
+
+                // ✅ v1.1.12 FIX: bitmapを解放（メモリリーク防止）
+                bitmap.recycle()
+                debugLog("[v1.1.12] Bitmap recycled after OCR failure")
+
                 isCapturing = false
             }
     }

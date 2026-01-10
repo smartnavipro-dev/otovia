@@ -1,0 +1,1010 @@
+01-10 21:55:16.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:16.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:16.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:16.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:18.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:18.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:18.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:18.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:20.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:20.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:20.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:20.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:22.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:22.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:22.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:22.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:24.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:24.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:24.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:24.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:26.231 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:26.231 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:26.231 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:26.231 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:28.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:28.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:28.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:28.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:30.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:30.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:30.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:30.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:32.231 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:32.231 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:32.231 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:32.231 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:34.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:34.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:34.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:34.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:36.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:36.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:36.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:36.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:38.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:38.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:38.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:38.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:40.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:40.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:40.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:40.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:42.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:42.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:42.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:42.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:44.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:44.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:44.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:44.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:46.231 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:46.231 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:46.231 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:46.231 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:48.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:48.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:48.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:48.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:50.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:50.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:50.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:50.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:52.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:52.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:52.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:52.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:54.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:54.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:54.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:54.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:56.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:56.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:56.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:56.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:55:58.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:55:58.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:55:58.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:55:58.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:00.048 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:00.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:00.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:00.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 21:56:00.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 21:56:00.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 21:56:00.232 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 21:56:00.253 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 21:56:00.253 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 23ms
+01-10 21:56:00.275 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 45ms, Size: 1080x2400
+01-10 21:56:00.276 20822 21214 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 21:56:00.532 20822 21214 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 102ms
+01-10 21:56:00.724 20822 21214 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 448ms
+01-10 21:56:00.724 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 494ms
+01-10 21:56:00.724 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 21:56:00.725 20822 21214 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Similarity calculation : Time: 1ms, Result: 0.999
+01-10 21:56:00.725 20822 21214 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] OCR skipped : Screen not changed (similarity: 0.999)
+01-10 21:56:00.725 20822 21214 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Bitmap recycled : OCR skipped, bitmap released
+01-10 21:56:02.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:02.231 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:02.231 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:02.231 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:04.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:04.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:04.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:04.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:06.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:06.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:06.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:06.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:08.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:08.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:08.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:08.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:10.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:10.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:10.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:10.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:12.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:12.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:12.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:12.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:14.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:14.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:14.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:14.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:16.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:16.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:16.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:16.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:18.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:18.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:18.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:18.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:20.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:20.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:20.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:20.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:22.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:22.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:22.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:22.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:24.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:24.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:24.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:24.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:26.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:26.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:26.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:26.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:28.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:28.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:28.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:28.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:30.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:30.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:30.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:30.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:31.804 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.819 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.828 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.837 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.845 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.853 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.864 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.877 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.885 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.893 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.902 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.911 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.919 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.928 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.936 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.944 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.954 20822 20822 D KindleTTS_AutoPageTurn: [KindleTTS_AutoPageTurn] Kindle event detected : 2048
+01-10 21:56:31.954 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.961 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.969 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.978 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.984 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:31.993 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.002 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.010 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.018 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.028 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.040 20822 20822 D KindleTTS_AutoPageTurn: [KindleTTS_AutoPageTurn] Kindle event detected : 2048
+01-10 21:56:32.040 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.043 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.051 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.060 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.068 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.077 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.085 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.094 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.102 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.111 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.119 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.127 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.135 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.144 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.163 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:32.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:32.229 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 21:56:32.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 21:56:32.230 20822 21214 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 21:56:32.232 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 21:56:32.242 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 21:56:32.242 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 12ms
+01-10 21:56:32.251 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 21ms, Size: 1080x2400
+01-10 21:56:32.251 20822 21214 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 21:56:32.338 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.354 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.362 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.379 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.388 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.397 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.412 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.434 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.439 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.446 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.454 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.463 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.474 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.482 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.492 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.498 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.506 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.517 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.523 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.527 20822 21214 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 144ms
+01-10 21:56:32.532 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.540 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.548 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.556 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.565 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.573 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.581 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.590 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.599 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.607 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.615 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.624 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.633 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.641 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.649 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.657 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.666 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.674 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.682 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.691 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.699 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.707 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.715 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.724 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.732 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.741 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.750 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.758 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.766 20822 21214 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 515ms
+01-10 21:56:32.766 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 536ms
+01-10 21:56:32.766 20822 21214 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 21:56:32.766 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.767 20822 21214 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Similarity calculation : Time: 1ms, Result: 0.999
+01-10 21:56:32.767 20822 21214 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] OCR skipped : Screen not changed (similarity: 0.999)
+01-10 21:56:32.767 20822 21214 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Bitmap recycled : OCR skipped, bitmap released
+01-10 21:56:32.774 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.783 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.792 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.799 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.808 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.817 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.824 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.832 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.841 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.850 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.857 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.867 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.874 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.884 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.892 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.900 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:32.935 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:33.135 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Checking accessibility service - Expected: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService, Enabled: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService 
+01-10 21:56:33.136 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Permission states - Accessibility: true 
+01-10 21:56:33.136 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Checking accessibility service - Expected: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService, Enabled: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService 
+01-10 21:56:33.136 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Accessibility service enabled: true 
+01-10 21:56:33.136 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Checking accessibility service - Expected: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService, Enabled: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService 
+01-10 21:56:33.136 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Permission states - Accessibility: true 
+01-10 21:56:33.136 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Checking accessibility service - Expected: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService, Enabled: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService 
+01-10 21:56:33.966 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Play/Pause button clicked : isReading: true, isPaused: false
+01-10 21:56:33.966 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Pausing reading 
+01-10 21:56:33.966 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Stopping auto OCR 
+01-10 21:56:33.968 20822 20822 I NotificationManager: com.kindletts.reader: notify(1001, null, Notification(channel=KindleTTSService shortcut=null contentView=null vibrate=null sound=null defaults=0 flags=ONGOING_EVENT color=0x00000000 vis=PRIVATE semFlags=0x0 semPriority=0 semMissedCount=0)) as user
+01-10 21:56:34.497 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Close button clicked 
+01-10 21:56:34.500 20822 20822 D KindleTTS_Service: [KindleTTS_Service] OverlayService destroying 
+01-10 21:56:34.500 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Stopping reading mode 
+01-10 21:56:34.500 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Stopping auto OCR 
+01-10 21:56:34.502 20822 20822 I NotificationManager: com.kindletts.reader: notify(1001, null, Notification(channel=KindleTTSService shortcut=null contentView=null vibrate=null sound=null defaults=0 flags=ONGOING_EVENT color=0x00000000 vis=PRIVATE semFlags=0x0 semPriority=0 semMissedCount=0)) as user
+01-10 21:56:34.504  1526  1526 I VirtualDisplayAdapter: Virtual display device released because media projection stopped: KindleTTSCapture
+01-10 21:56:34.504  1526  1526 D VirtualDisplayAdapter: Virtual Display: stopping device KindleTTSCapture
+01-10 21:56:34.505  1526  1827 I DisplayDeviceRepository: Display device changed: DisplayDeviceInfo{"KindleTTSCapture": uniqueId="virtual:com.kindletts.reader,10588,KindleTTSCapture,4", 1080 x 2400, modeId 10, renderFrameRate 60.0, defaultModeId 10, userPreferredModeId -1, supportedModes [{id=10, width=1080, height=2400, fps=60.0, vsync=60.0, synthetic=false, alternativeRefreshRates=[], supportedHdrTypes=[]}], colorMode 0, supportedColorModes [0], hdrCapabilities null, allmSupported false, gameContentTypeSupported false, density 480, 480.0 x 480.0 dpi, appVsyncOff 0, presDeadline 16666666, touch NONE, rotation 0, type VIRTUAL, deviceProductInfo null, state ON, committedState UNKNOWN, owner com.kindletts.reader (uid 10588), frameRateOverride , brightnessMinimum 0.0, brightnessMaximum 0.0, brightnessDefault 0.0, hdrSdrRatio NaN, FLAG_PRIVATE, FLAG_PRESENTATION, installOrientation 0, displayShape DisplayShape{ spec=-1893857183 displayWidth=1080 displayHeight=2400 physicalPixelDisplaySizeRatio=1.0 rotation=0 offsetX=0 offsetY=0 scale=1.0}}
+01-10 21:56:34.505 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Cleaning up MediaProjection resources 
+01-10 21:56:34.505 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Stopping auto OCR 
+01-10 21:56:34.505  1526  6656 V VirtualDisplayAdapter: Release VirtualDisplay KindleTTSCapture
+01-10 21:56:34.505  1366  1424 I SurfaceFlinger: destroyVirtualDisplay:name(KindleTTSCapture) uid(1000) token(0xb400007a2ae997d0) 
+01-10 21:56:34.506  1526  6656 I DisplayDeviceRepository: Display device removed: DisplayDeviceInfo{"KindleTTSCapture": uniqueId="virtual:com.kindletts.reader,10588,KindleTTSCapture,4", 1080 x 2400, modeId 10, renderFrameRate 60.0, defaultModeId 10, userPreferredModeId -1, supportedModes [{id=10, width=1080, height=2400, fps=60.0, vsync=60.0, synthetic=false, alternativeRefreshRates=[], supportedHdrTypes=[]}], colorMode 0, supportedColorModes [0], hdrCapabilities null, allmSupported false, gameContentTypeSupported false, density 480, 480.0 x 480.0 dpi, appVsyncOff 0, presDeadline 16666666, touch NONE, rotation 0, type VIRTUAL, deviceProductInfo null, state ON, committedState UNKNOWN, owner com.kindletts.reader (uid 10588), frameRateOverride , brightnessMinimum 0.0, brightnessMaximum 0.0, brightnessDefault 0.0, hdrSdrRatio NaN, FLAG_PRIVATE, FLAG_PRESENTATION, installOrientation 0, displayShape DisplayShape{ spec=-1893857183 displayWidth=1080 displayHeight=2400 physicalPixelDisplaySizeRatio=1.0 rotation=0 offsetX=0 offsetY=0 scale=1.0}}
+01-10 21:56:34.509 20822 20822 D KindleTTS_Service: [KindleTTS_Service] MediaProjection cleanup completed 
+01-10 21:56:34.522  1366  1366 I SurfaceFlinger: [LayerHierarchy{RequestedLayerState{Display 11 name="KindleTTSCapture"#1027 layerStack=11} 3 children}] reparent to OffscreenRoot
+01-10 21:56:34.522  1366  1366 I SurfaceFlinger: [LayerHierarchy{RequestedLayerState{Display 11 name="KindleTTSCapture"#1027 layerStack=11} 3 children}] RelativeParent to null
+01-10 21:56:34.522  1366  1366 I SurfaceFlinger: id=1027 Removed Display 11 name="KindleTTSCapture"#1027 (139)
+01-10 21:56:34.529 20822 20822 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] previousBitmap released 
+01-10 21:56:34.529 20822 20822 D KindleTTS_Service: [KindleTTS_Service] OverlayService destroyed 
+01-10 21:56:34.530  1366  1366 I SurfaceFlinger: destroyed Display 11 name="KindleTTSCapture"#1027
+01-10 21:56:34.530  1366  1366 I Layer   : id=1027 Destroyed Display 11 name="KindleTTSCapture"#1027
+01-10 21:56:34.532 20822 20822 D KindleTTS_Service: [KindleTTS_Service] MediaProjection stopped 
+01-10 21:56:36.291 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Checking accessibility service - Expected: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService, Enabled: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService 
+01-10 21:56:36.291 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Starting reading mode 
+01-10 21:56:36.291 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Stopping existing service (if any) and requesting new screen capture 
+01-10 21:56:36.592 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Requesting screen capture permission 
+01-10 21:56:43.859 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Starting overlay service with screen capture data and auto-start reading 
+01-10 21:56:43.861 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Checking accessibility service - Expected: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService, Enabled: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService 
+01-10 21:56:43.863 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Permission states - Accessibility: true 
+01-10 21:56:43.863 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Checking accessibility service - Expected: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService, Enabled: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService 
+01-10 21:56:43.863 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Accessibility service enabled: true 
+01-10 21:56:43.863 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Checking accessibility service - Expected: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService, Enabled: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService 
+01-10 21:56:43.863 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Permission states - Accessibility: true 
+01-10 21:56:43.864 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Service stopped externally, resetting MainActivity state 
+01-10 21:56:43.864 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Status updated: 準備完了 
+01-10 21:56:43.864 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Checking accessibility service - Expected: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService, Enabled: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService 
+01-10 21:56:43.898 20822 20822 D KindleTTS_Service: [KindleTTS_Service] OverlayService created 
+01-10 21:56:43.906 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Screen metrics : Width: 1080, Height: 2400
+01-10 21:56:43.916 20822 20822 D KindleTTS_Service: [KindleTTS_Service] OverlayService initialization completed 
+01-10 21:56:43.918 20822 20822 D KindleTTS_Service: [KindleTTS_Service] onStartCommand called : START_SERVICE_AND_READING
+01-10 21:56:43.918 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Cleaning up MediaProjection resources 
+01-10 21:56:43.918 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Stopping auto OCR 
+01-10 21:56:43.918 20822 20822 D KindleTTS_Service: [KindleTTS_Service] MediaProjection cleanup completed 
+01-10 21:56:43.918 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Starting screen capture 
+01-10 21:56:43.924  1366  2423 I SurfaceFlinger: createVirtualDisplay:name(KindleTTSCapture) uid(1000) token(0xb400007a2aea7910) 
+01-10 21:56:43.926  1526  6242 I DisplayDeviceRepository: Display device added: DisplayDeviceInfo{"KindleTTSCapture": uniqueId="virtual:com.kindletts.reader,10588,KindleTTSCapture,5", 1080 x 2400, modeId 11, renderFrameRate 60.0, defaultModeId 11, userPreferredModeId -1, supportedModes [{id=11, width=1080, height=2400, fps=60.0, vsync=60.0, synthetic=false, alternativeRefreshRates=[], supportedHdrTypes=[]}], colorMode 0, supportedColorModes [0], hdrCapabilities null, allmSupported false, gameContentTypeSupported false, density 480, 480.0 x 480.0 dpi, appVsyncOff 0, presDeadline 16666666, touch NONE, rotation 0, type VIRTUAL, deviceProductInfo null, state ON, committedState UNKNOWN, owner com.kindletts.reader (uid 10588), frameRateOverride , brightnessMinimum 0.0, brightnessMaximum 0.0, brightnessDefault 0.0, hdrSdrRatio NaN, FLAG_PRIVATE, FLAG_PRESENTATION, installOrientation 0, displayShape DisplayShape{ spec=-1893857183 displayWidth=1080 displayHeight=2400 physicalPixelDisplaySizeRatio=1.0 rotation=0 offsetX=0 offsetY=0 scale=1.0}}
+01-10 21:56:43.933  1526  1830 I DisplayDevice: [12] Layerstack set to 12 for virtual:com.kindletts.reader,10588,KindleTTSCapture,5
+01-10 21:56:43.933  1526  1830 D DisplayDevice: setProjectionLocked, orientation=0, layerStackRect=Rect(0, 0 - 1080, 2400), displayRect=Rect(0, 0 - 1080, 2400) for virtual:com.kindletts.reader,10588,KindleTTSCapture,5
+01-10 21:56:43.937  1526  2006 I DisplayPowerController2[12]: BrightnessEvent: disp=12, physDisp=virtual:com.kindletts.reader,10588,KindleTTSCapture,5, displayState=ON, displayPolicy=BRIGHT, brt=0.0, initBrt=NaN, rcmdBrt=NaN, preBrt=NaN, lux=0.0, preLux=0.0, hbmMax=1.0, hbmMode=off, rbcStrength=-1, thrmMax=1.0, powerFactor=1.0, wasShortTermModelActive=false, flags=, reason=manual, autoBrightness=true, strategy=InvalidBrightnessStrategy, autoBrightnessMode=default
+01-10 21:56:43.959  1366  1524 I SurfaceFlinger: id=1133 createSurf, flag=84404, Display 12 name="KindleTTSCapture"#1133
+01-10 21:56:43.960  1366  1366 I SurfaceFlinger: [Display 12 name="KindleTTSCapture"#1133] attach to parent Root
+01-10 21:56:43.968  1366  1366 I SurfaceFlinger: Layer [Display 12 name="KindleTTSCapture"#1133] hidden!! flag(0)
+01-10 21:56:43.968  1366  1366 I SurfaceFlinger: [LayerHierarchy{RequestedLayerState{WindowingLayer:0:36#1125 parentId=1133} 5 children}] reparent to LayerHierarchy{RequestedLayerState{Display 12 name="KindleTTSCapture"#1133 layerStack=12} 1 children}
+01-10 21:56:43.968  1366  1366 I SurfaceFlinger: [Display Overlays#1134] attach to parent LayerHierarchy{RequestedLayerState{Display 12 name="KindleTTSCapture"#1133 layerStack=12} 2 children}
+01-10 21:56:43.968  1366  1366 I SurfaceFlinger: [Input Overlays#1135] attach to parent LayerHierarchy{RequestedLayerState{Display 12 name="KindleTTSCapture"#1133 layerStack=12} 3 children}
+01-10 21:56:43.968  1366  1366 I SurfaceFlinger: [Accessibility Overlays#1136] attach to parent LayerHierarchy{RequestedLayerState{Display 12 name="KindleTTSCapture"#1133 layerStack=12} 4 children}
+01-10 21:56:43.970  1526  1775 D WindowManager: onDisplayAdded, displayId=12 display=Display id 12: DisplayInfo{"KindleTTSCapture", displayId 12, displayGroupId 0, FLAG_PRIVATE, FLAG_PRESENTATION, real 1080 x 2400, largest app 2400 x 2400, smallest app 1080 x 1080, appVsyncOff 0, presDeadline 16666666, mode 11, renderFrameRate 60.0, defaultMode 11, REFRESH_RATE_MODE_SEAMLESS, userPreferredModeId -1, supportedModes [{id=11, width=1080, height=2400, fps=60.0, vsync=60.0, synthetic=false, alternativeRefreshRates=[], supportedHdrTypes=[]}], appsSupportedModes [{id=11, width=1080, height=2400, fps=60.0, vsync=60.0, synthetic=false, alternativeRefreshRates=[], supportedHdrTypes=[]}], hdrCapabilities null, userDisabledHdrTypes [], minimalPostProcessingSupported false, rotation 0, state ON, committedState UNKNOWN, type VIRTUAL, uniqueId "virtual:com.kindletts.reader,10588,KindleTTSCapture,5", app 1080 x 2400, density 480 (480.0 x 480.0) dpi, layerStack 12, colorMode 0, supportedColorModes [0], deviceProductInfo null, owner com.kindletts.reader (uid 10588), removeMode 1, refreshRateOverride 60.0, brightnessMinimum 0.0, brightnessMaximum 0.0, brightnessDefault 0.0, installOrientation ROTATION_0, layoutLimitedRefreshRate null, hdrSdrRatio not_available, thermalRefreshRateThrottling {}, thermalBrightnessThrottlingDataId default}, DisplayMetrics{density=3.0, width=1080, height=2400, scaledDensity=3.0, xdpi=480.0, ydpi=480.0}, isValid=true
+01-10 21:56:43.970 20822 20822 I NotificationManager: com.kindletts.reader: notify(1001, null, Notification(channel=KindleTTSService shortcut=null contentView=null vibrate=null sound=null defaults=0 flags=ONGOING_EVENT color=0x00000000 vis=PRIVATE semFlags=0x0 semPriority=0 semMissedCount=0)) as user
+01-10 21:56:43.972 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Screen capture started successfully 
+01-10 21:56:43.977  1366  1366 I SurfaceFlinger: [LayerHierarchy{RequestedLayerState{MirrorRoot#1138 parentId=1133} 1 children}] reparent to LayerHierarchy{RequestedLayerState{Display 12 name="KindleTTSCapture"#1133 layerStack=12} 3 children}
+01-10 21:56:43.990 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Overlay created successfully 
+01-10 21:56:44.030 20822 20822 D KindleTTS_Service: [KindleTTS_Service] TTS initialized successfully 
+01-10 21:56:44.030 20822 20822 I NotificationManager: com.kindletts.reader: notify(1001, null, Notification(channel=KindleTTSService shortcut=null contentView=null vibrate=null sound=null defaults=0 flags=ONGOING_EVENT color=0x00000000 vis=PRIVATE semFlags=0x0 semPriority=0 semMissedCount=0)) as user
+01-10 21:56:44.032 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.035 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.045 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.054 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.063 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.072 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.074 20822 20822 D KindleTTS_AutoPageTurn: [KindleTTS_AutoPageTurn] Kindle event detected : 2048
+01-10 21:56:44.082 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.089 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.098 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.100 20822 20822 D KindleTTS_AutoPageTurn: [KindleTTS_AutoPageTurn] Kindle event detected : 32
+01-10 21:56:44.106 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.113 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.122 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.131 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.139 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.147 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.156 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.164 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.172 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.181 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.189 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.197 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.205 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.214 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.223 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.230 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.241 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.248 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.257 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.264 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.271 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.279 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.289 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.299 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.304 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.313 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.323 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.329 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.337 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.347 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.372 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.374 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Checking accessibility service - Expected: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService, Enabled: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService 
+01-10 21:56:44.374 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Permission states - Accessibility: true 
+01-10 21:56:44.374 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Checking accessibility service - Expected: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService, Enabled: com.kindletts.reader/com.kindletts.reader.AutoPageTurnService 
+01-10 21:56:44.374 20822 20822 D KindleTTS_MainActivity: [KindleTTS_MainActivity] Status updated: 読み上げ中... 
+01-10 21:56:44.382 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.387 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.395 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.404 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:44.991 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Starting reading mode 
+01-10 21:56:44.992 20822 20822 I NotificationManager: com.kindletts.reader: notify(1001, null, Notification(channel=KindleTTSService shortcut=null contentView=null vibrate=null sound=null defaults=0 flags=ONGOING_EVENT color=0x00000000 vis=PRIVATE semFlags=0x0 semPriority=0 semMissedCount=0)) as user
+01-10 21:56:45.002 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Starting auto OCR 
+01-10 21:56:45.002 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Created new OCR executor 
+01-10 21:56:45.002 20822 20822 D KindleTTS_Service: [KindleTTS_Service] OCR schedule started 
+01-10 21:56:45.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:45.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:45.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 21:56:45.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 21:56:45.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 21:56:45.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 21:56:45.019 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 21:56:45.019 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 16ms
+01-10 21:56:45.028 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 25ms, Size: 1080x2400
+01-10 21:56:45.028 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 21:56:45.075 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:45.091 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:45.259 20822 21775 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 99ms
+01-10 21:56:45.452 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 424ms
+01-10 21:56:45.452 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 449ms
+01-10 21:56:45.452 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: [KindleTTS_Service] OCR confidence stats : Blocks: 8,
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: Elements: 12,
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: HighConf: 12 (100%),
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: AvgConf: 0.62
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #0 coords : L:736, T:858, R:918, B:9072, W:182, H:8214, Ratio:45.13
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #0 text : (量的級和)といつた略語の意味を理解できるようになるし、経済が成長する理由や停滞する理
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #1 coords : L:1063, T:839, R:1592, B:9416, W:529, H:8577, Ratio:16.21
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #1 text : 的な知無を身につけるだけでも役に立つ。身近なところで言えば、CDP(国内総生産)やQEを\nそんな私が経済学の学習を熱心に推製するのは当然のなりゆきと言えるだろう。経済学の基本定
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #2 coords : L:232, T:9206, R:1771, B:9385, W:1539, H:179, Ratio:0.12
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #2 text : 読書の速さを測定中
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #3 coords : L:2062, T:750, R:2256, B:9148, W:194, H:8398, Ratio:43.29
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #3 text : だったため、経済済が人 々の生活にいかに重大な影響をおよぼすかということが心に焼きつけられ
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #4 coords : L:2403, T:791, R:2597, B:9135, W:194, H:8344, Ratio:43.01
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #4 text : て有題をしたこと、11〇以上のイン フレに苦しゆられたことを覚えている。当時の印家が華梨
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #5 coords : L:2751, T:984, R:2941, B:9124, W:190, H:8140, Ratio:42.84
+01-10 21:56:45.781 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #5 text : 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平日は ロウソクを灯し
+01-10 21:56:45.782 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #6 coords : L:3462, T:852, R:3675, B:4125, W:213, H:3273, Ratio:15.37
+01-10 21:56:45.782 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #6 text : イングランド銀行総裁による序文
+01-10 21:56:45.782 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #7 coords : L:3775, T:9242, R:3974, B:9356, W:199, H:114, Ratio:0.57
+01-10 21:56:45.782 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Block #7 text : 2%
+01-10 21:56:45.782 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Text orientation : Vertical: true, MedianRatio: 42.84, Blocks: 8
+01-10 21:56:45.782 20822 20822 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Filter : Original: 8, Filtered: 6
+01-10 21:56:45.782 20822 20822 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Block split : Block width:529, Lines:2 → Split into 2 items
+01-10 21:56:45.782 20822 20822 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Columns : Detected 7 columns
+01-10 21:56:45.783 20822 20822 D KindleTTS_Service: [KindleTTS_Service] v1.0.30 Sorted order : [0] Right:3675, Y:852, Text:イングランド銀行総裁 | [1] Right:2941, Y:984, Text:私が中学生だった1一 | [2] Right:2597, Y:791, Text:て有題をしたこと、1 | [3] Right:2256, Y:750, Text:だったため、経済済が | [4] Right:1592, Y:1041, Text:そんな私が経済学の学 | [5] Right:1248, Y:839, Text:的な知無を身につける | [6] Right:918, Y:858, Text:(量的級和)といつた
+01-10 21:56:45.790 20822 20822 D KindleTTS_TextCorrector: [Phase1] Generalized patterns applied: generalized:経済の誤認識(5件), generalized:経済学の誤認識(2件), generalized:影響の誤認識(1件), generalized:経済の誤認識(5件), generalized:経済学の誤認識(2件), generalized:生産の誤認識(1件), generalized:影響の誤認識(1件)
+01-10 21:56:45.793 20822 20822 D KindleTTS_TextCorrector: [Phase1] Contextual patterns applied: 1 corrections
+01-10 21:56:45.801 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Analyzing 193 tokens for particle missing
+01-10 21:56:45.802 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Particle missing: 'イングランド【の】銀行' (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.802 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '銀行【の】総裁' (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.802 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '1【の】一' (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.803 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '一【の】九' (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.803 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '九【の】七' (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.803 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '不調【が】に' (conf=0.46, 名詞＋助動詞（主格）)
+01-10 21:56:45.803 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '1【の】1' (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.804 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '1【の】〇' (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.804 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '〇【の】以上' (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.804 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '華【の】梨' (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.805 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '基本【の】定' (conf=0.50, 名詞連続（所有・並列）)
+01-10 21:56:45.805 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '知【の】無' (conf=0.50, 名詞連続（所有・並列）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '理解【が】できる' (conf=0.44, 名詞＋動詞（格助詞）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '成長【を】する' (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Particle missing: '停滞【を】する' (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3 UniDic] Detected 15 particle missing patterns
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3] イングランド【の】銀行 (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 銀行【の】総裁 (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 1【の】一 (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 一【の】九 (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 九【の】七 (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 不調【が】に (conf=0.46, 名詞＋助動詞（主格）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 1【の】1 (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 1【の】〇 (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 〇【の】以上 (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 華【の】梨 (conf=0.55, 名詞連続（所有・並列）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 基本【の】定 (conf=0.50, 名詞連続（所有・並列）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 知【の】無 (conf=0.50, 名詞連続（所有・並列）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 理解【が】できる (conf=0.44, 名詞＋動詞（格助詞）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 成長【を】する (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 21:56:45.806 20822 20822 D KindleTTS_TextCorrector: [v1.0.64 Phase3] 停滞【を】する (conf=0.51, 名詞＋動詞（格助詞）)
+01-10 21:56:45.807 20822 20822 D KindleTTS_ParticleDetector: [Phase3] Corrections applied: 0/15
+01-10 21:56:45.812 20822 20822 D KindleTTS_OkuriganaCorrector: [v1.0.65] Analyzing 193 tokens for okurigana errors
+01-10 21:56:45.817 20822 20822 D KindleTTS_SokuonChoon: [v1.0.69] Analyzing 193 tokens for choon errors (Phase 1+2)
+01-10 21:56:45.817 20822 20822 D KindleTTS_SokuonChoon: [v1.0.69 Phase3b] 'いつ' → 'いった' (conf=0.77, dist=1)
+01-10 21:56:45.817 20822 20822 D KindleTTS_SokuonChoon: [v1.0.69] Found 0 Phase1 + 0 Phase2 + 1 Phase3 patterns
+01-10 21:56:45.817 20822 20822 D KindleTTS_TextCorrector: [v1.0.76 Phase3 SokuonChoon Detection] Found 1 patterns (detection only)
+01-10 21:56:45.817 20822 20822 D KindleTTS_TextCorrector: [v1.0.76 SokuonChoon] 'いつ' → 'いった' (conf=0.77)
+01-10 21:56:45.821 20822 20822 D KindleTTS_KanjiShape: [v1.0.68] Analyzing 193 tokens for kanji shape errors
+01-10 21:56:45.821 20822 20822 D KindleTTS_KanjiShape: [v1.0.68] '平日' → '平目' (日→目) conf=0.89, 縦線の位置
+01-10 21:56:45.821 20822 20822 D KindleTTS_KanjiShape: [v1.0.68] '人' → '入' (人→入) conf=0.86, ノとハの違い
+01-10 21:56:45.821 20822 20822 D KindleTTS_KanjiShape: [v1.0.68] '基本' → '基木' (本→木) conf=0.66, 横線の有無
+01-10 21:56:45.821 20822 20822 D KindleTTS_KanjiShape: [v1.0.68] Found 3 kanji shape patterns in 4ms
+01-10 21:56:45.821 20822 20822 D KindleTTS_TextCorrector: [v1.0.76 Phase3 KanjiShape Detection] Found 3 patterns (detection only)
+01-10 21:56:45.822 20822 20822 D KindleTTS_TextCorrector: [v1.0.76 KanjiShape] '平日' → '平目' (日→目, conf=0.89)
+01-10 21:56:45.822 20822 20822 D KindleTTS_TextCorrector: [v1.0.76 KanjiShape] '人' → '入' (人→入, conf=0.86)
+01-10 21:56:45.822 20822 20822 D KindleTTS_TextCorrector: [v1.0.76 KanjiShape] '基本' → '基木' (本→木, conf=0.66)
+01-10 21:56:45.822 20822 20822 D KindleTTS_TextCorrector: [v1.0.39] Phase 1 confidence: 0.3 (patterns: 8)
+01-10 21:56:45.822 20822 20822 D KindleTTS_TextCorrector: [v1.0.39] Phase 1 confidence low (0.3), trying LLM correction
+01-10 21:56:45.822 20822 20822 D KindleTTS_TextCorrector: [v1.0.78 Phase3Hints] Generated 6 hints: particle=3, okurigana=0, choon=1, kanji=2
+01-10 21:56:45.822 20822 20822 D KindleTTS_QuotaManager: [v1.0.82] QuotaManager initialized
+01-10 21:56:45.822 20822 20822 I KindleTTS_QuotaManager: ========================================
+01-10 21:56:45.822 20822 20822 I KindleTTS_QuotaManager: [v1.0.82] API Quota Status
+01-10 21:56:45.822 20822 20822 I KindleTTS_QuotaManager: ========================================
+01-10 21:56:45.822 20822 20822 I KindleTTS_QuotaManager: Current usage: 0/20 (0%)
+01-10 21:56:45.822 20822 20822 I KindleTTS_QuotaManager: Remaining: 20 requests
+01-10 21:56:45.822 20822 20822 I KindleTTS_QuotaManager: Reset in: 24h 0m
+01-10 21:56:45.822 20822 20822 I KindleTTS_QuotaManager: Status: OK
+01-10 21:56:45.822 20822 20822 I KindleTTS_QuotaManager: ========================================
+01-10 21:56:45.824 20822 20822 D KindleTTS_LLMCorrector: [v1.0.42] LLMCorrector initialized with persistent cache
+01-10 21:56:45.824 20822 20822 I KindleTTS_QuotaManager: ========================================
+01-10 21:56:45.824 20822 20822 I KindleTTS_QuotaManager: [v1.0.82] API Quota Status
+01-10 21:56:45.824 20822 20822 I KindleTTS_QuotaManager: ========================================
+01-10 21:56:45.824 20822 20822 I KindleTTS_QuotaManager: Current usage: 0/20 (0%)
+01-10 21:56:45.824 20822 20822 I KindleTTS_QuotaManager: Remaining: 20 requests
+01-10 21:56:45.824 20822 20822 I KindleTTS_QuotaManager: Reset in: 24h 0m
+01-10 21:56:45.824 20822 20822 I KindleTTS_QuotaManager: Status: OK
+01-10 21:56:45.824 20822 20822 I KindleTTS_QuotaManager: ========================================
+01-10 21:56:45.824 20822 20822 D KindleTTS_LLMCorrector: [v1.0.82] API Quota: 20/20 remaining
+01-10 21:56:45.824 20822 20822 D KindleTTS_LLMCorrector: [LLM] Cache MISS, starting LLM correction for: 'イングランド銀行総裁による序文
+01-10 21:56:45.824 20822 20822 D KindleTTS_LLMCorrector: 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平...'
+01-10 21:56:45.824 20822 20822 D KindleTTS_LLMCorrector: [v1.0.75] Phase 3 hints: イングランド[の]銀行, 銀行[の]総裁, 1[の]一, いつ→いった, 日→目, 人→入
+01-10 21:56:45.824 20822 20822 D KindleTTS_LLMCorrector: [v1.0.78 TokenMetrics] Prompt length: 581 chars, Estimated tokens: ~1452
+01-10 21:56:45.824 20822 20822 D KindleTTS_LLMCorrector: [v1.0.78 TokenMetrics] Phase3Hints length: 45 chars (~112 tokens)
+01-10 21:56:45.825 20822 20822 D KindleTTS_LLMCorrector: [LLM] API key length: 17, starts with: YOUR_A...
+01-10 21:56:45.825 20822 20822 W KindleTTS_LLMCorrector: [LLM] API key not configured, skipping LLM correction
+01-10 21:56:45.825 20822 20822 W KindleTTS_LLMCorrector: [LLM] LLM returned empty, using original text
+01-10 21:56:45.825 20822 20822 D KindleTTS_TextCorrector: [v1.0.39] LLM correction rejected (confidence: 0.3)
+01-10 21:56:45.826 20822 20822 D KindleTTS_Service: [KindleTTS_Service] OCR success : TextLength: 284,
+01-10 21:56:45.826 20822 20822 D KindleTTS_Service: Preview: イングランド銀行総裁による序文 | 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた。平日は ロウソクを灯し | て有題をしたこと、11〇以上のイン フレに苦しゆられたことを覚えている。当時の,
+01-10 21:56:45.826 20822 20822 D KindleTTS_Service: Changed: true,
+01-10 21:56:45.826 20822 20822 D KindleTTS_Service: Corrections: 0 (Economic: 0, Katakana: 0)
+01-10 21:56:45.826 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Speaking : Total sentences: 5
+01-10 21:56:45.826 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Speaking sentences : Count: 5
+01-10 21:56:45.826 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Speaking sentence : 0: イングランド銀行総裁による序文
+01-10 21:56:45.826 20822 20822 D KindleTTS_Service: 私が中学生だった1一九七○年代には、世界の経済は不調に陥っていた
+01-10 21:56:45.876 20822 20822 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Screen saved : Bitmap saved for next comparison
+01-10 21:56:45.895 20822 20822 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Bitmap recycled : Original bitmap released after OCR success
+01-10 21:56:45.899 20822 21261 D KindleTTS_Service: [KindleTTS_Service] TTS started : 0
+01-10 21:56:45.929 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:47.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:47.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:47.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 21:56:47.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 21:56:47.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 21:56:47.004 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 21:56:47.011 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 21:56:47.011 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 8ms
+01-10 21:56:47.021 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 18ms, Size: 1080x2400
+01-10 21:56:47.021 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 21:56:47.243 20822 21775 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 100ms
+01-10 21:56:47.428 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 407ms
+01-10 21:56:47.428 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 425ms
+01-10 21:56:47.428 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 21:56:47.429 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Similarity calculation : Time: 1ms, Result: 1.000
+01-10 21:56:47.429 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] OCR skipped : Screen not changed (similarity: 1.000)
+01-10 21:56:47.429 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Bitmap recycled : OCR skipped, bitmap released
+01-10 21:56:49.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:49.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:49.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:49.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:50.891 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:51.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:51.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:51.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 21:56:51.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 21:56:51.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 21:56:51.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 21:56:51.013 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 21:56:51.013 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 11ms
+01-10 21:56:51.021 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 19ms, Size: 1080x2400
+01-10 21:56:51.021 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 21:56:51.246 20822 21775 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 100ms
+01-10 21:56:51.438 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 417ms
+01-10 21:56:51.438 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 436ms
+01-10 21:56:51.438 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 21:56:51.439 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Similarity calculation : Time: 1ms, Result: 1.000
+01-10 21:56:51.439 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] OCR skipped : Screen not changed (similarity: 1.000)
+01-10 21:56:51.439 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Bitmap recycled : OCR skipped, bitmap released
+01-10 21:56:53.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:53.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:53.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:53.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:55.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:55.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:55.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:55.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:56:56.433 20822 21273 D KindleTTS_Service: [KindleTTS_Service] TTS completed : 0
+01-10 21:56:56.934 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Speaking sentence : 1: 平日は ロウソクを灯し
+01-10 21:56:56.934 20822 20822 D KindleTTS_Service: て有題をしたこと、11〇以上のイン フレに苦しゆられたことを覚えている
+01-10 21:56:56.969 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:56:57.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:57.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:57.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 21:56:57.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 21:56:57.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 21:56:57.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 21:56:57.015 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 21:56:57.015 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 13ms
+01-10 21:56:57.020 20822 21273 D KindleTTS_Service: [KindleTTS_Service] TTS started : 1
+01-10 21:56:57.039 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 37ms, Size: 1080x2400
+01-10 21:56:57.039 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 21:56:57.271 20822 21775 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 100ms
+01-10 21:56:57.456 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 417ms
+01-10 21:56:57.456 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 454ms
+01-10 21:56:57.456 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 21:56:57.456 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Similarity calculation : Time: 0ms, Result: 1.000
+01-10 21:56:57.456 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] OCR skipped : Screen not changed (similarity: 1.000)
+01-10 21:56:57.456 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Bitmap recycled : OCR skipped, bitmap released
+01-10 21:56:59.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:56:59.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:56:59.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:56:59.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:00.050 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:01.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:01.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:01.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 21:57:01.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 21:57:01.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 21:57:01.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 21:57:01.009 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 21:57:01.009 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 7ms
+01-10 21:57:01.017 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 15ms, Size: 1080x2400
+01-10 21:57:01.017 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 21:57:01.255 20822 21775 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 100ms
+01-10 21:57:01.440 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 423ms
+01-10 21:57:01.440 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 438ms
+01-10 21:57:01.440 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 21:57:01.441 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Similarity calculation : Time: 1ms, Result: 1.000
+01-10 21:57:01.441 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] OCR skipped : Screen not changed (similarity: 1.000)
+01-10 21:57:01.441 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Bitmap recycled : OCR skipped, bitmap released
+01-10 21:57:01.998 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:03.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:03.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:03.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 21:57:03.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 21:57:03.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 21:57:03.004 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 21:57:03.009 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 21:57:03.009 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 6ms
+01-10 21:57:03.017 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 14ms, Size: 1080x2400
+01-10 21:57:03.017 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 21:57:03.247 20822 21775 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 100ms
+01-10 21:57:03.441 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 424ms
+01-10 21:57:03.441 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 438ms
+01-10 21:57:03.441 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 21:57:03.441 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Similarity calculation : Time: 0ms, Result: 1.000
+01-10 21:57:03.441 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] OCR skipped : Screen not changed (similarity: 1.000)
+01-10 21:57:03.441 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Bitmap recycled : OCR skipped, bitmap released
+01-10 21:57:05.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:05.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:05.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:05.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:05.801 20822 21273 D KindleTTS_Service: [KindleTTS_Service] TTS completed : 1
+01-10 21:57:06.302 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Speaking sentence : 2: 当時の印家が華梨
+01-10 21:57:06.302 20822 20822 D KindleTTS_Service: だったため、経済済が人 々の生活にいかに重大な影響をおよぼすかということが心に焼きつけられ
+01-10 21:57:06.302 20822 20822 D KindleTTS_Service: そんな私が経済学の学習を熱心に推製するのは当然のなりゆきと言えるだろう
+01-10 21:57:06.354 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:06.386 20822 21273 D KindleTTS_Service: [KindleTTS_Service] TTS started : 2
+01-10 21:57:07.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:07.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:07.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 21:57:07.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 21:57:07.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 21:57:07.004 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 21:57:07.012 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 21:57:07.012 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 9ms
+01-10 21:57:07.026 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 23ms, Size: 1080x2400
+01-10 21:57:07.026 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 21:57:07.314 20822 21775 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 109ms
+01-10 21:57:07.505 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 479ms
+01-10 21:57:07.505 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 502ms
+01-10 21:57:07.505 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 21:57:07.506 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Similarity calculation : Time: 1ms, Result: 1.000
+01-10 21:57:07.506 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] OCR skipped : Screen not changed (similarity: 1.000)
+01-10 21:57:07.506 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Bitmap recycled : OCR skipped, bitmap released
+01-10 21:57:09.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:09.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:09.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:09.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:11.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:11.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:11.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:11.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:11.374 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:13.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:13.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:13.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 21:57:13.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 21:57:13.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 21:57:13.004 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 21:57:13.015 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 21:57:13.015 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 12ms
+01-10 21:57:13.027 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 24ms, Size: 1080x2400
+01-10 21:57:13.027 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 21:57:13.258 20822 21775 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 100ms
+01-10 21:57:13.449 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 422ms
+01-10 21:57:13.450 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 447ms
+01-10 21:57:13.450 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 21:57:13.450 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Similarity calculation : Time: 0ms, Result: 1.000
+01-10 21:57:13.450 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] OCR skipped : Screen not changed (similarity: 1.000)
+01-10 21:57:13.450 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Bitmap recycled : OCR skipped, bitmap released
+01-10 21:57:15.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:15.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:15.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:15.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:17.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:17.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:17.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:17.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:19.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:19.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:19.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:19.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:21.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:21.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:21.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:21.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:23.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:23.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:23.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:23.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:23.655 20822 21273 D KindleTTS_Service: [KindleTTS_Service] TTS completed : 2
+01-10 21:57:24.157 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Speaking sentence : 3: 経済学の基本定
+01-10 21:57:24.157 20822 20822 D KindleTTS_Service: 的な知無を身につけるだけでも役に立つ
+01-10 21:57:24.211 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:24.243 20822 20832 D KindleTTS_Service: [KindleTTS_Service] TTS started : 3
+01-10 21:57:25.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:25.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:25.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 21:57:25.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 21:57:25.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 21:57:25.004 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 21:57:25.022 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 21:57:25.022 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 20ms
+01-10 21:57:25.041 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 39ms, Size: 1080x2400
+01-10 21:57:25.041 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 21:57:25.320 20822 21775 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 103ms
+01-10 21:57:25.508 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 467ms
+01-10 21:57:25.508 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 506ms
+01-10 21:57:25.508 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 21:57:25.508 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Similarity calculation : Time: 0ms, Result: 1.000
+01-10 21:57:25.508 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] OCR skipped : Screen not changed (similarity: 1.000)
+01-10 21:57:25.508 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Bitmap recycled : OCR skipped, bitmap released
+01-10 21:57:27.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:27.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:27.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:27.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:29.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:29.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:29.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:29.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:29.214 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:29.911 20822 21261 D KindleTTS_Service: [KindleTTS_Service] TTS completed : 3
+01-10 21:57:30.412 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Speaking sentence : 4: 身近なところで言えば、CDP(国内総生産)やQEを
+01-10 21:57:30.412 20822 20822 D KindleTTS_Service: (量的級和)といつた略語の意味を理解できるようになるし、経済が成長する理由や停滞する理
+01-10 21:57:30.469 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:30.552 20822 20842 D KindleTTS_Service: [KindleTTS_Service] TTS started : 4
+01-10 21:57:31.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:31.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:31.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 21:57:31.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 21:57:31.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 21:57:31.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 21:57:31.015 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 21:57:31.015 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 13ms
+01-10 21:57:31.027 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 25ms, Size: 1080x2400
+01-10 21:57:31.027 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 21:57:31.266 20822 21775 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 101ms
+01-10 21:57:31.451 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 424ms
+01-10 21:57:31.451 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 449ms
+01-10 21:57:31.451 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 21:57:31.452 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Similarity calculation : Time: 1ms, Result: 1.000
+01-10 21:57:31.452 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] OCR skipped : Screen not changed (similarity: 1.000)
+01-10 21:57:31.452 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Bitmap recycled : OCR skipped, bitmap released
+01-10 21:57:33.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:33.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:33.004 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:33.004 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:35.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:35.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:35.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:35.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:35.466 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:37.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:37.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:37.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 21:57:37.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 21:57:37.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 21:57:37.004 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 21:57:37.014 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 21:57:37.014 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 11ms
+01-10 21:57:37.027 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 24ms, Size: 1080x2400
+01-10 21:57:37.027 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 21:57:37.263 20822 21775 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 101ms
+01-10 21:57:37.456 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 429ms
+01-10 21:57:37.456 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 453ms
+01-10 21:57:37.456 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 21:57:37.457 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Similarity calculation : Time: 1ms, Result: 1.000
+01-10 21:57:37.457 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] OCR skipped : Screen not changed (similarity: 1.000)
+01-10 21:57:37.457 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Bitmap recycled : OCR skipped, bitmap released
+01-10 21:57:39.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:39.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:39.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:39.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:41.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:41.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:41.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:41.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:43.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:43.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:43.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:43.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:44.963 20822 21260 D KindleTTS_Service: [KindleTTS_Service] TTS completed : 4
+01-10 21:57:45.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:45.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:45.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:45.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:46.966 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Next page : direction: left_to_next
+01-10 21:57:46.967 20822 20822 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Page turn started : OCR will wait 2000ms for screen to settle
+01-10 21:57:46.969 20822 20822 D KindleTTS_Service: [KindleTTS_Service] State reset : sentences cleared, index reset to 0, TTS stopped
+01-10 21:57:46.973 20822 20822 D KindleTTS_AutoPageTurn: [KindleTTS_AutoPageTurn] onStartCommand called : action: PREVIOUS_PAGE, hasIntent: true
+01-10 21:57:46.973 20822 20822 D KindleTTS_AutoPageTurn: [KindleTTS_AutoPageTurn] Executing PREVIOUS_PAGE action 
+01-10 21:57:46.973 20822 20822 D KindleTTS_AutoPageTurn: [KindleTTS_AutoPageTurn] Performing previous page gesture 
+01-10 21:57:46.989 20822 20822 D KindleTTS_AutoPageTurn: [KindleTTS_AutoPageTurn] Current app package : com.amazon.kindle (Kindle: true)
+01-10 21:57:46.989 20822 20822 D KindleTTS_AutoPageTurn: [KindleTTS_AutoPageTurn] Previous page swipe : from (216.0, 1200.0) to (864.0, 1200.0)
+01-10 21:57:47.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:47.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:47.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:47.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:47.041 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.056 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.065 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.074 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.083 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.091 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.099 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.108 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.116 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.124 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.133 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.141 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.150 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.158 20822 20822 D KindleTTS_AutoPageTurn: [KindleTTS_AutoPageTurn] Kindle event detected : 2048
+01-10 21:57:47.158 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.166 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.174 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.183 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.191 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.200 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.208 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.217 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.226 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.233 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.242 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.250 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.259 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.267 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.276 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.283 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.292 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.299 20822 20822 D KindleTTS_AutoPageTurn: [KindleTTS_AutoPageTurn] Swipe gesture completed : from (216.0, 1200.0) to (864.0, 1200.0)
+01-10 21:57:47.301 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.308 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.316 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.325 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.333 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.341 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.352 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.367 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:47.375 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:57:49.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:49.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:49.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 21:57:49.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 21:57:49.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 21:57:49.005 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 21:57:49.024 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 21:57:49.024 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 21ms
+01-10 21:57:49.038 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 35ms, Size: 1080x2400
+01-10 21:57:49.038 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 21:57:49.271 20822 21775 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 101ms
+01-10 21:57:49.473 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 435ms
+01-10 21:57:49.473 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 470ms
+01-10 21:57:49.473 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 21:57:49.474 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Similarity calculation : Time: 0ms, Result: 1.000
+01-10 21:57:49.474 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] OCR skipped : Screen not changed (similarity: 1.000)
+01-10 21:57:49.474 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Bitmap recycled : OCR skipped, bitmap released
+01-10 21:57:49.474 20822 20822 D KindleTTS_Service: [KindleTTS_Service] performOCR skipped : isCapturing: true, imageReader: true
+01-10 21:57:49.975 20822 20822 D KindleTTS_Service: [KindleTTS_Service] OCR retry : Attempt 1 of 3
+01-10 21:57:51.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:51.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:51.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:51.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:51.477 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:51.477 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:51.477 20822 20822 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:51.978 20822 20822 D KindleTTS_Service: [KindleTTS_Service] OCR retry : Attempt 2 of 3
+01-10 21:57:53.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:53.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:53.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:53.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:53.481 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:53.481 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:53.481 20822 20822 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:53.984 20822 20822 D KindleTTS_Service: [KindleTTS_Service] OCR retry : Attempt 3 of 3
+01-10 21:57:55.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:55.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:55.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:55.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:55.487 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:55.487 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:55.487 20822 20822 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:55.988 20822 20822 D KindleTTS_Service: [KindleTTS_Service] OCR retry exhausted : No text found after 3 attempts
+01-10 21:57:57.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:57.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:57.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:57.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:57:59.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:57:59.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:57:59.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:57:59.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:58:00.043 20822 20822 D KindleTTS_Service: [KindleTTS_Service] Image available from listener : size: 1080x2400
+01-10 21:58:01.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:58:01.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:58:01.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Using cached image from listener : image: true
+01-10 21:58:01.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Converting image to bitmap : cached: true
+01-10 21:58:01.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] convertImageToBitmap : Starting conversion
+01-10 21:58:01.005 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image plane info : pixelStride: 4, rowStride: 4352, padding: 32
+01-10 21:58:01.025 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image closed after buffer copy 
+01-10 21:58:01.025 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : Time: 22ms
+01-10 21:58:01.049 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap cropped : Time: 46ms, Size: 1080x2400
+01-10 21:58:01.049 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 OCR preprocessing : Starting (NO rotation)
+01-10 21:58:01.305 20822 21775 D KindleTTS_Service: v1.1.6 applySharpenFast() completed. Time: 101ms
+01-10 21:58:01.501 20822 21775 D KindleTTS_Service: [KindleTTS_Service] v1.0.29 completed : No rotation, Time: 452ms
+01-10 21:58:01.501 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap conversion completed : Total time: 498ms
+01-10 21:58:01.501 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Bitmap created : bitmap: true, size: 4320x9600
+01-10 21:58:01.502 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Similarity calculation : Time: 1ms, Result: 1.000
+01-10 21:58:01.502 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] OCR skipped : Screen not changed (similarity: 1.000)
+01-10 21:58:01.502 20822 21775 D KindleTTS_Service: [KindleTTS_Service] [v1.1.11] Bitmap recycled : OCR skipped, bitmap released
+01-10 21:58:03.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:58:03.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:58:03.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:58:03.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:58:05.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:58:05.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:58:05.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:58:05.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:58:07.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:58:07.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:58:07.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:58:07.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:58:09.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:58:09.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:58:09.004 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:58:09.004 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:58:11.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:58:11.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:58:11.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:58:11.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:58:13.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:58:13.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:58:13.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:58:13.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:58:15.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:58:15.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:58:15.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:58:15.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:58:17.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:58:17.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:58:17.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:58:17.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:58:19.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:58:19.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:58:19.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:58:19.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:58:21.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:58:21.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:58:21.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:58:21.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:58:23.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:58:23.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:58:23.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:58:23.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:58:25.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:58:25.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:58:25.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:58:25.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:58:27.004 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:58:27.004 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:58:27.004 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:58:27.004 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
+01-10 21:58:29.002 20822 21775 D KindleTTS_Service: [KindleTTS_Service] OCR schedule tick : isReading: true, isPaused: false, isCapturing: false
+01-10 21:58:29.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Performing OCR 
+01-10 21:58:29.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] Image acquired directly : image: false
+01-10 21:58:29.003 20822 21775 D KindleTTS_Service: [KindleTTS_Service] No image available from ImageReader 
