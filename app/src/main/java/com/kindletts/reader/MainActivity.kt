@@ -173,29 +173,50 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     private fun toggleReading() {
+        val timestamp = System.currentTimeMillis()
+        val accessibilityEnabled = isAccessibilityServiceEnabled()
+
+        debugLog("=== TOGGLE READING ===", """
+            timestamp: $timestamp,
+            current_state: ${if (isReading) "READING" else "STOPPED"},
+            accessibility_enabled: $accessibilityEnabled
+        """.trimIndent())
+
         // アクセシビリティ権限のみチェック（画面キャプチャは自動で要求）
-        if (!isAccessibilityServiceEnabled()) {
+        if (!accessibilityEnabled) {
+            debugLog("[Permission Check] FAILED", "Accessibility service not enabled")
             showPermissionDialog()
             return
         }
 
         if (isReading) {
+            debugLog("[State Transition]", "READING → STOPPED")
             stopReading()
         } else {
+            debugLog("[State Transition]", "STOPPED → READING")
             startReading()
         }
     }
 
     private fun startReading() {
-        debugLog("Starting reading mode")
+        val timestamp = System.currentTimeMillis()
+        debugLog("=== START READING (MainActivity) ===", """
+            timestamp: $timestamp,
+            OverlayService.isRunning: ${OverlayService.isRunning},
+            currentReadingSpeed: $currentReadingSpeed,
+            autoPageTurnEnabled: $autoPageTurnEnabled,
+            pageDirection: $pageDirection
+        """.trimIndent())
 
         // ✅ v1.0.18 FIX: 常に既存サービスを停止してから新規作成
         // これにより、「×」ボタン後の再起動でもクリーンな状態から開始できる
-        debugLog("Stopping existing service (if any) and requesting new screen capture")
+        debugLog("[Service Cleanup]", "Stopping existing OverlayService if any")
         stopService(Intent(this, OverlayService::class.java))
 
         // サービスの完全停止を待つ
+        debugLog("[Service Cleanup]", "Waiting 300ms for service to stop completely")
         Handler(Looper.getMainLooper()).postDelayed({
+            debugLog("[Permission Request]", "Requesting screen capture permission")
             requestScreenCapturePermission()
         }, 300)
     }
@@ -342,7 +363,14 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     private fun startOverlayServiceAndReading(data: Intent) {
-        debugLog("Starting overlay service with screen capture data and auto-start reading")
+        val timestamp = System.currentTimeMillis()
+        debugLog("=== START OVERLAY SERVICE ===", """
+            timestamp: $timestamp,
+            reading_speed: $currentReadingSpeed,
+            auto_page_turn: $autoPageTurnEnabled,
+            page_direction: $pageDirection,
+            screen_capture_data: ${data != null}
+        """.trimIndent())
 
         val intent = Intent(this, OverlayService::class.java)
         intent.action = "START_SERVICE_AND_READING"  // 新しいアクション
@@ -352,15 +380,21 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         intent.putExtra("page_direction", pageDirection)
         startService(intent)
 
+        debugLog("[Service Started]", "OverlayService started with action: START_SERVICE_AND_READING")
+
         // UI状態を更新
         isReading = true
         isPaused = false
 
+        debugLog("[State Update]", "isReading: false→true, isPaused: false")
+
         // OverlayServiceが起動するまで少し待ってからUIを更新
+        debugLog("[UI Update]", "Scheduling UI update after 500ms delay")
         binding.root.postDelayed({
             updatePermissionButtonStates()
             updateUIState()
             updateStatusText("読み上げ中...")
+            debugLog("[UI Update]", "UI updated: status='読み上げ中...'")
         }, 500)
     }
 

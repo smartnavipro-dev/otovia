@@ -379,14 +379,24 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     }
 
     private fun startReading() {
-        debugLog("Starting reading mode")
+        val timestamp = System.currentTimeMillis()
+        debugLog("=== START READING MODE ===", """
+            timestamp: $timestamp,
+            ttsInitialized: ${appState.ttsInitialized},
+            screenCaptureActive: ${appState.screenCaptureActive},
+            currentPage: ${appState.currentPage},
+            isReading: $isReading,
+            isPaused: $isPaused
+        """.trimIndent())
 
         if (!appState.ttsInitialized) {
+            debugLog("[State Check] TTS not initialized", "Cannot start reading")
             showToast("TTS初期化中です。しばらくお待ちください。")
             return
         }
 
         if (!appState.screenCaptureActive) {
+            debugLog("[State Check] Screen capture not active", "Cannot start reading")
             showToast("画面キャプチャが開始されていません。")
             return
         }
@@ -396,12 +406,15 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         appState.isReading = true
         appState.isPaused = false
 
+        debugLog("[State Transition]", "isReading: false→true, isPaused: false")
+
         updateNotification("読み上げ中...")
         updateOverlayUI()
         updatePlayPauseButton()
 
         // 自動OCR開始
         startAutoOCR()
+        debugLog("=== READING MODE STARTED ===", "Auto OCR enabled")
     }
 
     private fun stopReading() {
@@ -497,49 +510,61 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     }
 
     private fun performOCR() {
+        val ocrStartTime = System.currentTimeMillis()
+
         if (isCapturing || imageReader == null) {
             debugLog("performOCR skipped", "isCapturing: $isCapturing, imageReader: ${imageReader != null}")
             return
         }
 
         isCapturing = true
-        debugLog("Performing OCR")
+        debugLog("=== OCR START ===", "timestamp: $ocrStartTime, isReading: $isReading, isPaused: $isPaused")
 
         try {
             // v1.0.83: まずキャッシュされた画像を使用、なければ直接取得
+            val imageAcquireStart = System.currentTimeMillis()
             var image = latestImage
             var usingCachedImage = true
-            
+
             if (image == null) {
                 usingCachedImage = false
                 image = imageReader?.acquireLatestImage()
-                debugLog("Image acquired directly", "image: ${image != null}")
+                val acquireTime = System.currentTimeMillis() - imageAcquireStart
+                debugLog("Image acquired directly", "image: ${image != null}, time: ${acquireTime}ms")
             } else {
-                debugLog("Using cached image from listener", "image: ${image != null}")
+                val acquireTime = System.currentTimeMillis() - imageAcquireStart
+                debugLog("Using cached image from listener", "image: ${image != null}, time: ${acquireTime}ms")
                 latestImage = null  // キャッシュをクリア（1回のみ使用）
             }
 
             if (image != null) {
-                debugLog("Converting image to bitmap", "cached: $usingCachedImage")
+                val conversionStart = System.currentTimeMillis()
+                debugLog("Converting image to bitmap", "cached: $usingCachedImage, size: ${image.width}x${image.height}")
                 val bitmap = convertImageToBitmap(image)
                 if (!usingCachedImage) {
                     image.close()  // 直接取得した画像のみここでclose
                 }
                 // キャッシュされた画像はconvertImageToBitmapで処理後にcloseされる
 
-                debugLog("Bitmap created", "bitmap: ${bitmap != null}, size: ${bitmap?.width}x${bitmap?.height}")
+                val conversionTime = System.currentTimeMillis() - conversionStart
+                debugLog("Bitmap created", "bitmap: ${bitmap != null}, size: ${bitmap?.width}x${bitmap?.height}, time: ${conversionTime}ms")
 
                 if (bitmap != null) {
                     processOCRImage(bitmap)
+                    val totalTime = System.currentTimeMillis() - ocrStartTime
+                    debugLog("=== OCR COMPLETED ===", "total time: ${totalTime}ms")
                 } else {
-                    debugLog("Bitmap conversion failed")
+                    debugLog("Bitmap conversion failed", "elapsed: ${System.currentTimeMillis() - ocrStartTime}ms")
                     isCapturing = false
                 }
             } else {
-                debugLog("No image available from ImageReader")
+                debugLog("No image available from ImageReader", "elapsed: ${System.currentTimeMillis() - ocrStartTime}ms")
                 isCapturing = false
             }
         } catch (e: Exception) {
+            val errorTime = System.currentTimeMillis() - ocrStartTime
+            Log.e(TAG, "[$TAG] OCR処理エラー (elapsed: ${errorTime}ms)", e)
+            debugLog("OCR処理エラー", "message: ${e.message}, stackTrace: ${e.stackTraceToString().take(500)}")
             handleError("OCR処理エラー", e)
             isCapturing = false
         }
@@ -728,55 +753,66 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
      * 処理速度とのバランスを取った適度な前処理を適用。
      */
     /**
-     * v1.1.6: OCR認識率向上のための最適化版画像前処理
+     * v1.1.15: OCR信頼度向上のための高度な画像前処理
      *
      * 改善内容:
-     * 1. 2段階スケーリング戦略（2倍 → シャープネス → 2倍）
-     * 2. シャープネス処理を1/4サイズ（10Mピクセル）で実行
-     * 3. 処理時間を大幅短縮（935ms → 620-640ms予測）
-     * 4. OCR精度は維持（シャープネス効果は小画像でも有効）
+     * 1. CLAHE（適応的ヒストグラム均等化）で局所的なコントラスト改善
+     * 2. バイラテラルフィルターでエッジを保持しながらノイズ除去
+     * 3. より強力なシャープネス処理でテキストのエッジを強調
+     * 4. 2段階スケーリング戦略で処理時間を最適化
      *
      * 処理フロー:
-     * 元画像 → 2倍 → コントラスト → シャープネス(OpenCV) → 2倍 → OCR
-     *           ↓                      ↓                         ↓
-     *        10Mピクセル           100-120ms               41Mピクセル
+     * 元画像 → 2倍 → グレー化 → CLAHE → デノイズ → シャープネス → 2倍 → OCR
+     *           ↓        ↓        ↓        ↓           ↓           ↓
+     *        10Mピクセル  適応的   ノイズ    エッジ      解像度     41Mピクセル
+     *                  コントラスト  除去     強調       向上
+     *
+     * 目標: OCR平均信頼度 61.6% → 70%以上
      */
     private fun applyBalancedPreprocessing(bitmap: Bitmap): Bitmap {
+        val totalStart = System.currentTimeMillis()
         val width = bitmap.width
         val height = bitmap.height
 
-        // ステップ1: 2倍拡大（シャープネス処理用の中間サイズ）
+        debugLog("[v1.1.15 Preprocessing] START", "input size: ${width}x${height}")
+
+        // ステップ1: 2倍拡大（処理用の中間サイズ）
+        val scale2xStart = System.currentTimeMillis()
         val intermediateWidth = (width * 2.0).toInt()
         val intermediateHeight = (height * 2.0).toInt()
         val scaled2x = Bitmap.createScaledBitmap(bitmap, intermediateWidth, intermediateHeight, true)
+        debugLog("[v1.1.15] Step1: 2x scaling", "size: ${intermediateWidth}x${intermediateHeight}, time: ${System.currentTimeMillis() - scale2xStart}ms")
 
-        // ステップ2: グレースケール化 + 強力なコントラスト強化
-        val contrastBitmap = Bitmap.createBitmap(intermediateWidth, intermediateHeight, Bitmap.Config.ARGB_8888)
-        val canvas1 = Canvas(contrastBitmap)
-        val paint1 = Paint()
+        // ステップ2: OpenCVでグレースケール化 + CLAHE適用
+        val claheStart = System.currentTimeMillis()
+        val claheBitmap = applyCLAHE(scaled2x)
+        debugLog("[v1.1.15] Step2: CLAHE (adaptive contrast)", "time: ${System.currentTimeMillis() - claheStart}ms")
 
-        // 強力なコントラスト（3.0f → 3.5f、-160f → -180f）
-        val colorMatrix = ColorMatrix(floatArrayOf(
-            3.5f, 3.5f, 3.5f, 0f, -180f,  // 強力なコントラスト
-            3.5f, 3.5f, 3.5f, 0f, -180f,
-            3.5f, 3.5f, 3.5f, 0f, -180f,
-            0f, 0f, 0f, 1f, 0f
-        ))
-        paint1.colorFilter = ColorMatrixColorFilter(colorMatrix)
-        canvas1.drawBitmap(scaled2x, 0f, 0f, paint1)
+        // ステップ3: バイラテラルフィルター（エッジ保持ノイズ除去）
+        val denoiseStart = System.currentTimeMillis()
+        val denoisedBitmap = applyBilateralFilter(claheBitmap)
+        debugLog("[v1.1.15] Step3: Bilateral filter (denoise)", "time: ${System.currentTimeMillis() - denoiseStart}ms")
 
-        // ステップ3: OpenCVによる高速シャープネス処理（10Mピクセル: 418ms → 100-120ms）
-        val sharpenedBitmap = applySharpenFast(contrastBitmap)
+        // ステップ4: シャープネス処理（強化版）
+        val sharpenStart = System.currentTimeMillis()
+        val sharpenedBitmap = applySharpenEnhanced(denoisedBitmap)
+        debugLog("[v1.1.15] Step4: Enhanced sharpening", "time: ${System.currentTimeMillis() - sharpenStart}ms")
 
-        // ステップ4: さらに2倍拡大して最終サイズ（4倍）にする
+        // ステップ5: 最終的に4倍サイズに拡大
+        val scale4xStart = System.currentTimeMillis()
         val finalWidth = (width * 4.0).toInt()
         val finalHeight = (height * 4.0).toInt()
         val finalBitmap = Bitmap.createScaledBitmap(sharpenedBitmap, finalWidth, finalHeight, true)
+        debugLog("[v1.1.15] Step5: Final 4x scaling", "size: ${finalWidth}x${finalHeight}, time: ${System.currentTimeMillis() - scale4xStart}ms")
 
         // メモリ解放
         if (scaled2x != bitmap) scaled2x.recycle()
-        if (sharpenedBitmap != contrastBitmap) contrastBitmap.recycle()
-        contrastBitmap.recycle()
+        if (claheBitmap != scaled2x) claheBitmap.recycle()
+        if (denoisedBitmap != claheBitmap) denoisedBitmap.recycle()
+        if (sharpenedBitmap != denoisedBitmap) sharpenedBitmap.recycle()
+
+        val totalTime = System.currentTimeMillis() - totalStart
+        debugLog("[v1.1.15 Preprocessing] COMPLETE", "total time: ${totalTime}ms, final size: ${finalWidth}x${finalHeight}")
 
         return finalBitmap
     }
@@ -835,6 +871,154 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         } catch (e: Exception) {
             Log.e(TAG, "v1.1.6 applySharpenFast() failed: ${e.message}", e)
             // エラー時は元の画像を返す
+            return bitmap
+        }
+    }
+
+    /**
+     * v1.1.15: CLAHE（適応的ヒストグラム均等化）を適用
+     *
+     * CLAHEは画像を小さなタイル（8x8）に分割し、各タイルごとにヒストグラム均等化を行う。
+     * これにより、局所的なコントラストが改善され、暗い部分と明るい部分の両方でテキストが鮮明になる。
+     *
+     * @param bitmap 入力画像
+     * @return CLAHE適用後の画像
+     */
+    private fun applyCLAHE(bitmap: Bitmap): Bitmap {
+        try {
+            // OpenCV初期化
+            if (!OpenCVLoader.initDebug()) {
+                Log.e(TAG, "[v1.1.15] OpenCV initialization failed in applyCLAHE")
+                return bitmap
+            }
+
+            // BitmapをMatに変換
+            val mat = Mat()
+            Utils.bitmapToMat(bitmap, mat)
+
+            // グレースケール化
+            val gray = Mat()
+            Imgproc.cvtColor(mat, gray, Imgproc.COLOR_BGR2GRAY)
+
+            // CLAHE適用（clipLimit=3.0, tileGridSize=8x8）
+            val clahe = Imgproc.createCLAHE(3.0, Size(8.0, 8.0))
+            val claheResult = Mat()
+            clahe.apply(gray, claheResult)
+
+            // MatをBitmapに変換
+            val resultBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
+            Imgproc.cvtColor(claheResult, mat, Imgproc.COLOR_GRAY2BGRA)
+            Utils.matToBitmap(mat, resultBitmap)
+
+            // メモリ解放
+            mat.release()
+            gray.release()
+            claheResult.release()
+
+            return resultBitmap
+        } catch (e: Exception) {
+            Log.e(TAG, "[v1.1.15] applyCLAHE failed: ${e.message}", e)
+            return bitmap
+        }
+    }
+
+    /**
+     * v1.1.15: バイラテラルフィルター（エッジ保持型ノイズ除去）
+     *
+     * バイラテラルフィルターは、エッジを保持しながらノイズを除去する。
+     * OCRにとって重要なテキストのエッジは保持し、ノイズのみを除去する。
+     *
+     * パラメータ:
+     * - d=9: フィルターサイズ
+     * - sigmaColor=75: 色空間のシグマ値
+     * - sigmaSpace=75: 座標空間のシグマ値
+     *
+     * @param bitmap 入力画像
+     * @return フィルター適用後の画像
+     */
+    private fun applyBilateralFilter(bitmap: Bitmap): Bitmap {
+        try {
+            // OpenCV初期化
+            if (!OpenCVLoader.initDebug()) {
+                Log.e(TAG, "[v1.1.15] OpenCV initialization failed in applyBilateralFilter")
+                return bitmap
+            }
+
+            // BitmapをMatに変換
+            val mat = Mat()
+            Utils.bitmapToMat(bitmap, mat)
+
+            // バイラテラルフィルター適用
+            val filtered = Mat()
+            Imgproc.bilateralFilter(mat, filtered, 9, 75.0, 75.0)
+
+            // MatをBitmapに変換
+            val resultBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
+            Utils.matToBitmap(filtered, resultBitmap)
+
+            // メモリ解放
+            mat.release()
+            filtered.release()
+
+            return resultBitmap
+        } catch (e: Exception) {
+            Log.e(TAG, "[v1.1.15] applyBilateralFilter failed: ${e.message}", e)
+            return bitmap
+        }
+    }
+
+    /**
+     * v1.1.15: 強化版シャープネス処理
+     *
+     * より強力な5x5 Laplacianカーネルを使用してエッジを強調。
+     * v1.1.6の3x3カーネルよりも広範囲のエッジ検出が可能。
+     *
+     * カーネル構造:
+     * -1 -1 -1 -1 -1
+     * -1 -1 -1 -1 -1
+     * -1 -1 25 -1 -1
+     * -1 -1 -1 -1 -1
+     * -1 -1 -1 -1 -1
+     *
+     * @param bitmap シャープネスを適用する画像
+     * @return シャープネス処理後の画像
+     */
+    private fun applySharpenEnhanced(bitmap: Bitmap): Bitmap {
+        try {
+            // OpenCV初期化
+            if (!OpenCVLoader.initDebug()) {
+                Log.e(TAG, "[v1.1.15] OpenCV initialization failed in applySharpenEnhanced")
+                return bitmap
+            }
+
+            // BitmapをMatに変換
+            val mat = Mat()
+            Utils.bitmapToMat(bitmap, mat)
+
+            // 5x5 Laplacianカーネル（より強力なエッジ強調）
+            val kernel = Mat(5, 5, CvType.CV_32F)
+            kernel.put(0, 0, -1.0, -1.0, -1.0, -1.0, -1.0)
+            kernel.put(1, 0, -1.0, -1.0, -1.0, -1.0, -1.0)
+            kernel.put(2, 0, -1.0, -1.0, 25.0, -1.0, -1.0)
+            kernel.put(3, 0, -1.0, -1.0, -1.0, -1.0, -1.0)
+            kernel.put(4, 0, -1.0, -1.0, -1.0, -1.0, -1.0)
+
+            // 畳み込み演算
+            val result = Mat()
+            Imgproc.filter2D(mat, result, -1, kernel)
+
+            // MatをBitmapに変換
+            val resultBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
+            Utils.matToBitmap(result, resultBitmap)
+
+            // メモリ解放
+            mat.release()
+            kernel.release()
+            result.release()
+
+            return resultBitmap
+        } catch (e: Exception) {
+            Log.e(TAG, "[v1.1.15] applySharpenEnhanced failed: ${e.message}", e)
             return bitmap
         }
     }
@@ -1201,24 +1385,47 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     }
 
     private fun processOCRImage(bitmap: Bitmap) {
+        val processStart = System.currentTimeMillis()
+        debugLog("[OCR Processing] START", "bitmap size: ${bitmap.width}x${bitmap.height}")
+
         val image = InputImage.fromBitmap(bitmap, 0)
         val recognizer = TextRecognition.getClient(JapaneseTextRecognizerOptions.Builder().build())
 
+        val ocrExecuteStart = System.currentTimeMillis()
         recognizer.process(image)
             .addOnSuccessListener { visionText ->
+                val ocrExecuteTime = System.currentTimeMillis() - ocrExecuteStart
+                debugLog("[OCR Processing] ML Kit completed", "time: ${ocrExecuteTime}ms, blocks: ${visionText.textBlocks.size}")
+
                 // 縦書き対応: テキストブロックを位置でソート
+                val extractStart = System.currentTimeMillis()
                 val extractedText = extractTextWithVerticalSupport(visionText)
+                val extractTime = System.currentTimeMillis() - extractStart
+                debugLog("[OCR Processing] Text extraction", "time: ${extractTime}ms, length: ${extractedText.length}")
 
                 // ✨ v1.0.33: Phase 3対応 - OCR結果オブジェクトを渡して信頼度ベース補正を有効化
+                val correctionStart = System.currentTimeMillis()
                 val correctedText = textCorrector.correctText(extractedText, visionText)
+                val correctionTime = System.currentTimeMillis() - correctionStart
                 val stats = textCorrector.getCorrectionStats(extractedText, correctedText)
 
+                debugLog("[OCR Processing] Text correction", """
+                    time: ${correctionTime}ms,
+                    original_length: ${extractedText.length},
+                    corrected_length: ${correctedText.length},
+                    corrections: ${stats.totalCorrections},
+                    economic_terms: ${stats.economicTermsFixed},
+                    katakana: ${stats.katakanaFixed}
+                """.trimIndent())
+
                 // ✨ 詳細なデバッグログ（補正情報を含む）
-                debugLog("OCR success", """
+                debugLog("[OCR Processing] SUCCESS", """
+                    Total time: ${System.currentTimeMillis() - processStart}ms
+                    (ML Kit: ${ocrExecuteTime}ms, Extract: ${extractTime}ms, Correction: ${correctionTime}ms),
                     TextLength: ${correctedText.length},
                     Preview: ${correctedText.take(100).replace("\n", " | ")},
                     Changed: ${correctedText != lastRecognizedText},
-                    Corrections: ${stats.totalCorrections} (Economic: ${stats.economicTermsFixed}, Katakana: ${stats.katakanaFixed})
+                    Duplicate: ${correctedText == lastRecognizedText}
                 """.trimIndent())
 
                 // ✨ v1.0.17: 補正後のテキストを使用
@@ -1226,30 +1433,38 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                     lastRecognizedText = correctedText
                     val sentences = splitIntoSentences(correctedText)
                     if (sentences.isNotEmpty()) {
-                        debugLog("Speaking", "Total sentences: ${sentences.size}")
+                        debugLog("[TTS] Preparing to speak", "sentences: ${sentences.size}, first: ${sentences.first().take(30)}")
                         speakSentences(sentences)
                     } else {
-                        debugLog("No sentences", "Text could not be split into sentences")
+                        debugLog("[TTS] No sentences", "Text could not be split into sentences")
                     }
                 } else if (correctedText.isEmpty()) {
-                    debugLog("OCR result empty", "No text extracted from image")
+                    debugLog("[OCR Processing] EMPTY", "No text extracted from image")
                 } else if (correctedText == lastRecognizedText) {
-                    debugLog("OCR duplicate", "Same text as previous capture")
+                    debugLog("[OCR Processing] DUPLICATE", "Same text as previous capture")
+                } else if (!isReading || isPaused) {
+                    debugLog("[OCR Processing] SKIPPED", "Not reading or paused: isReading=$isReading, isPaused=$isPaused")
                 }
 
                 // ✅ v1.1.12 FIX: bitmapを解放（メモリリーク防止）
                 bitmap.recycle()
-                debugLog("[v1.1.12] Bitmap recycled after OCR success")
+                debugLog("[Memory] Bitmap recycled after OCR success")
 
                 isCapturing = false
             }
             .addOnFailureListener { e ->
-                debugLog("OCR failed", e.message)
+                val failureTime = System.currentTimeMillis() - processStart
+                Log.e(TAG, "[$TAG] OCR failed (elapsed: ${failureTime}ms)", e)
+                debugLog("[OCR Processing] FAILED", """
+                    time: ${failureTime}ms,
+                    error: ${e.message},
+                    stackTrace: ${e.stackTraceToString().take(500)}
+                """.trimIndent())
                 handleError("OCRエラー", e)
 
                 // ✅ v1.1.12 FIX: bitmapを解放（メモリリーク防止）
                 bitmap.recycle()
-                debugLog("[v1.1.12] Bitmap recycled after OCR failure")
+                debugLog("[Memory] Bitmap recycled after OCR failure")
 
                 isCapturing = false
             }
@@ -1502,17 +1717,30 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         appState.totalSentences = sentences.size
         appState.currentSentence = 0
 
-        debugLog("Speaking sentences", "Count: ${sentences.size}")
+        debugLog("[TTS] Speak sentences START", """
+            count: ${sentences.size},
+            preview: ${sentences.take(3).joinToString(" | ") { it.take(20) + "..." }}
+        """.trimIndent())
         speakCurrentSentence()
     }
 
     private fun speakCurrentSentence() {
         if (currentSentenceIndex >= currentSentences.size || !isReading || isPaused) {
+            debugLog("[TTS] Speak skipped", """
+                index: $currentSentenceIndex,
+                total: ${currentSentences.size},
+                isReading: $isReading,
+                isPaused: $isPaused
+            """.trimIndent())
             return
         }
 
         val sentence = currentSentences[currentSentenceIndex]
-        debugLog("Speaking sentence", "$currentSentenceIndex: $sentence")
+        debugLog("[TTS] Speaking", """
+            index: $currentSentenceIndex/${currentSentences.size},
+            length: ${sentence.length},
+            text: ${sentence.take(50)}${if (sentence.length > 50) "..." else ""}
+        """.trimIndent())
 
         appState.currentSentence = currentSentenceIndex + 1
         updateOverlayText(sentence)
@@ -1521,16 +1749,25 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     }
 
     private fun onSentenceComplete() {
+        debugLog("[TTS] Sentence complete", "index: $currentSentenceIndex → ${currentSentenceIndex + 1}, total: ${currentSentences.size}")
         currentSentenceIndex++
 
         if (currentSentenceIndex < currentSentences.size) {
             // 次の文を読み上げ (既存のmainHandlerを再利用)
+            debugLog("[TTS] Next sentence", "Scheduling next sentence after 500ms delay")
             mainHandler.postDelayed({
                 speakCurrentSentence()
             }, 500)
         } else {
             // ページ完了
+            debugLog("[TTS] Page complete", """
+                autoPageTurnEnabled: $autoPageTurnEnabled,
+                isReading: $isReading,
+                scheduling_next_page: ${autoPageTurnEnabled && isReading}
+            """.trimIndent())
+
             if (autoPageTurnEnabled && isReading) {
+                debugLog("[Auto Page Turn]", "Scheduling next page after 2000ms delay")
                 mainHandler.postDelayed({
                     nextPage()
                 }, 2000)
@@ -1539,7 +1776,16 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     }
 
     private fun nextPage() {
-        debugLog("Next page", "direction: $pageDirection")
+        val timestamp = System.currentTimeMillis()
+        debugLog("=== NEXT PAGE ===", """
+            timestamp: $timestamp,
+            direction: $pageDirection,
+            currentPage: ${appState.currentPage} → ${appState.currentPage + 1},
+            lastText_length: ${lastRecognizedText.length},
+            currentSentences: ${currentSentences.size},
+            currentSentenceIndex: $currentSentenceIndex
+        """.trimIndent())
+
         appState.currentPage++
 
         // ✅ FIX: ページ変更時に状態をリセット（TTS継続の問題を修正）
@@ -1548,21 +1794,34 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         currentSentenceIndex = 0         // インデックスをリセット
         textToSpeech?.stop()             // 前のページのTTSを停止
 
-        debugLog("State reset", "sentences cleared, index reset to 0, TTS stopped")
+        debugLog("[State Reset]", "text/sentences/index cleared, TTS stopped, new page: ${appState.currentPage}")
 
         // ページめくり方向に応じてジェスチャーを選択
+        val gestureAction = if (pageDirection == "right_to_next") "NEXT_PAGE" else "PREVIOUS_PAGE"
+        debugLog("[Page Turn Gesture]", "action: $gestureAction, direction: $pageDirection")
+
         val intent = Intent(this, AutoPageTurnService::class.java)
-        intent.action = if (pageDirection == "right_to_next") "NEXT_PAGE" else "PREVIOUS_PAGE"
+        intent.action = gestureAction
         intent.putExtra("page_direction", pageDirection)
         startService(intent)
 
         // OCRを再実行（リトライ付き）
         // ページ遷移アニメーション完了を確実に待つため2.5秒に延長
+        debugLog("[OCR Retry]", "Scheduling OCR retry: maxRetries=3, initialDelay=2500ms")
         performOCRWithRetry(maxRetries = 3, initialDelay = 2500)
     }
 
     private fun previousPage() {
-        debugLog("Previous page", "direction: $pageDirection")
+        val timestamp = System.currentTimeMillis()
+        debugLog("=== PREVIOUS PAGE ===", """
+            timestamp: $timestamp,
+            direction: $pageDirection,
+            currentPage: ${appState.currentPage} → ${appState.currentPage - 1},
+            lastText_length: ${lastRecognizedText.length},
+            currentSentences: ${currentSentences.size},
+            currentSentenceIndex: $currentSentenceIndex
+        """.trimIndent())
+
         appState.currentPage--
 
         // ✅ FIX: ページ変更時に状態をリセット（TTS継続の問題を修正）
@@ -1571,16 +1830,20 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         currentSentenceIndex = 0         // インデックスをリセット
         textToSpeech?.stop()             // 前のページのTTSを停止
 
-        debugLog("State reset", "sentences cleared, index reset to 0, TTS stopped")
+        debugLog("[State Reset]", "text/sentences/index cleared, TTS stopped, new page: ${appState.currentPage}")
 
         // ページめくり方向に応じてジェスチャーを選択
+        val gestureAction = if (pageDirection == "right_to_next") "PREVIOUS_PAGE" else "NEXT_PAGE"
+        debugLog("[Page Turn Gesture]", "action: $gestureAction, direction: $pageDirection")
+
         val intent = Intent(this, AutoPageTurnService::class.java)
-        intent.action = if (pageDirection == "right_to_next") "PREVIOUS_PAGE" else "NEXT_PAGE"
+        intent.action = gestureAction
         intent.putExtra("page_direction", pageDirection)
         startService(intent)
 
         // OCRを再実行（リトライ付き）
         // ページ遷移アニメーション完了を確実に待つため2.5秒に延長
+        debugLog("[OCR Retry]", "Scheduling OCR retry: maxRetries=3, initialDelay=2500ms")
         performOCRWithRetry(maxRetries = 3, initialDelay = 2500)
     }
 

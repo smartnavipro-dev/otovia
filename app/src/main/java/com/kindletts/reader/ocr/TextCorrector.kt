@@ -1445,8 +1445,10 @@ class TextCorrector(private val context: android.content.Context) {
                     // v1.0.75: 検出結果を保存
                     phase3DetectionResult = detectionResult
 
-                    // v1.1.13: 閾値を0.7→0.45に下げて、より多くの助詞検出を適用
-                    val particleCorrected = particleDetector.applyCorrections(detectionResult, minConfidence = 0.45)
+                    // v1.1.15: 閾値を0.45→0.40に下げて、より多くの助詞検出を適用
+                    // v1.1.13で0.7→0.45に変更し、適用率が0%→80%(12/15)に改善
+                    // v1.1.15でさらに0.45→0.40に変更し、残りの3件(信頼度0.44)も適用を目指す
+                    val particleCorrected = particleDetector.applyCorrections(detectionResult, minConfidence = 0.40)
                     if (particleCorrected != correctedText) {
                         Log.d(TAG, "[v1.0.64 Phase3] Particle corrections applied")
                         correctedText = particleCorrected
