@@ -940,29 +940,39 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         try {
             // OpenCV初期化
             if (!OpenCVLoader.initDebug()) {
-                Log.e(TAG, "[v1.1.15] OpenCV initialization failed in applyBilateralFilter")
+                Log.e(TAG, "[v1.1.28] OpenCV initialization failed in applyBilateralFilter")
                 return bitmap
             }
 
-            // BitmapをMatに変換
+            // BitmapをMatに変換（BGRA 4チャンネル）
             val mat = Mat()
             Utils.bitmapToMat(bitmap, mat)
 
-            // バイラテラルフィルター適用
+            // v1.1.28: BGRA→BGR変換（bilateralFilterはCV_8UC1/CV_8UC3のみ対応）
+            val bgr = Mat()
+            Imgproc.cvtColor(mat, bgr, Imgproc.COLOR_BGRA2BGR)
+
+            // バイラテラルフィルター適用（3チャンネルBGR）
             val filtered = Mat()
-            Imgproc.bilateralFilter(mat, filtered, 9, 75.0, 75.0)
+            Imgproc.bilateralFilter(bgr, filtered, 9, 75.0, 75.0)
+
+            // BGR→BGRA変換（Bitmap用に4チャンネルに戻す）
+            val bgra = Mat()
+            Imgproc.cvtColor(filtered, bgra, Imgproc.COLOR_BGR2BGRA)
 
             // MatをBitmapに変換
             val resultBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
-            Utils.matToBitmap(filtered, resultBitmap)
+            Utils.matToBitmap(bgra, resultBitmap)
 
             // メモリ解放
             mat.release()
+            bgr.release()
             filtered.release()
+            bgra.release()
 
             return resultBitmap
         } catch (e: Exception) {
-            Log.e(TAG, "[v1.1.15] applyBilateralFilter failed: ${e.message}", e)
+            Log.e(TAG, "[v1.1.28] applyBilateralFilter failed: ${e.message}", e)
             return bitmap
         }
     }

@@ -193,6 +193,7 @@ class KanjiShapeCorrector {
 
     /**
      * 文脈ベース適合性評価
+     * v1.1.28: 原形が辞書語の場合は補正しない（収入→収人 等の誤補正防止）
      */
     private fun evaluateContextualFit(
         originalToken: Token,
@@ -201,6 +202,13 @@ class KanjiShapeCorrector {
         nextTokens: List<Token>,
         pair: KanjiShapePair
     ): Double {
+        // v1.1.28: 原形が辞書に存在する正しい語なら補正不要
+        val originalDictScore = evaluateDictionaryExistence(originalToken.surface)
+        if (originalDictScore >= 1.0) {
+            Log.d(TAG, "[v1.1.28] Skipping '${originalToken.surface}' → '${candidateForm}': original is a valid dictionary word")
+            return 0.0
+        }
+
         var score = 0.0
 
         // 1. 品詞適合性（30%）

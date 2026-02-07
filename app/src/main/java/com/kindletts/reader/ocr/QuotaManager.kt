@@ -36,8 +36,9 @@ class QuotaManager(context: Context) {
 
         /**
          * クォータ制限設定
+         * v1.1.26: テスト用に一時的に100に引き上げ
          */
-        const val DAILY_LIMIT = 20                   // 無料枠: 20 requests/day
+        const val DAILY_LIMIT = 100                  // v1.1.26: テスト用（通常は20）
         const val RESET_INTERVAL_MS = 24 * 60 * 60 * 1000L  // 24時間
     }
 

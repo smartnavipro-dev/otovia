@@ -95,8 +95,9 @@ class LLMCorrector(private val context: Context) {
 
         /**
          * LLM補正を試行する条件
+         * v1.1.26: 全文LLM補正モード（テスト用）
          */
-        private const val MIN_CONFIDENCE_FOR_PHASE1 = 0.7  // Phase 1の信頼度閾値（v1.0.54: HTTP API検証完了、本番用しきい値に戻す）
+        private const val MIN_CONFIDENCE_FOR_PHASE1 = 2.0  // v1.1.27: 全文LLM補正モード（1.0では1.0信頼度でスキップされるため2.0に）
         private const val MAX_TEXT_LENGTH_FOR_LLM = 500    // LLM処理の最大文字数
 
         /**
@@ -1196,20 +1197,37 @@ ${if (context != null) "\n文脈: $context" else ""}
 
     /**
      * v1.0.40: LLMレスポンスのパース
+     * v1.1.26: マークダウンコードブロック処理の強化（TTSに```json混入防止）
      */
     private fun parseResponse(responseText: String): String {
+        Log.d(TAG, "[v1.1.26] parseResponse input: ${responseText.take(200)}...")
+
         return try {
             // JSONブロックを抽出（```json ... ``` または直接JSON）
-            val jsonText = if (responseText.contains("```json")) {
-                responseText.substringAfter("```json").substringBefore("```").trim()
-            } else if (responseText.contains("```")) {
-                responseText.substringAfter("```").substringBefore("```").trim()
-            } else if (responseText.trim().startsWith("{")) {
-                responseText.trim()
-            } else {
-                // JSONが見つからない場合は、レスポンステキストをそのまま返す
-                Log.w(TAG, "[LLM] No JSON found in response, using raw text")
-                return responseText.trim()
+            var jsonText = responseText.trim()
+
+            // マークダウンコードブロックを除去（複数パターン対応）
+            if (jsonText.contains("```json")) {
+                jsonText = jsonText.substringAfter("```json").substringBefore("```").trim()
+                Log.d(TAG, "[v1.1.26] Extracted from ```json block: ${jsonText.take(100)}...")
+            } else if (jsonText.contains("```")) {
+                jsonText = jsonText.substringAfter("```").substringBefore("```").trim()
+                Log.d(TAG, "[v1.1.26] Extracted from ``` block: ${jsonText.take(100)}...")
+            }
+
+            // JSONオブジェクトとして開始するかチェック
+            if (!jsonText.startsWith("{")) {
+                // JSONオブジェクトが見つからない場合、テキスト内から探す
+                val jsonStart = jsonText.indexOf("{")
+                val jsonEnd = jsonText.lastIndexOf("}")
+                if (jsonStart >= 0 && jsonEnd > jsonStart) {
+                    jsonText = jsonText.substring(jsonStart, jsonEnd + 1)
+                    Log.d(TAG, "[v1.1.26] Extracted JSON object: ${jsonText.take(100)}...")
+                } else {
+                    Log.w(TAG, "[v1.1.26] No JSON object found in response")
+                    // JSONが見つからない場合は空文字列を返す（生テキストを返さない）
+                    return ""
+                }
             }
 
             // JSONパース
@@ -1217,16 +1235,22 @@ ${if (context != null) "\n文脈: $context" else ""}
             val corrected = json.optString("corrected", "")
 
             if (corrected.isNotEmpty()) {
-                Log.d(TAG, "[LLM] Parsed corrected text: $corrected")
-                corrected
+                // 抽出されたテキストにまだマークダウンが含まれていないか確認
+                val cleanedText = corrected
+                    .replace("```json", "")
+                    .replace("```", "")
+                    .trim()
+                Log.d(TAG, "[v1.1.26] Parsed corrected text: $cleanedText")
+                cleanedText
             } else {
-                Log.w(TAG, "[LLM] No 'corrected' field in JSON response")
+                Log.w(TAG, "[v1.1.26] No 'corrected' field in JSON response")
                 ""
             }
         } catch (e: Exception) {
-            Log.e(TAG, "[LLM] Failed to parse JSON response: ${e.message}", e)
-            // JSONパースに失敗した場合は、レスポンステキストをそのまま返す
-            responseText.trim()
+            Log.e(TAG, "[v1.1.26] Failed to parse JSON response: ${e.message}", e)
+            // JSONパースに失敗した場合は空文字列を返す（生テキストを返さない）
+            // これによりTTSに```jsonが混入することを防ぐ
+            ""
         }
     }
 

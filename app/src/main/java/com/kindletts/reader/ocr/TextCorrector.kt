@@ -39,10 +39,11 @@ class TextCorrector(private val context: android.content.Context) {
          * v1.0.39: LLM補正を試行する信頼度閾値
          * Phase 1の信頼度がこれ未満の場合、LLM補正を試行
          * v1.1.5: 0.7 → 0.5に変更（より厳しく、LLM API呼び出しを削減）
-         * 理由: 信頼度0.5-0.7の範囲はTextCorrectorで対応し、LLMは本当に低信頼度のみに限定
-         * 期待効果: LLM呼び出し -20-30%、月間コスト削減
+         * v1.1.26: 0.5 → 1.0に変更（全文LLM補正モード - テスト用）
+         * 理由: OCR誤認識「龍の要」→「需要」などをLLMで補正するため
+         * 期待効果: +20%認識率向上
          */
-        private const val MIN_CONFIDENCE_FOR_PHASE1 = 0.5f  // v1.1.5: 0.7 → 0.5
+        private const val MIN_CONFIDENCE_FOR_PHASE1 = 2.0f  // v1.1.27: 全文LLM補正モード（1.0では信頼度1.0でスキップされるため2.0に）
 
         // Phase 2: 形態素解析器（遅延初期化）
         private val morphAnalyzer: MorphologicalAnalyzer by lazy {
@@ -1220,7 +1221,8 @@ class TextCorrector(private val context: android.content.Context) {
             Regex("(金釜)(利和)") to "金利",
             Regex("(通迫)(貨貝)") to "通貨",
             Regex("([赤亦]字|[黒里墨]字)の") to "赤字の",
-            Regex("([輸愉]出|[輸愉]入)") to "輸出",
+            Regex("[愉][出]") to "輸出",
+            Regex("[愉][入]") to "輸入",
 
             // ============================================================
             // 動詞・形容詞の文脈パターン
