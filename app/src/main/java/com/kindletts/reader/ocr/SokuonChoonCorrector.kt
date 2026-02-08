@@ -407,8 +407,9 @@ class SokuonChoonCorrector {
             // 編集距離を計算
             val distance = levenshteinDistance(surface, dictWord.withoutChoon)
 
-            // 編集距離が小さく、長音挿入のみの場合
-            if (distance <= 2 && distance > 0) {
+            // v1.1.28: 編集距離閾値を2→1に厳格化（インブプット→インターネット等の誤マッチ防止）
+            // 長音脱落は通常1文字単位なので距離1で十分
+            if (distance <= 1 && distance > 0) {
                 val confidence = calculatePhase2Confidence(
                     surface,
                     dictWord.word,

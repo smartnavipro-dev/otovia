@@ -66,6 +66,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
 
     // OCR関連
     private var lastRecognizedText = ""
+    private var lastExtractedText = ""  // v1.1.28: LLM前の重複チェック用（生OCRテキスト）
     private var ocrExecutor: ScheduledExecutorService? = null
     private var isCapturing = false
     // v1.0.17: テキスト補正機能, v1.0.39: contextパラメータ追加
@@ -1413,6 +1414,16 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 val extractTime = System.currentTimeMillis() - extractStart
                 debugLog("[OCR Processing] Text extraction", "time: ${extractTime}ms, length: ${extractedText.length}")
 
+                // v1.1.28: LLM呼び出し前に生OCRテキストの重複チェック（クォータ節約）
+                if (extractedText == lastExtractedText && extractedText.isNotEmpty()) {
+                    debugLog("[OCR Processing] PRE-DUPLICATE", "Raw OCR text unchanged, skipping correction (saved LLM call)")
+                    bitmap.recycle()
+                    debugLog("[Memory] Bitmap recycled after pre-duplicate check")
+                    isCapturing = false
+                    return@addOnSuccessListener
+                }
+                lastExtractedText = extractedText
+
                 // ✨ v1.0.33: Phase 3対応 - OCR結果オブジェクトを渡して信頼度ベース補正を有効化
                 val correctionStart = System.currentTimeMillis()
                 val correctedText = textCorrector.correctText(extractedText, visionText)
@@ -1800,6 +1811,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
 
         // ✅ FIX: ページ変更時に状態をリセット（TTS継続の問題を修正）
         lastRecognizedText = ""
+        lastExtractedText = ""  // v1.1.28: 生OCRテキストもリセット
         currentSentences = emptyList()  // 古い文のリストをクリア
         currentSentenceIndex = 0         // インデックスをリセット
         textToSpeech?.stop()             // 前のページのTTSを停止
@@ -1836,6 +1848,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
 
         // ✅ FIX: ページ変更時に状態をリセット（TTS継続の問題を修正）
         lastRecognizedText = ""
+        lastExtractedText = ""  // v1.1.28: 生OCRテキストもリセット
         currentSentences = emptyList()  // 古い文のリストをクリア
         currentSentenceIndex = 0         // インデックスをリセット
         textToSpeech?.stop()             // 前のページのTTSを停止

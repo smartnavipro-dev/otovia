@@ -810,7 +810,7 @@ ${if (context != null) "\n文脈: $context" else ""}
                         put("temperature", 0.1)
                         put("topK", 1)
                         put("topP", 0.1)
-                        put("maxOutputTokens", 4000)  // v1.0.55: 2000→4000に増加（thoughtsが2000消費する場合あり）
+                        put("maxOutputTokens", 8192)  // v1.1.28: 4000→8192に増加（MAX_TOKENSによるJSON途中切れ防止）
                     })
                     put("safetySettings", JSONArray().apply {
                         val categories = arrayOf("HARM_CATEGORY_HARASSMENT", "HARM_CATEGORY_HATE_SPEECH",
@@ -1230,20 +1230,31 @@ ${if (context != null) "\n文脈: $context" else ""}
                 }
             }
 
-            // JSONパース
-            val json = JSONObject(jsonText)
-            val corrected = json.optString("corrected", "")
+            // JSONパース（v1.1.28: 途中切れJSON修復ロジック追加）
+            val json = try {
+                JSONObject(jsonText)
+            } catch (e: org.json.JSONException) {
+                // v1.1.28: MAX_TOKENSによるJSON途中切れを修復
+                Log.w(TAG, "[v1.1.28] JSON parse failed, attempting truncated JSON repair: ${e.message}")
+                repairTruncatedJson(jsonText)
+            }
 
-            if (corrected.isNotEmpty()) {
-                // 抽出されたテキストにまだマークダウンが含まれていないか確認
-                val cleanedText = corrected
-                    .replace("```json", "")
-                    .replace("```", "")
-                    .trim()
-                Log.d(TAG, "[v1.1.26] Parsed corrected text: $cleanedText")
-                cleanedText
+            if (json != null) {
+                val corrected = json.optString("corrected", "")
+                if (corrected.isNotEmpty()) {
+                    // 抽出されたテキストにまだマークダウンが含まれていないか確認
+                    val cleanedText = corrected
+                        .replace("```json", "")
+                        .replace("```", "")
+                        .trim()
+                    Log.d(TAG, "[v1.1.28] Parsed corrected text: $cleanedText")
+                    cleanedText
+                } else {
+                    Log.w(TAG, "[v1.1.26] No 'corrected' field in JSON response")
+                    ""
+                }
             } else {
-                Log.w(TAG, "[v1.1.26] No 'corrected' field in JSON response")
+                Log.w(TAG, "[v1.1.28] JSON repair also failed, returning empty")
                 ""
             }
         } catch (e: Exception) {
@@ -1251,6 +1262,53 @@ ${if (context != null) "\n文脈: $context" else ""}
             // JSONパースに失敗した場合は空文字列を返す（生テキストを返さない）
             // これによりTTSに```jsonが混入することを防ぐ
             ""
+        }
+    }
+
+    /**
+     * v1.1.28: MAX_TOKENSで途中切れしたJSONを修復
+     *
+     * Gemini APIがMAX_TOKENSで停止した場合、JSONが不完全になる。
+     * 例: {"corrected": "途中で切れたテキスト
+     * → {"corrected": "途中で切れたテキスト"} に修復
+     */
+    private fun repairTruncatedJson(jsonText: String): JSONObject? {
+        return try {
+            var repaired = jsonText.trim()
+
+            // "corrected"フィールドの値をregexで抽出
+            val correctedPattern = Regex(""""corrected"\s*:\s*"((?:[^"\\]|\\.)*)""")
+            val match = correctedPattern.find(repaired)
+
+            if (match != null) {
+                val extractedValue = match.groupValues[1]
+                // 最小限の有効なJSONを構築
+                val repairedJson = JSONObject()
+                repairedJson.put("corrected", extractedValue)
+                Log.d(TAG, "[v1.1.28] Repaired truncated JSON, extracted ${extractedValue.length} chars")
+                repairedJson
+            } else {
+                // "corrected": " の開始は見つかるが、閉じ " がない場合
+                val openPattern = Regex(""""corrected"\s*:\s*"(.*)""", RegexOption.DOT_MATCHES_ALL)
+                val openMatch = openPattern.find(repaired)
+                if (openMatch != null) {
+                    var value = openMatch.groupValues[1]
+                    // 末尾の不完全なエスケープシーケンスを除去
+                    if (value.endsWith("\\")) {
+                        value = value.dropLast(1)
+                    }
+                    val repairedJson = JSONObject()
+                    repairedJson.put("corrected", value)
+                    Log.d(TAG, "[v1.1.28] Repaired open-ended JSON, extracted ${value.length} chars")
+                    repairedJson
+                } else {
+                    Log.w(TAG, "[v1.1.28] Could not find 'corrected' field in truncated JSON")
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "[v1.1.28] JSON repair failed: ${e.message}")
+            null
         }
     }
 
