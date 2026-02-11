@@ -1447,13 +1447,17 @@ class TextCorrector(private val context: android.content.Context) {
                     // v1.0.75: 検出結果を保存
                     phase3DetectionResult = detectionResult
 
-                    // v1.1.15: 閾値を0.45→0.40に下げて、より多くの助詞検出を適用
-                    // v1.1.13で0.7→0.45に変更し、適用率が0%→80%(12/15)に改善
-                    // v1.1.15でさらに0.45→0.40に変更し、残りの3件(信頼度0.44)も適用を目指す
-                    val particleCorrected = particleDetector.applyCorrections(detectionResult, minConfidence = 0.40)
-                    if (particleCorrected != correctedText) {
-                        Log.d(TAG, "[v1.0.64 Phase3] Particle corrections applied")
-                        correctedText = particleCorrected
+                    // v1.1.30: LLM全文補正モードでは助詞挿入を直接適用しない
+                    // 理由: OCR誤字に助詞を挿入すると悪化する（例: 龍要→龍の要、正しくは需要）
+                    // 検出結果はLLMヒントとして渡されるため、LLMが適切に判断する
+                    if (MIN_CONFIDENCE_FOR_PHASE1 < 1.0) {
+                        val particleCorrected = particleDetector.applyCorrections(detectionResult, minConfidence = 0.40)
+                        if (particleCorrected != correctedText) {
+                            Log.d(TAG, "[v1.0.64 Phase3] Particle corrections applied")
+                            correctedText = particleCorrected
+                        }
+                    } else {
+                        Log.d(TAG, "[v1.1.30 Phase3] Particle corrections skipped (LLM mode), hints passed to LLM")
                     }
                 }
             } catch (e: Exception) {
@@ -1618,11 +1622,15 @@ class TextCorrector(private val context: android.content.Context) {
                 phase3Hints = phase3Hints
             )
 
-            if (llmConfidence > phase1Confidence) {
-                Log.d(TAG, "[v1.0.39] LLM correction accepted (confidence: $llmConfidence)")
+            // v1.1.30: 固定閾値で判定（Phase 1 confidence比較を廃止）
+            // 旧ロジック: llmConfidence > phase1Confidence → Phase1が多くのパターンを適用すると
+            // phase1Confidence=1.0になり、LLMのconfidence(常に<1.0)が常にrejectされていた
+            val LLM_ACCEPTANCE_THRESHOLD = 0.5
+            if (llmConfidence >= LLM_ACCEPTANCE_THRESHOLD) {
+                Log.d(TAG, "[v1.1.30] LLM correction accepted (confidence: $llmConfidence, threshold: $LLM_ACCEPTANCE_THRESHOLD)")
                 correctedText = llmCorrected
             } else {
-                Log.d(TAG, "[v1.0.39] LLM correction rejected (confidence: $llmConfidence)")
+                Log.d(TAG, "[v1.1.30] LLM correction rejected (confidence: $llmConfidence < threshold: $LLM_ACCEPTANCE_THRESHOLD)")
             }
         }
 

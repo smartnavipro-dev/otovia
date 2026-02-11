@@ -703,21 +703,21 @@ class LLMCorrector(private val context: Context) {
      * v1.0.57: プロンプト最適化（thoughts過剰消費の抑制、バランス改善）
      * v1.0.75: Phase 3形態素解析ヒントを追加
      * v1.0.77: プロンプト簡潔化（-30% tokens）
+     * v1.1.30: 積極的補正モードに変更（保守的すぎてOCR誤字を見逃す問題の修正）
      */
     private fun buildCorrectionPrompt(text: String, context: String?, genre: String? = null, phase3Hints: String? = null): String {
         val genreHint = genre ?: "一般"
 
         return """
-日本語OCR補正。明確なエラーのみ補正、過剰補正禁止。
+日本語書籍のOCR誤認識補正。文脈から正しい文字を積極的に推測して補正せよ。
 
-【ルール】形状類似漢字・促音のみ、文脈適合必須、不確実なら元維持
+【方針】書籍の文章として自然な日本語に復元。形状類似漢字の誤認識を重点補正。不要スペース除去。
 【ジャンル】$genreHint
-【誤認識】経済:英→経,機作→機会 歴史:天→夭,皇→星 科学:実→宴,験→検 カナ:ビ→ピ,ツ→シ
-${if (context != null) "【文脈】$context\n" else ""}${if (phase3Hints != null) "【文法】$phase3Hints\n" else ""}
-【元】$text
+【頻出OCR誤字】龍→需,頓→価,副→則,渡→選/予,郵→要,賀→貴,観→銀,映→要,済→経,植→値,龍要→需要,法副→法則,頓接→価格,渡択→選択 カナ:ツ→ッ,ビ→ピ,ハツビー→ハッピー
+${if (context != null) "【文脈】$context\n" else ""}${if (phase3Hints != null) "【文法ヒント】$phase3Hints\n" else ""}
+【OCR出力】$text
 
-JSON出力:{"corrected":"補正後","confidence":0.95,"changes":[{"from":"杏究","to":"研究","reason":"形状"}]}
-※0.7以上で採用、無変更時changes=[]
+JSON:{"corrected":"補正後","confidence":0.95,"changes":[{"from":"龍要","to":"需要","reason":"形状類似"}]}
         """.trimIndent()
     }
 
