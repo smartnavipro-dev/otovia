@@ -810,7 +810,12 @@ ${if (context != null) "\n文脈: $context" else ""}
                         put("temperature", 0.1)
                         put("topK", 1)
                         put("topP", 0.1)
-                        put("maxOutputTokens", 8192)  // v1.1.28: 4000→8192に増加（MAX_TOKENSによるJSON途中切れ防止）
+                        put("maxOutputTokens", 8192)
+                        // v1.1.29: Gemini 2.5 Flashの思考トークンを無効化
+                        // 思考トークンがmaxOutputTokensを消費し、実際の応答が~300文字で途切れていた問題を修正
+                        put("thinkingConfig", JSONObject().apply {
+                            put("thinkingBudget", 0)
+                        })
                     })
                     put("safetySettings", JSONArray().apply {
                         val categories = arrayOf("HARM_CATEGORY_HARASSMENT", "HARM_CATEGORY_HATE_SPEECH",
@@ -966,7 +971,11 @@ ${if (context != null) "\n文脈: $context" else ""}
                         put("temperature", 0.1)
                         put("topK", 1)
                         put("topP", 0.1)
-                        put("maxOutputTokens", 4000)  // v1.0.55: thoughtsTokenCount対策で4000に増加
+                        put("maxOutputTokens", 8192)
+                        // v1.1.29: Gemini 2.5 Flashの思考トークンを無効化
+                        put("thinkingConfig", JSONObject().apply {
+                            put("thinkingBudget", 0)
+                        })
                     })
                     put("safetySettings", JSONArray().apply {
                         val categories = arrayOf("HARM_CATEGORY_HARASSMENT", "HARM_CATEGORY_HATE_SPEECH",
@@ -1198,9 +1207,10 @@ ${if (context != null) "\n文脈: $context" else ""}
     /**
      * v1.0.40: LLMレスポンスのパース
      * v1.1.26: マークダウンコードブロック処理の強化（TTSに```json混入防止）
+     * v1.1.29: バージョンタグ統一、修復コードの確実な動作を保証
      */
     private fun parseResponse(responseText: String): String {
-        Log.d(TAG, "[v1.1.26] parseResponse input: ${responseText.take(200)}...")
+        Log.d(TAG, "[v1.1.29] parseResponse input: ${responseText.take(200)}...")
 
         return try {
             // JSONブロックを抽出（```json ... ``` または直接JSON）
@@ -1209,10 +1219,10 @@ ${if (context != null) "\n文脈: $context" else ""}
             // マークダウンコードブロックを除去（複数パターン対応）
             if (jsonText.contains("```json")) {
                 jsonText = jsonText.substringAfter("```json").substringBefore("```").trim()
-                Log.d(TAG, "[v1.1.26] Extracted from ```json block: ${jsonText.take(100)}...")
+                Log.d(TAG, "[v1.1.29] Extracted from ```json block: ${jsonText.take(100)}...")
             } else if (jsonText.contains("```")) {
                 jsonText = jsonText.substringAfter("```").substringBefore("```").trim()
-                Log.d(TAG, "[v1.1.26] Extracted from ``` block: ${jsonText.take(100)}...")
+                Log.d(TAG, "[v1.1.29] Extracted from ``` block: ${jsonText.take(100)}...")
             }
 
             // JSONオブジェクトとして開始するかチェック
@@ -1222,9 +1232,9 @@ ${if (context != null) "\n文脈: $context" else ""}
                 val jsonEnd = jsonText.lastIndexOf("}")
                 if (jsonStart >= 0 && jsonEnd > jsonStart) {
                     jsonText = jsonText.substring(jsonStart, jsonEnd + 1)
-                    Log.d(TAG, "[v1.1.26] Extracted JSON object: ${jsonText.take(100)}...")
+                    Log.d(TAG, "[v1.1.29] Extracted JSON object: ${jsonText.take(100)}...")
                 } else {
-                    Log.w(TAG, "[v1.1.26] No JSON object found in response")
+                    Log.w(TAG, "[v1.1.29] No JSON object found in response")
                     // JSONが見つからない場合は空文字列を返す（生テキストを返さない）
                     return ""
                 }
@@ -1235,7 +1245,7 @@ ${if (context != null) "\n文脈: $context" else ""}
                 JSONObject(jsonText)
             } catch (e: org.json.JSONException) {
                 // v1.1.28: MAX_TOKENSによるJSON途中切れを修復
-                Log.w(TAG, "[v1.1.28] JSON parse failed, attempting truncated JSON repair: ${e.message}")
+                Log.w(TAG, "[v1.1.29] JSON parse failed, attempting truncated JSON repair: ${e.message}")
                 repairTruncatedJson(jsonText)
             }
 
@@ -1247,18 +1257,18 @@ ${if (context != null) "\n文脈: $context" else ""}
                         .replace("```json", "")
                         .replace("```", "")
                         .trim()
-                    Log.d(TAG, "[v1.1.28] Parsed corrected text: $cleanedText")
+                    Log.d(TAG, "[v1.1.29] Parsed corrected text: ${cleanedText.take(100)}...")
                     cleanedText
                 } else {
-                    Log.w(TAG, "[v1.1.26] No 'corrected' field in JSON response")
+                    Log.w(TAG, "[v1.1.29] No 'corrected' field in JSON response")
                     ""
                 }
             } else {
-                Log.w(TAG, "[v1.1.28] JSON repair also failed, returning empty")
+                Log.w(TAG, "[v1.1.29] JSON repair also failed, returning empty")
                 ""
             }
         } catch (e: Exception) {
-            Log.e(TAG, "[v1.1.26] Failed to parse JSON response: ${e.message}", e)
+            Log.e(TAG, "[v1.1.29] Failed to parse JSON response: ${e.message}", e)
             // JSONパースに失敗した場合は空文字列を返す（生テキストを返さない）
             // これによりTTSに```jsonが混入することを防ぐ
             ""
@@ -1285,7 +1295,7 @@ ${if (context != null) "\n文脈: $context" else ""}
                 // 最小限の有効なJSONを構築
                 val repairedJson = JSONObject()
                 repairedJson.put("corrected", extractedValue)
-                Log.d(TAG, "[v1.1.28] Repaired truncated JSON, extracted ${extractedValue.length} chars")
+                Log.d(TAG, "[v1.1.29] Repaired truncated JSON, extracted ${extractedValue.length} chars")
                 repairedJson
             } else {
                 // "corrected": " の開始は見つかるが、閉じ " がない場合
@@ -1299,15 +1309,15 @@ ${if (context != null) "\n文脈: $context" else ""}
                     }
                     val repairedJson = JSONObject()
                     repairedJson.put("corrected", value)
-                    Log.d(TAG, "[v1.1.28] Repaired open-ended JSON, extracted ${value.length} chars")
+                    Log.d(TAG, "[v1.1.29] Repaired open-ended JSON, extracted ${value.length} chars")
                     repairedJson
                 } else {
-                    Log.w(TAG, "[v1.1.28] Could not find 'corrected' field in truncated JSON")
+                    Log.w(TAG, "[v1.1.29] Could not find 'corrected' field in truncated JSON")
                     null
                 }
             }
         } catch (e: Exception) {
-            Log.e(TAG, "[v1.1.28] JSON repair failed: ${e.message}")
+            Log.e(TAG, "[v1.1.29] JSON repair failed: ${e.message}")
             null
         }
     }
