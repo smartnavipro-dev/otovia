@@ -215,16 +215,16 @@ class TextCorrector(private val context: android.content.Context) {
                 description = "経済学の誤認識"
             ),
 
-            // 景気パターン（v1.0.38追加）
+            // 景気パターン（v1.0.38追加, v1.1.31: 環→景追加）
             GeneralizedRule(
-                pattern = Regex("[景影京][気氛]"),
+                pattern = Regex("[景影京環][気氛]"),
                 correct = "景気",
                 description = "景気の誤認識"
             ),
 
-            // 不況パターン（v1.0.38追加）
+            // 不況パターン（v1.0.38追加, v1.1.31: 死→況追加）
             GeneralizedRule(
-                pattern = Regex("[不木][況洗]"),
+                pattern = Regex("[不木][況洗死]"),
                 correct = "不況",
                 description = "不況の誤認識"
             ),
@@ -264,9 +264,9 @@ class TextCorrector(private val context: android.content.Context) {
                 description = "金利の誤認識"
             ),
 
-            // 財政パターン（v1.0.38追加）
+            // 財政パターン（v1.0.38追加, v1.1.31: 証→財追加）
             GeneralizedRule(
-                pattern = Regex("[財柑][政改]"),
+                pattern = Regex("[財柑証][政改]"),
                 correct = "財政",
                 description = "財政の誤認識"
             ),
@@ -805,6 +805,112 @@ class TextCorrector(private val context: android.content.Context) {
                 pattern = Regex("苦しゆられた"),
                 correct = "苦しめられた",
                 description = "苦しめられたの誤認識"
+            ),
+
+            // ============================================================
+            // v1.1.31: 実機テストv1.1.30で検出された新規OCR誤認識パターン
+            // ============================================================
+
+            // 刺激パターン（瀬→激の誤認識）
+            GeneralizedRule(
+                pattern = Regex("刺[瀬激撃]"),
+                correct = "刺激",
+                description = "刺激の誤認識"
+            ),
+
+            // 刺激効果（複合パターン: 刺瀬数果→刺激効果）
+            GeneralizedRule(
+                pattern = Regex("刺[瀬激][数効][果歌]"),
+                correct = "刺激効果",
+                description = "刺激効果の誤認識"
+            ),
+
+            // 景気刺激（複合パターン）
+            GeneralizedRule(
+                pattern = Regex("[景影京環][気氛]刺[瀬激]"),
+                correct = "景気刺激",
+                description = "景気刺激の誤認識"
+            ),
+
+            // 時間パターン（持→時の誤認識）
+            GeneralizedRule(
+                pattern = Regex("持[間問]"),
+                correct = "時間",
+                description = "時間の誤認識"
+            ),
+
+            // 乗数パターン（乗務教→乗数）
+            GeneralizedRule(
+                pattern = Regex("乗[務数][教数]?"),
+                correct = "乗数",
+                description = "乗数の誤認識"
+            ),
+
+            // 持続パターン（時続→持続）
+            GeneralizedRule(
+                pattern = Regex("[時持][続読]"),
+                correct = "持続",
+                description = "持続の誤認識"
+            ),
+
+            // 実際パターン（美際→実際）
+            GeneralizedRule(
+                pattern = Regex("[美実][際祭]"),
+                correct = "実際",
+                description = "実際の誤認識"
+            ),
+
+            // 克服パターン（完服→克服）
+            GeneralizedRule(
+                pattern = Regex("[完克][服腹]"),
+                correct = "克服",
+                description = "克服の誤認識"
+            ),
+
+            // 激論パターン（激舗→激論）
+            GeneralizedRule(
+                pattern = Regex("[激撃][舗論輪]"),
+                correct = "激論",
+                description = "激論の誤認識"
+            ),
+
+            // 長期的パターン（長期約→長期的）
+            GeneralizedRule(
+                pattern = Regex("長期[約的]"),
+                correct = "長期的",
+                description = "長期的の誤認識"
+            ),
+
+            // 問題点パターン（問題京→問題点）
+            GeneralizedRule(
+                pattern = Regex("問題[京点]"),
+                correct = "問題点",
+                description = "問題点の誤認識"
+            ),
+
+            // 金融政策パターン（金融政第→金融政策）
+            GeneralizedRule(
+                pattern = Regex("金融政[第策]"),
+                correct = "金融政策",
+                description = "金融政策の誤認識"
+            ),
+
+            // 流動性の罠パターン（流動性の覧→流動性の罠）
+            GeneralizedRule(
+                pattern = Regex("流動性の[覧罠]"),
+                correct = "流動性の罠",
+                description = "流動性の罠の誤認識"
+            ),
+
+            // 孤島パターン（小島→孤島 in economic context is usually 孤島）
+            // Note: 小島 can be valid (small island), but in economics context 孤島 is more common
+            // This is handled by dictionary instead for safety
+
+            // 概念パターン（念→概念 の断片対応）
+            GeneralizedRule(
+                pattern = Regex("という[念概]"),
+                correct = "という概念",
+                description = "概念の断片誤認識"
             )
         )
 
@@ -1087,7 +1193,52 @@ class TextCorrector(private val context: android.content.Context) {
             // 対象関連
             "対豪" to "対象",
             "対家" to "対象",
-            "割引対家" to "割引対象"
+            "割引対家" to "割引対象",
+
+            // ============================================================
+            // v1.1.31: 実機テストv1.1.30で検出された新規エントリ
+            // ============================================================
+
+            // 景気・刺激関連
+            "環気" to "景気",
+            "刺瀬" to "刺激",
+            "数果" to "効果",
+            "刺瀬数果" to "刺激効果",
+
+            // 時間・持続関連
+            "持間" to "時間",
+            "時続" to "持続",
+
+            // 財政・乗数関連
+            "証政" to "財政",
+            "乗務教" to "乗数",
+            "乗務" to "乗数",
+
+            // 不況関連
+            "不死" to "不況",
+
+            // 一般用語
+            "完服" to "克服",
+            "美際" to "実際",
+            "問題京" to "問題点",
+            "金融政第" to "金融政策",
+            "激舗" to "激論",
+            "長期約" to "長期的",
+            "真献" to "貢献",
+
+            // 流動性の罠
+            "流動性の覧" to "流動性の罠",
+
+            // OCRノイズ文字除去パターン
+            "こ和ら" to "これら",
+            "ししまう" to "しまう",
+            "むみに" to "むやみに",
+
+            // OCR文字分裂・ノイズ挿入パターン
+            "す文出" to "支出",       // 支→す文 に分裂
+            "下回国る" to "下回る",   // 国がノイズ挿入
+            "上がN" to "上がる",      // Nがノイズ
+            "こRでは" to "ここでは"   // Rがノイズ
         )
 
         /**

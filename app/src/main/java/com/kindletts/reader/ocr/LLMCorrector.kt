@@ -704,6 +704,7 @@ class LLMCorrector(private val context: Context) {
      * v1.0.75: Phase 3形態素解析ヒントを追加
      * v1.0.77: プロンプト簡潔化（-30% tokens）
      * v1.1.30: 積極的補正モードに変更（保守的すぎてOCR誤字を見逃す問題の修正）
+     * v1.1.31: 意味反転防止ルール追加、新OCR誤字例追加（環→景,瀬→激等）
      */
     private fun buildCorrectionPrompt(text: String, context: String?, genre: String? = null, phase3Hints: String? = null): String {
         val genreHint = genre ?: "一般"
@@ -712,8 +713,9 @@ class LLMCorrector(private val context: Context) {
 日本語書籍のOCR誤認識補正。文脈から正しい文字を積極的に推測して補正せよ。
 
 【方針】書籍の文章として自然な日本語に復元。形状類似漢字の誤認識を重点補正。不要スペース除去。
+【禁止】正確に認識された漢字（上/下/増/減/大/小など意味を持つ語）の変更禁止。単語中のノイズ文字（例:下回国る→下回る）は削除のみ。
 【ジャンル】$genreHint
-【頻出OCR誤字】龍→需,頓→価,副→則,渡→選/予,郵→要,賀→貴,観→銀,映→要,済→経,植→値,龍要→需要,法副→法則,頓接→価格,渡択→選択 カナ:ツ→ッ,ビ→ピ,ハツビー→ハッピー
+【頻出OCR誤字】龍→需,頓→価,副→則,渡→選/予,郵→要,賀→貴,観→銀,映→要,済→経,植→値,環→景,瀬→激,持→時,死→況,覧→罠,証→財,美→実 語:龍要→需要,環気→景気,刺瀬→刺激,数果→効果,持間→時間,法副→法則 カナ:ツ→ッ,ビ→ピ,ハツビー→ハッピー
 ${if (context != null) "【文脈】$context\n" else ""}${if (phase3Hints != null) "【文法ヒント】$phase3Hints\n" else ""}
 【OCR出力】$text
 
