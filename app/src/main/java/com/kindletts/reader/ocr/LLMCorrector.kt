@@ -150,7 +150,7 @@ class LLMCorrector(private val context: Context) {
          * v1.0.45: 反復補正設定
          * v1.0.56: 精度向上のため閾値を0.8→0.95に引き上げ（約20%のケースで再補正）
          */
-        private const val REFINEMENT_CONFIDENCE_THRESHOLD = 0.95 // 再補正の閾値（これ未満で再処理）
+        private const val REFINEMENT_CONFIDENCE_THRESHOLD = 0.90 // v1.1.31: 0.95→0.90（不要なrefinement削減、API消費30%減）
         private const val ENABLE_ITERATIVE_REFINEMENT = true     // 反復補正を有効化
         private const val MAX_REFINEMENT_ITERATIONS = 1          // 最大反復回数（1回=合計2段階補正）
     }
@@ -704,7 +704,7 @@ class LLMCorrector(private val context: Context) {
      * v1.0.75: Phase 3形態素解析ヒントを追加
      * v1.0.77: プロンプト簡潔化（-30% tokens）
      * v1.1.30: 積極的補正モードに変更（保守的すぎてOCR誤字を見逃す問題の修正）
-     * v1.1.31: 意味反転防止ルール追加、新OCR誤字例追加（環→景,瀬→激等）
+     * v1.1.31: 意味反転防止ルール追加、新OCR誤字例追加（環→景,瀬→激,競→財,旧→日,方→庁,邪→学等）
      */
     private fun buildCorrectionPrompt(text: String, context: String?, genre: String? = null, phase3Hints: String? = null): String {
         val genreHint = genre ?: "一般"
@@ -715,7 +715,7 @@ class LLMCorrector(private val context: Context) {
 【方針】書籍の文章として自然な日本語に復元。形状類似漢字の誤認識を重点補正。不要スペース除去。
 【禁止】正確に認識された漢字（上/下/増/減/大/小など意味を持つ語）の変更禁止。単語中のノイズ文字（例:下回国る→下回る）は削除のみ。
 【ジャンル】$genreHint
-【頻出OCR誤字】龍→需,頓→価,副→則,渡→選/予,郵→要,賀→貴,観→銀,映→要,済→経,植→値,環→景,瀬→激,持→時,死→況,覧→罠,証→財,美→実 語:龍要→需要,環気→景気,刺瀬→刺激,数果→効果,持間→時間,法副→法則 カナ:ツ→ッ,ビ→ピ,ハツビー→ハッピー
+【頻出OCR誤字】龍→需,頓→価,副→則,渡→選/予,郵→要,賀→貴,観→銀,映→要,済→経,植→値,環→景,瀬→激,持→時,死→況,覧→罠,証→財,美→実,競→財,旧→日,方→庁,邪→学 語:龍要→需要,環気→景気,刺瀬→刺激,数果→効果,持間→時間,法副→法則,競政→財政,旧本→日本,方舎→庁舎,邪校→学校 カナ:ツ→ッ,ビ→ピ,ハツビー→ハッピー
 ${if (context != null) "【文脈】$context\n" else ""}${if (phase3Hints != null) "【文法ヒント】$phase3Hints\n" else ""}
 【OCR出力】$text
 
@@ -1125,31 +1125,36 @@ ${if (context != null) "\n文脈: $context" else ""}
             // 精密化プロンプトの構築
             val prompt = buildRefinementPrompt(originalText, correctedText, context)
 
-            // LLM実行
-            val responseText = invokeLLM(prompt)
+            // LLM実行（invokeLLMは内部でparseResponseを呼び、補正テキストのみを返す）
+            val refinedText = invokeLLM(prompt)
 
-            if (responseText.isEmpty()) {
-                Log.w(TAG, "[v1.0.45] Refinement LLM returned empty, using original text")
-                return Pair(originalText, initialConfidence)
+            if (refinedText.isEmpty()) {
+                Log.w(TAG, "[v1.0.45] Refinement LLM returned empty, keeping initial correction")
+                return Pair(correctedText, initialConfidence)
             }
 
-            // レスポンスをパース（confidence付き）
-            val (refinedText, refinedConfidence) = parseRefinementResponse(responseText)
+            // v1.1.31: calculateConfidenceで信頼度を計算（初回補正と同じ方式）
+            // 旧コード: parseRefinementResponseでJSON解析を試みていたが、
+            // invokeLLMが既にJSONをパース済みのため常に「No JSON found」になっていた
+            val refinedConfidence = calculateConfidence(originalText, refinedText)
 
             // 統計更新
             refinementCount++
             val refinementLatency = System.currentTimeMillis() - refinementStartTime
             totalRefinementLatency += refinementLatency
 
-            // 改善度チェック
-            if (refinedConfidence > initialConfidence) {
-                refinementImprovedCount++
-                Log.d(TAG, "[v1.0.45] Refinement improved confidence: $initialConfidence -> $refinedConfidence ($refinementLatency ms)")
-            } else {
-                Log.d(TAG, "[v1.0.45] Refinement completed but no improvement: $initialConfidence -> $refinedConfidence ($refinementLatency ms)")
-            }
+            // 改善度チェック: テキストが変わったか、信頼度が上がったかを確認
+            val textChanged = refinedText != correctedText
+            val confidenceImproved = refinedConfidence > initialConfidence
 
-            return Pair(refinedText, refinedConfidence)
+            if (textChanged || confidenceImproved) {
+                refinementImprovedCount++
+                Log.d(TAG, "[v1.1.31] Refinement improved: confidence $initialConfidence -> $refinedConfidence, textChanged=$textChanged ($refinementLatency ms)")
+                return Pair(refinedText, maxOf(refinedConfidence, initialConfidence))
+            } else {
+                Log.d(TAG, "[v1.1.31] Refinement no improvement: confidence $initialConfidence -> $refinedConfidence ($refinementLatency ms)")
+                return Pair(correctedText, initialConfidence)
+            }
 
         } catch (e: Exception) {
             Log.e(TAG, "[v1.0.45] Refinement failed: ${e.message}", e)
@@ -1210,6 +1215,7 @@ ${if (context != null) "\n文脈: $context" else ""}
      * v1.0.40: LLMレスポンスのパース
      * v1.1.26: マークダウンコードブロック処理の強化（TTSに```json混入防止）
      * v1.1.29: バージョンタグ統一、修復コードの確実な動作を保証
+     * v1.1.31: 【補正後】形式のフォールバック処理追加
      */
     private fun parseResponse(responseText: String): String {
         Log.d(TAG, "[v1.1.29] parseResponse input: ${responseText.take(200)}...")
@@ -1236,6 +1242,17 @@ ${if (context != null) "\n文脈: $context" else ""}
                     jsonText = jsonText.substring(jsonStart, jsonEnd + 1)
                     Log.d(TAG, "[v1.1.29] Extracted JSON object: ${jsonText.take(100)}...")
                 } else {
+                    // v1.1.31: 【補正後】形式のフォールバック
+                    // LLMがJSON形式ではなく【OCR出力】...【補正後】...形式で返すことがある
+                    val correctedMarker = "【補正後】"
+                    if (responseText.contains(correctedMarker)) {
+                        val correctedText = responseText.substringAfter(correctedMarker).trim()
+                        if (correctedText.isNotEmpty()) {
+                            Log.d(TAG, "[v1.1.31] Extracted from 【補正後】 block: ${correctedText.take(100)}...")
+                            return correctedText
+                        }
+                    }
+
                     Log.w(TAG, "[v1.1.29] No JSON object found in response")
                     // JSONが見つからない場合は空文字列を返す（生テキストを返さない）
                     return ""
