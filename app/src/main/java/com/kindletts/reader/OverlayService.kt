@@ -1425,8 +1425,13 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 lastExtractedText = extractedText
 
                 // ✨ v1.0.33: Phase 3対応 - OCR結果オブジェクトを渡して信頼度ベース補正を有効化
+                // v1.1.33: 前ページの補正済みテキストをLLMコンテキストとして渡す
                 val correctionStart = System.currentTimeMillis()
-                val correctedText = textCorrector.correctText(extractedText, visionText)
+                val correctedText = textCorrector.correctText(
+                    extractedText,
+                    visionText,
+                    previousContext = lastRecognizedText.ifEmpty { null }
+                )
                 val correctionTime = System.currentTimeMillis() - correctionStart
                 val stats = textCorrector.getCorrectionStats(extractedText, correctedText)
 
