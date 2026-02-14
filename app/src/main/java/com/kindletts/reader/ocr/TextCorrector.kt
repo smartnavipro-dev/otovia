@@ -1440,6 +1440,16 @@ class TextCorrector(private val context: android.content.Context) {
         CorrectionValidator()
     }
 
+    // v1.1.32: 文字種異常検出補正器（Stage 1: 安全な直接補正）
+    private val charTypeAnomalyCorrector: CharTypeAnomalyCorrector by lazy {
+        CharTypeAnomalyCorrector()
+    }
+
+    // v1.1.32: 形状類似ヒントビルダー（Stage 2: LLMヒント生成）
+    private val shapeSimilarHintBuilder: ShapeSimilarHintBuilder by lazy {
+        ShapeSimilarHintBuilder()
+    }
+
     // Phase 1で適用されたパターンを追跡
     private val appliedPatterns = mutableListOf<String>()
 
@@ -1572,14 +1582,15 @@ class TextCorrector(private val context: android.content.Context) {
 
         var correctedText = originalText
 
+        // v1.1.32 ステップ-1: 文字種異常検出補正（Stage 1 — 漢字↔カタカナの安全な補正）
+        val anomalyCorrected = charTypeAnomalyCorrector.correct(correctedText)
+        if (anomalyCorrected != correctedText) {
+            Log.d(TAG, "[v1.1.32 Stage1] CharType anomaly corrections applied")
+            correctedText = anomalyCorrected
+        }
+
         // ステップ0: Phase 1 - 一般化パターンの適用（優先）
         correctedText = applyGeneralizedPatterns(correctedText)
-
-        // v1.1.5 ステップ0.5: 形状類似文字の優先補正（信頼度に基づく）
-        if (ocrResult != null) {
-            val avgConfidence = calculateAverageConfidence(ocrResult)
-            correctedText = correctShapeSimilarChars(correctedText, avgConfidence)
-        }
 
         // ステップ1: 経済用語の単純置換（Phase 1で補完されなかったもの）
         correctedText = applyEconomicTermsCorrection(correctedText)
@@ -1784,11 +1795,19 @@ class TextCorrector(private val context: android.content.Context) {
                 phase3KanjiResult
             )
 
+            // v1.1.32: 形状類似ヒントを生成（Stage 2）
+            val shapeSimilarHints = shapeSimilarHintBuilder.buildHints(correctedText)
+
+            // Phase 3ヒントと形状類似ヒントを結合
+            val combinedHints = listOfNotNull(shapeSimilarHints, phase3Hints)
+                .joinToString(" | ")
+                .ifEmpty { null }
+
             val (llmCorrected, llmConfidence) = llmCorrector.correctWithLLM(
                 text = correctedText,
                 context = null,
                 phase1Confidence = phase1Confidence,
-                phase3Hints = phase3Hints
+                phase3Hints = combinedHints
             )
 
             // v1.1.30: 固定閾値で判定（Phase 1 confidence比較を廃止）

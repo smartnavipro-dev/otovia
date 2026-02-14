@@ -77,6 +77,11 @@ private class RetryableException(val retryDelayMs: Long, val errorResponse: Stri
  * - 最大3回までのリトライ
  * - リトライ統計追跡
  *
+ * v1.1.32: キャッシュ最適化
+ * - キャッシュキー正規化（空白・改行・全角半角の差異を吸収）
+ * - キャッシュサイズ拡大（100→500エントリ）
+ * - ヒット率改善を期待（7%→20-30%）
+ *
  * 期待される補正率: 99-99.5%（Phase 1: 90% + LLM: 9-9.5%）
  * 月間コスト: ~$0.04-0.05（反復補正により+20%）
  * 平均レイテンシ: ~120ms（再処理時+500ms for 20%）
@@ -103,7 +108,7 @@ class LLMCorrector(private val context: Context) {
         /**
          * v1.0.41: キャッシュサイズ
          */
-        private const val CACHE_SIZE = 100  // 最大100エントリ（約10KB）
+        private const val CACHE_SIZE = 500  // v1.1.32: 100→500に拡大（約50KB、API節約優先）
 
         /**
          * v1.0.42: キャッシュ永続化設定
@@ -206,6 +211,16 @@ class LLMCorrector(private val context: Context) {
     )
 
     /**
+     * v1.1.32: キャッシュキー正規化
+     * OCRの微妙な差異（空白・改行・全角半角）を吸収してヒット率を向上
+     */
+    private fun normalizeCacheKey(text: String): String {
+        return text
+            .replace(Regex("[\\s\\u3000]+"), " ")  // 全角スペース・連続空白・改行を半角スペース1つに
+            .trim()
+    }
+
+    /**
      * LLMベース補正のメインメソッド
      * v1.0.41: キャッシュ対応
      * v1.0.61: ジャンル情報を追加
@@ -252,8 +267,8 @@ class LLMCorrector(private val context: Context) {
             return Pair(text, 0.0)
         }
 
-        // v1.0.41: キャッシュチェック
-        val cacheKey = text.trim()
+        // v1.0.41: キャッシュチェック（v1.1.32: 正規化キー）
+        val cacheKey = normalizeCacheKey(text)
         val cached = correctionCache.get(cacheKey)
         if (cached != null) {
             cacheHits++
@@ -497,8 +512,8 @@ class LLMCorrector(private val context: Context) {
                     val correctedText = correctedTexts.getOrElse(i) { originalText }
                     val confidence = calculateConfidence(originalText, correctedText)
 
-                    // キャッシュに保存
-                    val cacheKey = originalText.trim()
+                    // キャッシュに保存（v1.1.32: 正規化キー）
+                    val cacheKey = normalizeCacheKey(originalText)
                     val result = CorrectionResult(correctedText, confidence)
                     correctionCache.put(cacheKey, result)
 
@@ -707,19 +722,19 @@ class LLMCorrector(private val context: Context) {
      * v1.1.31: 意味反転防止ルール追加、新OCR誤字例追加（環→景,瀬→激,競→財,旧→日,方→庁,邪→学等）
      */
     private fun buildCorrectionPrompt(text: String, context: String?, genre: String? = null, phase3Hints: String? = null): String {
-        val genreHint = genre ?: "一般"
+        val genreHint = genre ?: "書籍"
 
         return """
 日本語書籍のOCR誤認識補正。文脈から正しい文字を積極的に推測して補正せよ。
 
-【方針】書籍の文章として自然な日本語に復元。形状類似漢字の誤認識を重点補正。不要スペース除去。
+【方針】書籍の文章として自然な日本語に復元。形状類似文字の誤認識を重点補正。不要スペース除去。
 【禁止】正確に認識された漢字（上/下/増/減/大/小など意味を持つ語）の変更禁止。単語中のノイズ文字（例:下回国る→下回る）は削除のみ。
 【ジャンル】$genreHint
-【頻出OCR誤字】龍→需,頓→価,副→則,渡→選/予,郵→要,賀→貴,観→銀,映→要,済→経,植→値,環→景,瀬→激,持→時,死→況,覧→罠,証→財,美→実,競→財,旧→日,方→庁,邪→学 語:龍要→需要,環気→景気,刺瀬→刺激,数果→効果,持間→時間,法副→法則,競政→財政,旧本→日本,方舎→庁舎,邪校→学校 カナ:ツ→ッ,ビ→ピ,ハツビー→ハッピー
-${if (context != null) "【文脈】$context\n" else ""}${if (phase3Hints != null) "【文法ヒント】$phase3Hints\n" else ""}
+【字形類似】力↔カ,工↔エ,口↔ロ,二↔ニ,八↔ハ,一↔ー,日↔目,人↔入,大↔犬,木↔本,土↔士,未↔末,持↔待,白↔自 カナ:ツ↔シ,ソ↔ン,ビ↔ピ,フ↔ブ,ア↔マ 数字:l/I→1,O→0,S→5
+${if (context != null) "【文脈】$context\n" else ""}${if (phase3Hints != null) "【ヒント】$phase3Hints\n" else ""}
 【OCR出力】$text
 
-JSON:{"corrected":"補正後","confidence":0.95,"changes":[{"from":"龍要","to":"需要","reason":"形状類似"}]}
+JSON:{"corrected":"補正後","confidence":0.95,"changes":[{"from":"誤","to":"正","reason":"字形類似"}]}
         """.trimIndent()
     }
 
@@ -736,7 +751,7 @@ JSON:{"corrected":"補正後","confidence":0.95,"changes":[{"from":"龍要","to"
         }.joinToString("\n")
 
         return """
-経済学書籍の日本語OCR一括校正。誤認識: 英→経、機作→機会、海格→価格、コースト→コスト。
+日本語書籍のOCR一括校正。字形類似誤認識（力↔カ,工↔エ,口↔ロ,日↔目,未↔末等）を重点補正。
 信頼度: 1.0=完璧、0.95=軽微、0.90=中程度。
 
 ${if (context != null) "文脈: $context\n\n" else ""}入力:
@@ -757,7 +772,7 @@ $textsBlock
      */
     private fun buildRefinementPrompt(originalText: String, correctedText: String, context: String?): String {
         return """
-OCR補正の再検証。過剰補正を避け、経済学用語として自然に。目標信頼度: 0.95以上。
+OCR補正の再検証。過剰補正を避け、書籍の文章として自然な日本語に。目標信頼度: 0.95以上。
 
 元: $originalText
 補正済: $correctedText
