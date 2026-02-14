@@ -731,7 +731,7 @@ class LLMCorrector(private val context: Context) {
 【禁止】正確に認識された漢字（上/下/増/減/大/小など意味を持つ語）の変更禁止。単語中のノイズ文字（例:下回国る→下回る）は削除のみ。
 【ジャンル】$genreHint
 【字形類似】力↔カ,工↔エ,口↔ロ,二↔ニ,八↔ハ,一↔ー,日↔目,人↔入,大↔犬,木↔本,土↔士,未↔末,持↔待,白↔自 カナ:ツ↔シ,ソ↔ン,ビ↔ピ,フ↔ブ,ア↔マ 数字:l/I→1,O→0,S→5
-${if (context != null) "【文脈】$context\n" else ""}${if (phase3Hints != null) "【ヒント】$phase3Hints\n" else ""}
+${if (context != null) "【前ページ末尾】$context\n" else ""}${if (phase3Hints != null) "【ヒント】$phase3Hints\n" else ""}
 【OCR出力】$text
 
 JSON:{"corrected":"補正後","confidence":0.95,"changes":[{"from":"誤","to":"正","reason":"字形類似"}]}

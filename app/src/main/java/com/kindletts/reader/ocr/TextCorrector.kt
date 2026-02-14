@@ -1574,8 +1574,9 @@ class TextCorrector(private val context: android.content.Context) {
      * メイン補正メソッド（OCR結果オブジェクト付き）
      * v1.0.33: Phase 3信頼度ベース補正を追加
      * v1.0.39: 信頼度スコアリング + LLM統合 + バリデーション
+     * v1.1.33: previousContext追加（前ページのLLM補正済みテキストをLLMに渡す）
      */
-    fun correctText(originalText: String, ocrResult: Text?): String {
+    fun correctText(originalText: String, ocrResult: Text?, previousContext: String? = null): String {
         if (originalText.isEmpty()) {
             return originalText
         }
@@ -1803,9 +1804,15 @@ class TextCorrector(private val context: android.content.Context) {
                 .joinToString(" | ")
                 .ifEmpty { null }
 
+            // v1.1.33: 前ページコンテキストをLLMに渡す（200文字制限）
+            val llmContext = previousContext?.takeLast(200)
+            if (llmContext != null) {
+                Log.d(TAG, "[v1.1.33] Previous page context: ${llmContext.length} chars")
+            }
+
             val (llmCorrected, llmConfidence) = llmCorrector.correctWithLLM(
                 text = correctedText,
-                context = null,
+                context = llmContext,
                 phase1Confidence = phase1Confidence,
                 phase3Hints = combinedHints
             )
