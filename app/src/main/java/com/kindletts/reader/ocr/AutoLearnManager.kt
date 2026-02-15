@@ -17,18 +17,26 @@ import kotlin.concurrent.write
  * - applyLearnedPatterns(): 学習済みパターンを適用（PROMOTION_THRESHOLD回以上のみ）
  *
  * アルゴリズム: LCS (Longest Common Subsequence) ベースの文字レベルdiff
- * 短いパターン(1文字)や削除パターンには前後1文字のコンテキストを付加して安全性を確保
+ *
+ * v1.1.34: 安全性強化
+ * - from最低3文字（コンテキスト付加後）
+ * - 長さ比率チェック（to/from ≤ 2.0）
+ * - 文字重複チェック（fromとtoに共通文字が必要）
+ * - 句読点のみパターンをブロック
+ * - 短パターン(≤2文字)にもコンテキスト付加
  */
 class AutoLearnManager private constructor(context: Context) {
 
     companion object {
         private const val TAG = "KindleTTS_AutoLearn"
-        private const val PREFS_NAME = "auto_learn_patterns"
+        private const val PREFS_NAME = "auto_learn_patterns_v2"  // v1.1.34: 安全版で新キー
         private const val KEY_PATTERNS = "patterns"
         private const val PROMOTION_THRESHOLD = 3   // N回以上で自動適用に昇格
         private const val MAX_PATTERNS = 500        // 最大保存パターン数
         private const val MAX_PATTERN_LENGTH = 12   // from/toの最大文字数
         private const val MAX_DIFF_INPUT = 500      // diff計算の入力上限
+        private const val MIN_FROM_LENGTH = 3       // v1.1.34: from最低文字数
+        private const val MAX_LENGTH_RATIO = 2.0    // v1.1.34: to/from長さ比率上限
 
         @Volatile
         private var instance: AutoLearnManager? = null
@@ -38,6 +46,9 @@ class AutoLearnManager private constructor(context: Context) {
                 instance ?: AutoLearnManager(context.applicationContext).also { instance = it }
             }
         }
+
+        // v1.1.34: 句読点・記号セット
+        private val PUNCTUATION = setOf('。', '、', '！', '？', '…', '」', '「', '）', '（', '.', ',', '!', '?')
     }
 
     data class LearnedPattern(
@@ -76,6 +87,52 @@ class AutoLearnManager private constructor(context: Context) {
         }
     }
 
+    // --- Safety Checks (v1.1.34) ---
+
+    /**
+     * v1.1.34: パターンの安全性を検証
+     * 危険なパターン（短すぎ、句読点のみ、長さ比率異常、文字重複なし）を除外
+     */
+    private fun isSafePattern(from: String, to: String): Boolean {
+        // 1. from最低文字数チェック
+        if (from.length < MIN_FROM_LENGTH) {
+            Log.d(TAG, "[Safety] Rejected (too short): '$from' → '$to'")
+            return false
+        }
+
+        // 2. fromが句読点で始まるまたは終わる短パターンはブロック
+        if (from.length <= 3) {
+            val startsWithPunct = from.first() in PUNCTUATION
+            val endsWithPunct = from.last() in PUNCTUATION
+            if (startsWithPunct || endsWithPunct) {
+                Log.d(TAG, "[Safety] Rejected (short+punctuation): '$from' → '$to'")
+                return false
+            }
+        }
+
+        // 3. 長さ比率チェック（toがfromの2倍を超えたら危険）
+        if (from.isNotEmpty() && to.length.toDouble() / from.length > MAX_LENGTH_RATIO) {
+            Log.d(TAG, "[Safety] Rejected (length ratio ${to.length}/${from.length}): '$from' → '$to'")
+            return false
+        }
+
+        // 4. 文字重複チェック（fromとtoに少なくとも1文字の共通非句読点文字が必要）
+        val fromChars = from.filter { it !in PUNCTUATION }.toSet()
+        val toChars = to.filter { it !in PUNCTUATION }.toSet()
+        if (fromChars.isNotEmpty() && toChars.isNotEmpty() && fromChars.intersect(toChars).isEmpty()) {
+            Log.d(TAG, "[Safety] Rejected (no char overlap): '$from' → '$to'")
+            return false
+        }
+
+        // 5. to が空の場合（削除パターン）、fromが短すぎないかチェック
+        if (to.isEmpty() && from.length < 4) {
+            Log.d(TAG, "[Safety] Rejected (short deletion): '$from' → ''")
+            return false
+        }
+
+        return true
+    }
+
     // --- Learn ---
 
     /**
@@ -92,25 +149,29 @@ class AutoLearnManager private constructor(context: Context) {
         lock.write {
             var newCount = 0
             var updatedCount = 0
+            var rejectedCount = 0
 
             for ((from, to) in diffs) {
                 if (from.length > MAX_PATTERN_LENGTH || to.length > MAX_PATTERN_LENGTH) continue
-                if (from.isEmpty()) continue  // コンテキスト付加しても空なら無視
+                if (from.isEmpty()) continue
                 if (from == to) continue
+
+                // v1.1.34: 安全性チェック
+                if (!isSafePattern(from, to)) {
+                    rejectedCount++
+                    continue
+                }
 
                 val key = from
                 val existing = patterns[key]
                 if (existing != null && existing.to == to) {
-                    // 同じパターン再出現 → カウント増加
                     existing.count++
                     existing.lastSeen = System.currentTimeMillis()
                     updatedCount++
                 } else if (existing == null) {
-                    // 新規パターン
                     patterns[key] = LearnedPattern(from = from, to = to)
                     newCount++
                 }
-                // existing != null && existing.to != to → 曖昧パターン、スキップ
             }
 
             // 上限超過時は古いパターンを削除
@@ -122,7 +183,7 @@ class AutoLearnManager private constructor(context: Context) {
 
             savePatterns()
 
-            Log.d(TAG, "Learned: +$newCount new, ↑$updatedCount updated, ${patterns.size} total")
+            Log.d(TAG, "Learned: +$newCount new, ↑$updatedCount updated, ✗$rejectedCount rejected, ${patterns.size} total")
             for ((from, to) in diffs) {
                 val p = patterns[from]
                 if (p != null) {
@@ -174,7 +235,7 @@ class AutoLearnManager private constructor(context: Context) {
      * 1. LCS（最長共通部分列）のDPテーブルを構築
      * 2. バックトラックで編集操作列(Match/Delete/Insert)を取得
      * 3. 連続する非Match操作をグループ化してdiffブロックに
-     * 4. 短いパターンや削除にはコンテキスト文字を付加
+     * 4. 短いパターン(≤2文字)にはコンテキスト文字を付加 (v1.1.34: 拡張)
      *
      * @return (from, to) ペアのリスト
      */
@@ -194,7 +255,6 @@ class AutoLearnManager private constructor(context: Context) {
         }
 
         // バックトラック → 編集操作列 (type: 0=match, 1=delete, 2=insert)
-        // preChar: pre側の文字, postChar: post側の文字
         val ops = mutableListOf<Triple<Int, Char?, Char?>>()
         var i = m; var j = n
         while (i > 0 || j > 0) {
@@ -218,17 +278,15 @@ class AutoLearnManager private constructor(context: Context) {
         // diffブロックへのグループ化
         val result = mutableListOf<Pair<String, String>>()
         var idx = 0
-        var prePos = 0  // pre文字列における現在位置
+        var prePos = 0
 
         while (idx < ops.size) {
             if (ops[idx].first == 0) {
-                // Match → 進む
                 prePos++
                 idx++
                 continue
             }
 
-            // 非Matchブロックの開始
             val blockPreStart = prePos
             val fromChars = StringBuilder()
             val toChars = StringBuilder()
@@ -246,14 +304,15 @@ class AutoLearnManager private constructor(context: Context) {
             if (from == to) continue
             if (from.isBlank() && to.isBlank()) continue
 
-            // 短いパターン(1文字以下)や削除(to空)にはコンテキスト付加
-            if (from.length <= 1 || to.isEmpty()) {
+            // v1.1.34: 短いパターン(2文字以下)にはコンテキスト付加（従来は1文字以下のみ）
+            // 削除パターン(to空)にもコンテキスト付加
+            if (from.length <= 2 || to.isEmpty()) {
                 val before = if (blockPreStart > 0) pre[blockPreStart - 1].toString() else ""
                 val afterIdx = blockPreStart + from.length
                 val after = if (afterIdx < m) pre[afterIdx].toString() else ""
                 val ctxFrom = before + from + after
                 val ctxTo = before + to + after
-                if (ctxFrom != ctxTo && ctxFrom.length >= 2) {
+                if (ctxFrom != ctxTo && ctxFrom.length >= MIN_FROM_LENGTH) {
                     result.add(Pair(ctxFrom, ctxTo))
                 }
             } else if (from.isNotEmpty()) {

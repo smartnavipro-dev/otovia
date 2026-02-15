@@ -1600,6 +1600,14 @@ class TextCorrector(private val context: android.content.Context) {
             }
         }
 
+        // v1.1.34 ステップ-0.3: 日本語テキスト正規化（不要スペース除去）
+        val normalized = normalizeJapaneseSpaces(correctedText)
+        if (normalized != correctedText) {
+            val spaceCount = correctedText.length - normalized.length
+            Log.d(TAG, "[v1.1.34 Normalize] Removed $spaceCount spurious spaces from Japanese text")
+            correctedText = normalized
+        }
+
         // v1.1.32 ステップ-1: 文字種異常検出補正（Stage 1 — 漢字↔カタカナの安全な補正）
         val anomalyCorrected = charTypeAnomalyCorrector.correct(correctedText)
         if (anomalyCorrected != correctedText) {
@@ -2168,4 +2176,36 @@ class TextCorrector(private val context: android.content.Context) {
         val originalLength: Int,
         val correctedLength: Int
     )
+
+    /**
+     * v1.1.34: 日本語テキスト中の不要スペースを除去
+     *
+     * OCRが日本語の縦書きテキストをスキャンする際、文字間に不要な半角/全角スペースが
+     * 挿入されることがある（例: 「無制限 に」「できな い」）。
+     * 日本語文字（ひらがな・カタカナ・漢字・句読点）同士の間のスペースは常にOCRエラー。
+     *
+     * 安全ルール:
+     * - 日本語文字↔日本語文字の間のスペースのみ除去
+     * - 日本語↔ASCII、ASCII↔ASCIIの間のスペースは保持
+     * - 改行（\n）は保持
+     */
+    private fun normalizeJapaneseSpaces(text: String): String {
+        // 日本語文字クラス: ひらがな + カタカナ + 漢字 + CJK句読点 + 長音符 + 繰り返し記号
+        // \u3000 = 全角スペース（除去対象）
+        // パターン: (日本語文字)(スペース+)(日本語文字) → $1$3
+        val japaneseCharClass = "[\\u3040-\\u309F\\u30A0-\\u30FF\\u4E00-\\u9FFF\\u3001-\\u3003\\u3005\\u3008-\\u3011\\u3014-\\u301F\\uFF01-\\uFF60]"
+        val pattern = Regex("($japaneseCharClass)[\\s\\u3000]+($japaneseCharClass)")
+
+        var result = text
+        // 連続適用（「A B C」→ まず「AB C」、次に「ABC」）
+        var prev: String
+        do {
+            prev = result
+            result = pattern.replace(result) { match ->
+                match.groupValues[1] + match.groupValues[2]
+            }
+        } while (result != prev)
+
+        return result
+    }
 }
