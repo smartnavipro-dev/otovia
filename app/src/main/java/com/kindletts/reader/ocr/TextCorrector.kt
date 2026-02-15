@@ -75,6 +75,9 @@ class TextCorrector(private val context: android.content.Context) {
             KanjiShapeCorrector()
         }
 
+        // v1.1.33: 自動学習の有効化フラグ
+        private const val ENABLE_AUTO_LEARN = true
+
         // Phase 3制御フラグ
         private const val ENABLE_PARTICLE_DETECTION = true       // v1.0.64: 助詞脱落検出
         private const val ENABLE_OKURIGANA_CORRECTION = false    // v1.0.69: 一時的に無効化（プロセスクラッシュ問題）
@@ -1450,6 +1453,11 @@ class TextCorrector(private val context: android.content.Context) {
         ShapeSimilarHintBuilder()
     }
 
+    // v1.1.33: 自動学習マネージャー（遅延初期化）
+    private val autoLearnManager: AutoLearnManager by lazy {
+        AutoLearnManager.getInstance(context)
+    }
+
     // Phase 1で適用されたパターンを追跡
     private val appliedPatterns = mutableListOf<String>()
 
@@ -1582,6 +1590,15 @@ class TextCorrector(private val context: android.content.Context) {
         }
 
         var correctedText = originalText
+
+        // v1.1.33 ステップ-0.5: 自動学習パターン適用（LLM差分から学習済みのパターン）
+        if (ENABLE_AUTO_LEARN) {
+            val autoLearned = autoLearnManager.applyLearnedPatterns(correctedText)
+            if (autoLearned != correctedText) {
+                Log.d(TAG, "[v1.1.33 AutoLearn] Applied learned patterns (${autoLearnManager.getPromotedCount()} promoted)")
+                correctedText = autoLearned
+            }
+        }
 
         // v1.1.32 ステップ-1: 文字種異常検出補正（Stage 1 — 漢字↔カタカナの安全な補正）
         val anomalyCorrected = charTypeAnomalyCorrector.correct(correctedText)
@@ -1810,6 +1827,8 @@ class TextCorrector(private val context: android.content.Context) {
                 Log.d(TAG, "[v1.1.33] Previous page context: ${llmContext.length} chars")
             }
 
+            val preLLMText = correctedText  // v1.1.33: 自動学習用にLLM適用前を保持
+
             val (llmCorrected, llmConfidence) = llmCorrector.correctWithLLM(
                 text = correctedText,
                 context = llmContext,
@@ -1824,6 +1843,16 @@ class TextCorrector(private val context: android.content.Context) {
             if (llmConfidence >= LLM_ACCEPTANCE_THRESHOLD) {
                 Log.d(TAG, "[v1.1.30] LLM correction accepted (confidence: $llmConfidence, threshold: $LLM_ACCEPTANCE_THRESHOLD)")
                 correctedText = llmCorrected
+
+                // v1.1.33: LLM補正が受理された場合、差分を自動学習
+                if (ENABLE_AUTO_LEARN && preLLMText != llmCorrected) {
+                    try {
+                        autoLearnManager.learnFromDiff(preLLMText, llmCorrected)
+                        Log.d(TAG, "[v1.1.33 AutoLearn] ${autoLearnManager.getStats()}")
+                    } catch (e: Exception) {
+                        Log.e(TAG, "[v1.1.33 AutoLearn] Learning failed: ${e.message}", e)
+                    }
+                }
             } else {
                 Log.d(TAG, "[v1.1.30] LLM correction rejected (confidence: $llmConfidence < threshold: $LLM_ACCEPTANCE_THRESHOLD)")
             }

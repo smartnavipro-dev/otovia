@@ -67,6 +67,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     // OCR関連
     private var lastRecognizedText = ""
     private var lastExtractedText = ""  // v1.1.28: LLM前の重複チェック用（生OCRテキスト）
+    private var lastCorrectedPageText = ""  // v1.1.33: 前ページコンテキスト用（ページめくり後も保持）
     private var ocrExecutor: ScheduledExecutorService? = null
     private var isCapturing = false
     // v1.0.17: テキスト補正機能, v1.0.39: contextパラメータ追加
@@ -1427,10 +1428,12 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 // ✨ v1.0.33: Phase 3対応 - OCR結果オブジェクトを渡して信頼度ベース補正を有効化
                 // v1.1.33: 前ページの補正済みテキストをLLMコンテキストとして渡す
                 val correctionStart = System.currentTimeMillis()
+                // v1.1.33: 前ページコンテキスト（現ページの途中テキスト or 前ページの補正済みテキスト）
+                val prevContext = lastRecognizedText.ifEmpty { lastCorrectedPageText }.ifEmpty { null }
                 val correctedText = textCorrector.correctText(
                     extractedText,
                     visionText,
-                    previousContext = lastRecognizedText.ifEmpty { null }
+                    previousContext = prevContext
                 )
                 val correctionTime = System.currentTimeMillis() - correctionStart
                 val stats = textCorrector.getCorrectionStats(extractedText, correctedText)
@@ -1815,6 +1818,8 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         appState.currentPage++
 
         // ✅ FIX: ページ変更時に状態をリセット（TTS継続の問題を修正）
+        // v1.1.33: 前ページコンテキストを保存してからリセット
+        lastCorrectedPageText = lastRecognizedText
         lastRecognizedText = ""
         lastExtractedText = ""  // v1.1.28: 生OCRテキストもリセット
         currentSentences = emptyList()  // 古い文のリストをクリア
@@ -1852,6 +1857,8 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         appState.currentPage--
 
         // ✅ FIX: ページ変更時に状態をリセット（TTS継続の問題を修正）
+        // v1.1.33: 前ページコンテキストを保存してからリセット
+        lastCorrectedPageText = lastRecognizedText
         lastRecognizedText = ""
         lastExtractedText = ""  // v1.1.28: 生OCRテキストもリセット
         currentSentences = emptyList()  // 古い文のリストをクリア
