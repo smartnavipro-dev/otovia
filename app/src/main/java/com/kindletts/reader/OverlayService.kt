@@ -68,6 +68,8 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     private var lastRecognizedText = ""
     private var lastExtractedText = ""  // v1.1.28: LLM前の重複チェック用（生OCRテキスト）
     private var lastCorrectedPageText = ""  // v1.1.33: 前ページコンテキスト用（ページめくり後も保持）
+    private var trailingFragment = ""  // v1.1.35: 跨ページ文章結合用（前ページ末尾の不完全文）
+    private var hasSpokenForCurrentPage = false  // v1.1.35: 同一ページで既にTTS開始したか
     private var ocrExecutor: ScheduledExecutorService? = null
     private var isCapturing = false
     // v1.0.17: テキスト補正機能, v1.0.39: contextパラメータ追加
@@ -407,6 +409,8 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         isPaused = false
         appState.isReading = true
         appState.isPaused = false
+        trailingFragment = ""  // v1.1.35: 新規読み上げ開始時にリセット
+        hasSpokenForCurrentPage = false  // v1.1.35
 
         debugLog("[State Transition]", "isReading: false→true, isPaused: false")
 
@@ -424,6 +428,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
 
         isReading = false
         isPaused = false
+        trailingFragment = ""  // v1.1.35: 跨ページ断片をリセット
         appState.isReading = false
         appState.isPaused = false
 
@@ -1458,9 +1463,44 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 """.trimIndent())
 
                 // ✨ v1.0.17: 補正後のテキストを使用
+                // v1.1.35: 跨ページテキスト結合
                 if (correctedText.isNotEmpty() && correctedText != lastRecognizedText && isReading && !isPaused) {
                     lastRecognizedText = correctedText
-                    val sentences = splitIntoSentences(correctedText)
+
+                    // v1.1.35: KindleのUI要素を除去（ページ進捗表示など）
+                    var cleanedText = correctedText
+                        .replace(Regex("\\d+\\s*ページ中\\s*\\d+\\s*ページの[^\\n]*?\\d+%"), "")
+                        .replace(Regex("に戻る"), "")  // ナビゲーションUI
+                        .replace(Regex("\\bAa\\b"), "")  // フォント設定ボタン
+                        .trim()
+
+                    // v1.1.35: 前ページの末尾断片を結合（ページ初回キャプチャのみ）
+                    var textToSpeak = cleanedText
+                    if (trailingFragment.isNotEmpty() && !hasSpokenForCurrentPage) {
+                        textToSpeak = trailingFragment + textToSpeak
+                        debugLog("[CrossPage] Merged", "fragment='${trailingFragment.take(50)}' (${trailingFragment.length}chars) + new page")
+                        trailingFragment = ""
+                    }
+
+                    // v1.1.35: 末尾の不完全文を検出して次ページ用に保存（初回のみ）
+                    val sentenceEndChars = setOf('。', '！', '？', '.', '!', '?')
+                    val trimmedText = textToSpeak.trimEnd()
+                    if (!hasSpokenForCurrentPage && trimmedText.isNotEmpty() && trimmedText.last() !in sentenceEndChars) {
+                        val lastEndIdx = trimmedText.lastIndexOfAny(sentenceEndChars.toCharArray())
+                        if (lastEndIdx >= 0) {
+                            trailingFragment = trimmedText.substring(lastEndIdx + 1).trim()
+                            textToSpeak = trimmedText.substring(0, lastEndIdx + 1)
+                            debugLog("[CrossPage] Saved trailing", "'${trailingFragment.take(50)}' (${trailingFragment.length}chars) for next page")
+                        } else {
+                            debugLog("[CrossPage] No sentence-end on page", "speaking entire text (${trimmedText.length}chars)")
+                        }
+                    } else if (!hasSpokenForCurrentPage) {
+                        debugLog("[CrossPage] Page ends with punctuation", "no trailing fragment")
+                    }
+
+                    hasSpokenForCurrentPage = true  // v1.1.35: 同一ページのリトライではCrossPage処理をスキップ
+
+                    val sentences = splitIntoSentences(textToSpeak)
                     if (sentences.isNotEmpty()) {
                         debugLog("[TTS] Preparing to speak", "sentences: ${sentences.size}, first: ${sentences.first().take(30)}")
                         speakSentences(sentences)
@@ -1735,7 +1775,9 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     private fun android.graphics.Rect.centerX(): Int = (left + right) / 2
 
     private fun splitIntoSentences(text: String): List<String> {
-        return text.split(Regex("[。！？\\.\\!\\?]"))
+        // v1.1.35: 句読点を保持する分割（TTSの自然さ向上）
+        // "文A。文B！文C" → ["文A。", "文B！", "文C"]
+        return Regex("(?<=[。！？.!?])").split(text)
             .map { it.trim() }
             .filter { it.isNotEmpty() }
     }
@@ -1824,9 +1866,10 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         lastExtractedText = ""  // v1.1.28: 生OCRテキストもリセット
         currentSentences = emptyList()  // 古い文のリストをクリア
         currentSentenceIndex = 0         // インデックスをリセット
+        hasSpokenForCurrentPage = false  // v1.1.35: 跨ページフラグリセット
         textToSpeech?.stop()             // 前のページのTTSを停止
 
-        debugLog("[State Reset]", "text/sentences/index cleared, TTS stopped, new page: ${appState.currentPage}")
+        debugLog("[State Reset]", "text/sentences/index cleared, TTS stopped, trailingFragment=${trailingFragment.length}chars, new page: ${appState.currentPage}")
 
         // ページめくり方向に応じてジェスチャーを選択
         val gestureAction = if (pageDirection == "right_to_next") "NEXT_PAGE" else "PREVIOUS_PAGE"
@@ -1863,9 +1906,10 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         lastExtractedText = ""  // v1.1.28: 生OCRテキストもリセット
         currentSentences = emptyList()  // 古い文のリストをクリア
         currentSentenceIndex = 0         // インデックスをリセット
+        hasSpokenForCurrentPage = false  // v1.1.35: 跨ページフラグリセット
         textToSpeech?.stop()             // 前のページのTTSを停止
 
-        debugLog("[State Reset]", "text/sentences/index cleared, TTS stopped, new page: ${appState.currentPage}")
+        debugLog("[State Reset]", "text/sentences/index cleared, TTS stopped, trailingFragment=${trailingFragment.length}chars, new page: ${appState.currentPage}")
 
         // ページめくり方向に応じてジェスチャーを選択
         val gestureAction = if (pageDirection == "right_to_next") "PREVIOUS_PAGE" else "NEXT_PAGE"
