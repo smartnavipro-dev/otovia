@@ -15,9 +15,13 @@ import android.speech.tts.TextToSpeech
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.kindletts.reader.ocr.AutoLearnManager
 import androidx.core.app.NotificationCompat
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
@@ -70,6 +74,8 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     private var lastCorrectedPageText = ""  // v1.1.33: 前ページコンテキスト用（ページめくり後も保持）
     private var trailingFragment = ""  // v1.1.35: 跨ページ文章結合用（前ページ末尾の不完全文）
     private var hasSpokenForCurrentPage = false  // v1.1.35: 同一ページで既にTTS開始したか
+    private var currentSpokenSentence = ""  // v1.1.37: ユーザーフィードバック用（現在読み上げ中の文）
+    private var correctionDialogView: View? = null  // v1.1.37: 修正ダイアログのView
     private var ocrExecutor: ScheduledExecutorService? = null
     private var isCapturing = false
     // v1.0.17: テキスト補正機能, v1.0.39: contextパラメータ追加
@@ -332,6 +338,17 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 // これにより、MainActivityが再起動時に画面キャプチャを再要求できる
                 isRunning = false
                 stopSelf()
+            }
+
+            // v1.1.37: テキストのロングタップで修正ダイアログ表示
+            val overlayText = view.findViewById<TextView>(R.id.overlayText)
+            overlayText?.isLongClickable = true
+            overlayText?.setOnLongClickListener {
+                if (currentSpokenSentence.isNotEmpty()) {
+                    debugLog("[UserFeedback] Long press detected", "sentence: ${currentSpokenSentence.take(30)}")
+                    showCorrectionDialog(currentSpokenSentence)
+                }
+                true
             }
 
             updateOverlayUI()
@@ -1807,6 +1824,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         }
 
         val sentence = currentSentences[currentSentenceIndex]
+        currentSpokenSentence = sentence  // v1.1.37: ユーザーフィードバック用
         debugLog("[TTS] Speaking", """
             index: $currentSentenceIndex/${currentSentences.size},
             length: ${sentence.length},
@@ -1972,6 +1990,97 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 else -> "読み上げ中"
             }
             statusText.text = "$status (${appState.currentPage}ページ)"
+        }
+    }
+
+    // v1.1.37: ユーザーフィードバック修正ダイアログ
+    private fun showCorrectionDialog(originalSentence: String) {
+        // TTS一時停止
+        val wasReading = isReading && !isPaused
+        if (wasReading) {
+            textToSpeech?.stop()
+            isPaused = true
+            updatePlayPauseButton()
+        }
+
+        val context = this
+        mainHandler.post {
+            try {
+                // ダイアログレイアウト構築
+                val layout = LinearLayout(context).apply {
+                    orientation = LinearLayout.VERTICAL
+                    setPadding(48, 32, 48, 16)
+                }
+
+                val label = TextView(context).apply {
+                    text = "現在の文:"
+                    setTextColor(0xFF888888.toInt())
+                    textSize = 12f
+                }
+                layout.addView(label)
+
+                val originalView = TextView(context).apply {
+                    text = originalSentence
+                    textSize = 14f
+                    setTextColor(0xFFFFFFFF.toInt())
+                    setPadding(0, 8, 0, 24)
+                }
+                layout.addView(originalView)
+
+                val editText = EditText(context).apply {
+                    setText(originalSentence)
+                    textSize = 14f
+                    setSelectAllOnFocus(true)
+                    hint = "正しい文を入力"
+                }
+                layout.addView(editText)
+
+                val dialog = AlertDialog.Builder(context, android.R.style.Theme_DeviceDefault_Dialog)
+                    .setTitle("テキスト修正")
+                    .setView(layout)
+                    .setPositiveButton("学習") { dlg, _ ->
+                        val corrected = editText.text.toString().trim()
+                        if (corrected.isNotEmpty() && corrected != originalSentence) {
+                            val autoLearn = AutoLearnManager.getInstance(context)
+                            val count = autoLearn.learnFromUserCorrection(originalSentence, corrected)
+                            val msg = if (count > 0) "★ ${count}パターン学習しました" else "差分なし"
+                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                            debugLog("[UserFeedback] Learned $count patterns", "'${originalSentence.take(20)}' → '${corrected.take(20)}'")
+                        }
+                        dlg.dismiss()
+                        correctionDialogView = null
+                        // TTS再開
+                        if (wasReading) {
+                            isPaused = false
+                            speakCurrentSentence()
+                            updatePlayPauseButton()
+                        }
+                    }
+                    .setNegativeButton("キャンセル") { dlg, _ ->
+                        dlg.dismiss()
+                        correctionDialogView = null
+                        if (wasReading) {
+                            isPaused = false
+                            speakCurrentSentence()
+                            updatePlayPauseButton()
+                        }
+                    }
+                    .create()
+
+                // オーバーレイサービスからダイアログ表示するためにTYPE_APPLICATION_OVERLAY設定
+                dialog.window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
+                dialog.show()
+                correctionDialogView = dialog.window?.decorView
+                debugLog("[UserFeedback] Correction dialog shown", "sentence: ${originalSentence.take(30)}")
+            } catch (e: Exception) {
+                Log.e(TAG, "[UserFeedback] Failed to show dialog: ${e.message}", e)
+                // TTS再開
+                if (wasReading) {
+                    isPaused = false
+                    speakCurrentSentence()
+                    updatePlayPauseButton()
+                }
+            }
         }
     }
 
