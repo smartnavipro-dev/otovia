@@ -280,6 +280,49 @@ class AutoLearnManager private constructor(context: Context) {
         return applyLearnedPatternsWithStats(text).correctedText
     }
 
+    // --- User Correction Learning (v1.1.37) ---
+
+    /**
+     * ユーザーの手動修正から最高品質パターンを学習
+     * LCS diffで差分抽出し、confidence=1.0、即座に昇格
+     *
+     * @param originalSentence TTS読み上げ時の文（ユーザーが「間違い」と判断したもの）
+     * @param correctedSentence ユーザーが入力した正しい文
+     * @return 学習されたパターン数
+     */
+    fun learnFromUserCorrection(originalSentence: String, correctedSentence: String): Int {
+        if (originalSentence == correctedSentence) return 0
+
+        val diffs = extractDiffs(originalSentence, correctedSentence)
+        if (diffs.isEmpty()) return 0
+
+        lock.write {
+            var learnedCount = 0
+            for ((from, to) in diffs) {
+                if (from.length > MAX_PATTERN_LENGTH || to.length > MAX_PATTERN_LENGTH) continue
+                if (from.isEmpty() || from == to) continue
+
+                val key = from
+                patterns[key] = LearnedPattern(
+                    from = from,
+                    to = to,
+                    count = PROMOTION_THRESHOLD,  // 即座に昇格
+                    confidence = 1.0f,             // 最高信頼度
+                    llmAgreement = PROMOTION_THRESHOLD,
+                    source = "USER"
+                )
+                learnedCount++
+                Log.d(TAG, "[UserCorrection] ★ '$from' → '$to' (instant promotion, conf=1.0)")
+            }
+
+            if (learnedCount > 0) {
+                savePatterns()
+                Log.d(TAG, "[UserCorrection] Learned $learnedCount patterns from user feedback")
+            }
+            return learnedCount
+        }
+    }
+
     // --- LLM Confirmation (v1.1.36) ---
 
     /**
