@@ -1591,12 +1591,14 @@ class TextCorrector(private val context: android.content.Context) {
 
         var correctedText = originalText
 
-        // v1.1.33 ステップ-0.5: 自動学習パターン適用（LLM差分から学習済みのパターン）
+        // v1.1.36 ステップ-0.5: 自動学習パターン適用（信頼度スコアリング付き）
+        var autoLearnResult: AutoLearnManager.ApplyResult? = null
+        val preAutoLearnText = correctedText  // v1.1.36: LLM確認用に保持
         if (ENABLE_AUTO_LEARN) {
-            val autoLearned = autoLearnManager.applyLearnedPatterns(correctedText)
-            if (autoLearned != correctedText) {
-                Log.d(TAG, "[v1.1.33 AutoLearn] Applied learned patterns (${autoLearnManager.getPromotedCount()} promoted)")
-                correctedText = autoLearned
+            autoLearnResult = autoLearnManager.applyLearnedPatternsWithStats(correctedText)
+            if (autoLearnResult.correctedText != correctedText) {
+                Log.d(TAG, "[v1.1.36 AutoLearn] Applied ${autoLearnResult.appliedCount} patterns (avgConf=${String.format("%.2f", autoLearnResult.avgConfidence)}, highConf=${autoLearnResult.highConfidenceCount}, promoted=${autoLearnResult.totalPromoted})")
+                correctedText = autoLearnResult.correctedText
             }
         }
 
@@ -1807,9 +1809,19 @@ class TextCorrector(private val context: android.content.Context) {
         }
 
         // v1.0.39 ステップ8: LLM補正（信頼度が低い場合のみ）
-        // v1.0.75: Phase 3検出結果をLLMに渡す
-        // v1.0.76: すべてのPhase 3検出結果をLLMに渡す
-        if (ENABLE_LLM_CORRECTION && phase1Confidence < MIN_CONFIDENCE_FOR_PHASE1) {
+        // v1.1.36: 適応パイプライン - AutoLearnの信頼度が高ければLLMをスキップ
+        var llmSkipped = false
+        if (ENABLE_LLM_CORRECTION && phase1Confidence < MIN_CONFIDENCE_FOR_PHASE1 && autoLearnResult != null) {
+            val skipRec = autoLearnManager.getSkipRecommendation(autoLearnResult)
+            if (skipRec.shouldSkip) {
+                Log.d(TAG, "[v1.1.36 Adaptive] ★ LLM SKIPPED: ${skipRec.reason}")
+                llmSkipped = true
+            } else {
+                Log.d(TAG, "[v1.1.36 Adaptive] LLM required: ${skipRec.reason}")
+            }
+        }
+
+        if (ENABLE_LLM_CORRECTION && phase1Confidence < MIN_CONFIDENCE_FOR_PHASE1 && !llmSkipped) {
             Log.d(TAG, "[v1.0.39] Phase 1 confidence low ($phase1Confidence), trying LLM correction")
 
             // v1.0.75: Phase 3ヒントを生成
@@ -1856,7 +1868,9 @@ class TextCorrector(private val context: android.content.Context) {
                 if (ENABLE_AUTO_LEARN && preLLMText != llmCorrected) {
                     try {
                         autoLearnManager.learnFromDiff(preLLMText, llmCorrected)
-                        Log.d(TAG, "[v1.1.33 AutoLearn] ${autoLearnManager.getStats()}")
+                        // v1.1.36: AutoLearnパターンの信頼度をLLM結果で確認・更新
+                        autoLearnManager.confirmWithLLM(preAutoLearnText, autoLearnResult?.correctedText ?: preAutoLearnText, llmCorrected)
+                        Log.d(TAG, "[v1.1.36 AutoLearn] ${autoLearnManager.getStats()}")
                     } catch (e: Exception) {
                         Log.e(TAG, "[v1.1.33 AutoLearn] Learning failed: ${e.message}", e)
                     }
