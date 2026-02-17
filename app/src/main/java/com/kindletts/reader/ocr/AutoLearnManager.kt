@@ -13,23 +13,18 @@ import kotlin.concurrent.write
  * v1.1.33: 自動学習マネージャー
  * LLM補正の差分を蓄積し、同じ誤りパターンを自動適用するシステム
  *
- * - learnFromDiff(): LLM補正前後の文字列差分からパターンを抽出・保存
- * - applyLearnedPatterns(): 学習済みパターンを適用（PROMOTION_THRESHOLD回以上のみ）
- *
- * アルゴリズム: LCS (Longest Common Subsequence) ベースの文字レベルdiff
- *
- * v1.1.34: 安全性強化
- * - from最低3文字（コンテキスト付加後）
- * - 長さ比率チェック（to/from ≤ 2.0）
- * - 文字重複チェック（fromとtoに共通文字が必要）
- * - 句読点のみパターンをブロック
- * - 短パターン(≤2文字)にもコンテキスト付加
+ * v1.1.34: 安全性強化 (isSafePattern)
+ * v1.1.36: 信頼度スコアリング + 適応パイプライン
+ *   - confidence: LLM同意率ベースの信頼度 (0.0-1.0)
+ *   - llmAgreement/Disagreement: LLMとの一致/不一致カウント
+ *   - getAdaptiveSkipRecommendation(): LLMスキップ判定用データ提供
+ *   - confirmWithLLM(): LLM結果との照合で信頼度を更新
  */
 class AutoLearnManager private constructor(context: Context) {
 
     companion object {
         private const val TAG = "KindleTTS_AutoLearn"
-        private const val PREFS_NAME = "auto_learn_patterns_v2"  // v1.1.34: 安全版で新キー
+        private const val PREFS_NAME = "auto_learn_patterns_v3"  // v1.1.36: 信頼度付き新キー
         private const val KEY_PATTERNS = "patterns"
         private const val PROMOTION_THRESHOLD = 3   // N回以上で自動適用に昇格
         private const val MAX_PATTERNS = 500        // 最大保存パターン数
@@ -37,6 +32,8 @@ class AutoLearnManager private constructor(context: Context) {
         private const val MAX_DIFF_INPUT = 500      // diff計算の入力上限
         private const val MIN_FROM_LENGTH = 3       // v1.1.34: from最低文字数
         private const val MAX_LENGTH_RATIO = 2.0    // v1.1.34: to/from長さ比率上限
+        private const val HIGH_CONFIDENCE = 0.8f    // v1.1.36: 高信頼度閾値
+        private const val LOW_CONFIDENCE = 0.3f     // v1.1.36: 低信頼度（自動削除対象）
 
         @Volatile
         private var instance: AutoLearnManager? = null
@@ -56,7 +53,23 @@ class AutoLearnManager private constructor(context: Context) {
         val to: String,
         var count: Int = 1,
         val firstSeen: Long = System.currentTimeMillis(),
-        var lastSeen: Long = System.currentTimeMillis()
+        var lastSeen: Long = System.currentTimeMillis(),
+        // v1.1.36: 信頼度スコアリング
+        var confidence: Float = 0.5f,       // 初期信頼度0.5
+        var llmAgreement: Int = 0,          // LLMが同じ補正をした回数
+        var llmDisagreement: Int = 0,       // LLMが異なる補正をした回数
+        var source: String = "LLM_DIFF"     // パターンのソース (LLM_DIFF / USER)
+    )
+
+    /**
+     * v1.1.36: AutoLearnの適用結果サマリー（適応パイプライン用）
+     */
+    data class ApplyResult(
+        val correctedText: String,
+        val appliedCount: Int,              // 適用されたパターン数
+        val avgConfidence: Float,           // 適用パターンの平均信頼度
+        val highConfidenceCount: Int,       // 高信頼度パターン数
+        val totalPromoted: Int              // 全昇格パターン数
     )
 
     private val prefs: SharedPreferences =
@@ -89,18 +102,12 @@ class AutoLearnManager private constructor(context: Context) {
 
     // --- Safety Checks (v1.1.34) ---
 
-    /**
-     * v1.1.34: パターンの安全性を検証
-     * 危険なパターン（短すぎ、句読点のみ、長さ比率異常、文字重複なし）を除外
-     */
     private fun isSafePattern(from: String, to: String): Boolean {
-        // 1. from最低文字数チェック
         if (from.length < MIN_FROM_LENGTH) {
             Log.d(TAG, "[Safety] Rejected (too short): '$from' → '$to'")
             return false
         }
 
-        // 2. fromが句読点で始まるまたは終わる短パターンはブロック
         if (from.length <= 3) {
             val startsWithPunct = from.first() in PUNCTUATION
             val endsWithPunct = from.last() in PUNCTUATION
@@ -110,13 +117,11 @@ class AutoLearnManager private constructor(context: Context) {
             }
         }
 
-        // 3. 長さ比率チェック（toがfromの2倍を超えたら危険）
         if (from.isNotEmpty() && to.length.toDouble() / from.length > MAX_LENGTH_RATIO) {
             Log.d(TAG, "[Safety] Rejected (length ratio ${to.length}/${from.length}): '$from' → '$to'")
             return false
         }
 
-        // 4. 文字重複チェック（fromとtoに少なくとも1文字の共通非句読点文字が必要）
         val fromChars = from.filter { it !in PUNCTUATION }.toSet()
         val toChars = to.filter { it !in PUNCTUATION }.toSet()
         if (fromChars.isNotEmpty() && toChars.isNotEmpty() && fromChars.intersect(toChars).isEmpty()) {
@@ -124,7 +129,6 @@ class AutoLearnManager private constructor(context: Context) {
             return false
         }
 
-        // 5. to が空の場合（削除パターン）、fromが短すぎないかチェック
         if (to.isEmpty() && from.length < 4) {
             Log.d(TAG, "[Safety] Rejected (short deletion): '$from' → ''")
             return false
@@ -135,11 +139,6 @@ class AutoLearnManager private constructor(context: Context) {
 
     // --- Learn ---
 
-    /**
-     * LLM補正前後の差分からパターンを学習
-     * @param preLLM  LLM補正前のテキスト（Phase1等の補正済み）
-     * @param postLLM LLM補正後のテキスト
-     */
     fun learnFromDiff(preLLM: String, postLLM: String) {
         if (preLLM == postLLM) return
 
@@ -156,7 +155,6 @@ class AutoLearnManager private constructor(context: Context) {
                 if (from.isEmpty()) continue
                 if (from == to) continue
 
-                // v1.1.34: 安全性チェック
                 if (!isSafePattern(from, to)) {
                     rejectedCount++
                     continue
@@ -166,12 +164,35 @@ class AutoLearnManager private constructor(context: Context) {
                 val existing = patterns[key]
                 if (existing != null && existing.to == to) {
                     existing.count++
+                    existing.llmAgreement++
                     existing.lastSeen = System.currentTimeMillis()
+                    // v1.1.36: LLM同意で信頼度上昇
+                    existing.confidence = calculateConfidence(existing)
                     updatedCount++
-                } else if (existing == null) {
+                } else if (existing != null && existing.to != to) {
+                    // v1.1.36: 衝突 - LLMが異なる補正を提案
+                    existing.llmDisagreement++
+                    existing.confidence = calculateConfidence(existing)
+                    Log.d(TAG, "[Conflict] '$from': existing='${existing.to}' vs new='$to' (conf=${String.format("%.2f", existing.confidence)})")
+                    // 信頼度が低すぎたら入れ替え
+                    if (existing.confidence < LOW_CONFIDENCE) {
+                        Log.d(TAG, "[Conflict] Replacing low-confidence pattern: '$from' → '$to'")
+                        patterns[key] = LearnedPattern(from = from, to = to)
+                        newCount++
+                    }
+                } else {
                     patterns[key] = LearnedPattern(from = from, to = to)
                     newCount++
                 }
+            }
+
+            // v1.1.36: 低信頼度パターンを自動削除
+            val lowConfPatterns = patterns.entries.filter {
+                it.value.confidence < LOW_CONFIDENCE && it.value.count >= PROMOTION_THRESHOLD
+            }
+            for (entry in lowConfPatterns) {
+                Log.d(TAG, "[AutoPurge] Removing low-confidence: '${entry.key}' → '${entry.value.to}' (conf=${String.format("%.2f", entry.value.confidence)})")
+                patterns.remove(entry.key)
             }
 
             // 上限超過時は古いパターンを削除
@@ -188,64 +209,171 @@ class AutoLearnManager private constructor(context: Context) {
                 val p = patterns[from]
                 if (p != null) {
                     val star = if (p.count >= PROMOTION_THRESHOLD) " ★PROMOTED" else ""
-                    Log.d(TAG, "  '$from' → '${p.to}' (count=${p.count}$star)")
+                    Log.d(TAG, "  '$from' → '${p.to}' (count=${p.count}, conf=${String.format("%.2f", p.confidence)}$star)")
                 }
             }
         }
     }
 
-    // --- Apply ---
+    // --- Confidence Calculation (v1.1.36) ---
 
     /**
-     * 学習済みパターンを適用（閾値以上のもののみ）
-     * @return 補正後テキスト
+     * LLM同意率ベースの信頼度計算
+     * agreement / (agreement + disagreement) をベースに、出現回数で補正
      */
-    fun applyLearnedPatterns(text: String): String {
+    private fun calculateConfidence(pattern: LearnedPattern): Float {
+        val total = pattern.llmAgreement + pattern.llmDisagreement
+        if (total == 0) return 0.5f  // データなし → 中立
+
+        val agreementRate = pattern.llmAgreement.toFloat() / total
+
+        // 出現回数が少ないうちは中立(0.5)に寄せる（ベイズ的平滑化）
+        val smoothingFactor = minOf(total.toFloat() / 5f, 1.0f)  // 5回で完全収束
+        val smoothed = 0.5f * (1f - smoothingFactor) + agreementRate * smoothingFactor
+
+        return smoothed.coerceIn(0.0f, 1.0f)
+    }
+
+    // --- Apply (v1.1.36: ApplyResult付き) ---
+
+    /**
+     * 学習済みパターンを適用し、適用結果のサマリーを返す
+     * 適応パイプラインでLLMスキップ判定に使用
+     */
+    fun applyLearnedPatternsWithStats(text: String): ApplyResult {
         lock.read {
             val promoted = patterns.values.filter { it.count >= PROMOTION_THRESHOLD }
-            if (promoted.isEmpty()) return text
+            if (promoted.isEmpty()) return ApplyResult(text, 0, 0f, 0, 0)
 
             var result = text
             var appliedCount = 0
+            val appliedConfidences = mutableListOf<Float>()
+            var highConfCount = 0
 
-            // 長いパターンを先に適用（部分マッチの誤爆防止）
             for (pattern in promoted.sortedByDescending { it.from.length }) {
                 if (result.contains(pattern.from)) {
                     val before = result
                     result = result.replace(pattern.from, pattern.to)
                     if (result != before) {
                         appliedCount++
-                        Log.d(TAG, "Applied: '${pattern.from}' → '${pattern.to}' (count=${pattern.count})")
+                        appliedConfidences.add(pattern.confidence)
+                        if (pattern.confidence >= HIGH_CONFIDENCE) highConfCount++
+                        Log.d(TAG, "Applied: '${pattern.from}' → '${pattern.to}' (count=${pattern.count}, conf=${String.format("%.2f", pattern.confidence)})")
                     }
                 }
             }
 
+            val avgConf = if (appliedConfidences.isNotEmpty()) appliedConfidences.average().toFloat() else 0f
+
             if (appliedCount > 0) {
-                Log.d(TAG, "Applied $appliedCount learned patterns to text")
+                Log.d(TAG, "Applied $appliedCount patterns (avgConf=${String.format("%.2f", avgConf)}, highConf=$highConfCount)")
             }
-            return result
+
+            return ApplyResult(result, appliedCount, avgConf, highConfCount, promoted.size)
         }
+    }
+
+    /**
+     * 後方互換: 文字列のみ返す旧API
+     */
+    fun applyLearnedPatterns(text: String): String {
+        return applyLearnedPatternsWithStats(text).correctedText
+    }
+
+    // --- LLM Confirmation (v1.1.36) ---
+
+    /**
+     * LLM補正結果とAutoLearn適用結果を照合し、信頼度を更新
+     * AutoLearnが「A→B」と補正した箇所で、LLMも「A→B」ならagreement++
+     * LLMが「A→C」(B≠C)ならdisagreement++
+     *
+     * @param preAutoLearn AutoLearn適用前のテキスト
+     * @param postAutoLearn AutoLearn適用後のテキスト
+     * @param postLLM LLM補正後のテキスト
+     */
+    fun confirmWithLLM(preAutoLearn: String, postAutoLearn: String, postLLM: String) {
+        if (preAutoLearn == postAutoLearn) return  // AutoLearnが何も変更していない
+
+        lock.write {
+            val promoted = patterns.values.filter { it.count >= PROMOTION_THRESHOLD }
+            var agreed = 0
+            var disagreed = 0
+
+            for (pattern in promoted) {
+                // このパターンがAutoLearnで適用されたか
+                if (preAutoLearn.contains(pattern.from) && !postAutoLearn.contains(pattern.from)) {
+                    // LLMの結果にも pattern.to が含まれているか
+                    if (postLLM.contains(pattern.to)) {
+                        pattern.llmAgreement++
+                        agreed++
+                    } else if (!postLLM.contains(pattern.from)) {
+                        // LLMもfromを変更したが、toが異なる → disagreement
+                        pattern.llmDisagreement++
+                        disagreed++
+                    }
+                    pattern.confidence = calculateConfidence(pattern)
+                }
+            }
+
+            if (agreed > 0 || disagreed > 0) {
+                savePatterns()
+                Log.d(TAG, "[LLM Confirm] agreed=$agreed, disagreed=$disagreed")
+            }
+        }
+    }
+
+    // --- Adaptive Pipeline Support (v1.1.36) ---
+
+    /**
+     * LLMスキップ推奨判定データを返す
+     * TextCorrectorがこのデータを使ってLLM呼び出しをスキップするか判定
+     */
+    data class SkipRecommendation(
+        val shouldSkip: Boolean,
+        val reason: String,
+        val promotedCount: Int,
+        val highConfidenceRate: Float  // 高信頼度パターンの割合
+    )
+
+    fun getSkipRecommendation(applyResult: ApplyResult): SkipRecommendation {
+        val promoted = applyResult.totalPromoted
+        val highConfRate = if (promoted > 0) {
+            lock.read {
+                patterns.values
+                    .filter { it.count >= PROMOTION_THRESHOLD }
+                    .count { it.confidence >= HIGH_CONFIDENCE }
+                    .toFloat() / promoted
+            }
+        } else 0f
+
+        // スキップ条件:
+        // 1. 昇格パターンが20個以上（十分な学習量）
+        // 2. 高信頼度パターンの割合が50%以上
+        // 3. 今回適用されたパターンの平均信頼度が0.8以上
+        val shouldSkip = promoted >= 20 &&
+                highConfRate >= 0.5f &&
+                applyResult.appliedCount > 0 &&
+                applyResult.avgConfidence >= HIGH_CONFIDENCE
+
+        val reason = when {
+            promoted < 20 -> "Not enough patterns ($promoted < 20)"
+            highConfRate < 0.5f -> "Low high-confidence rate (${String.format("%.0f", highConfRate * 100)}% < 50%)"
+            applyResult.appliedCount == 0 -> "No patterns applied to this text"
+            applyResult.avgConfidence < HIGH_CONFIDENCE -> "Applied patterns avg confidence too low (${String.format("%.2f", applyResult.avgConfidence)})"
+            else -> "High confidence coverage (promoted=$promoted, highConfRate=${String.format("%.0f", highConfRate * 100)}%, avgAppliedConf=${String.format("%.2f", applyResult.avgConfidence)})"
+        }
+
+        return SkipRecommendation(shouldSkip, reason, promoted, highConfRate)
     }
 
     // --- Diff Algorithm ---
 
-    /**
-     * LCSベースの文字レベルdiff抽出
-     *
-     * 1. LCS（最長共通部分列）のDPテーブルを構築
-     * 2. バックトラックで編集操作列(Match/Delete/Insert)を取得
-     * 3. 連続する非Match操作をグループ化してdiffブロックに
-     * 4. 短いパターン(≤2文字)にはコンテキスト文字を付加 (v1.1.34: 拡張)
-     *
-     * @return (from, to) ペアのリスト
-     */
     private fun extractDiffs(pre: String, post: String): List<Pair<String, String>> {
         val m = pre.length
         val n = post.length
         if (m > MAX_DIFF_INPUT || n > MAX_DIFF_INPUT) return emptyList()
         if (m == 0 && n == 0) return emptyList()
 
-        // LCS DPテーブル
         val dp = Array(m + 1) { IntArray(n + 1) }
         for (i in 1..m) {
             for (j in 1..n) {
@@ -254,7 +382,6 @@ class AutoLearnManager private constructor(context: Context) {
             }
         }
 
-        // バックトラック → 編集操作列 (type: 0=match, 1=delete, 2=insert)
         val ops = mutableListOf<Triple<Int, Char?, Char?>>()
         var i = m; var j = n
         while (i > 0 || j > 0) {
@@ -275,7 +402,6 @@ class AutoLearnManager private constructor(context: Context) {
         }
         ops.reverse()
 
-        // diffブロックへのグループ化
         val result = mutableListOf<Pair<String, String>>()
         var idx = 0
         var prePos = 0
@@ -304,8 +430,6 @@ class AutoLearnManager private constructor(context: Context) {
             if (from == to) continue
             if (from.isBlank() && to.isBlank()) continue
 
-            // v1.1.34: 短いパターン(2文字以下)にはコンテキスト付加（従来は1文字以下のみ）
-            // 削除パターン(to空)にもコンテキスト付加
             if (from.length <= 2 || to.isEmpty()) {
                 val before = if (blockPreStart > 0) pre[blockPreStart - 1].toString() else ""
                 val afterIdx = blockPreStart + from.length
@@ -329,7 +453,8 @@ class AutoLearnManager private constructor(context: Context) {
         lock.read {
             val total = patterns.size
             val promoted = patterns.values.count { it.count >= PROMOTION_THRESHOLD }
-            return "AutoLearn: $total patterns ($promoted promoted, threshold=$PROMOTION_THRESHOLD)"
+            val highConf = patterns.values.count { it.count >= PROMOTION_THRESHOLD && it.confidence >= HIGH_CONFIDENCE }
+            return "AutoLearn: $total patterns ($promoted promoted, $highConf high-conf)"
         }
     }
 
