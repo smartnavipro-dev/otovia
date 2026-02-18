@@ -77,6 +77,9 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     private var hasSpokenForCurrentPage = false  // v1.1.35: 同一ページで既にTTS開始したか
     private var currentSpokenSentence = ""  // v1.1.37: ユーザーフィードバック用（現在読み上げ中の文）
     private var correctionDialogView: View? = null  // v1.1.37: 修正ダイアログのView
+    // v1.1.41: セッション統計（LLM使用/スキップ カウント）
+    private var sessionLLMUsed = 0
+    private var sessionLLMSkipped = 0
     private var ocrExecutor: ScheduledExecutorService? = null
     private var isCapturing = false
     // v1.0.17: テキスト補正機能, v1.0.39: contextパラメータ追加
@@ -1471,13 +1474,19 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 val correctionTime = System.currentTimeMillis() - correctionStart
                 val stats = textCorrector.getCorrectionStats(extractedText, correctedText)
 
+                // v1.1.41: セッション統計を更新
+                if (textCorrector.lastCorrectionUsedLLM) sessionLLMUsed++ else sessionLLMSkipped++
+                mainHandler.post { updateOverlayUI() }
+
                 debugLog("[OCR Processing] Text correction", """
                     time: ${correctionTime}ms,
                     original_length: ${extractedText.length},
                     corrected_length: ${correctedText.length},
                     corrections: ${stats.totalCorrections},
                     economic_terms: ${stats.economicTermsFixed},
-                    katakana: ${stats.katakanaFixed}
+                    katakana: ${stats.katakanaFixed},
+                    llm_used: ${textCorrector.lastCorrectionUsedLLM},
+                    session_llm: $sessionLLMUsed used / $sessionLLMSkipped skipped
                 """.trimIndent())
 
                 // ✨ 詳細なデバッグログ（補正情報を含む）
@@ -1986,7 +1995,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                         debugLog("OCR retry success", "Text found on attempt $retryCount")
                     }
                 }, 500)
-            }, if (retryCount == 0) initialDelay else 1500)  // ← リトライ時も1.5秒待つ
+            }, if (retryCount == 0) initialDelay else 750)  // v1.1.41: リトライは0.75秒（初回2.5s後、ページ安定済みなのでより頻繁に試行）
         }
 
         attemptOCR()
@@ -2003,7 +2012,13 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
             // v1.1.38: 昇格済み学習パターン数を表示
             val promoted = AutoLearnManager.getInstance(this).getPromotedCount()
             val patternBadge = if (promoted > 0) " [★$promoted]" else ""
-            statusText.text = "$status (${appState.currentPage}ページ)$patternBadge"
+            // v1.1.41: セッションLLM統計（使用/節約）と今日のAPI消費数
+            val sessionTotal = sessionLLMUsed + sessionLLMSkipped
+            val sessionBadge = if (sessionTotal > 0) {
+                // 節約率を簡潔に: "AI:3/8" = 3回使用、8回節約
+                " [AI:$sessionLLMUsed/$sessionTotal]"
+            } else ""
+            statusText.text = "$status (${appState.currentPage}ページ)$patternBadge$sessionBadge"
         }
     }
 
@@ -2205,6 +2220,9 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                                 currentSentences = updated
                                 debugLog("[UserFeedback] Replaced sentence[$currentSentenceIndex] with corrected text")
                             }
+                            // v1.1.41: 次ページのCleanPageスキップを無効化（ユーザー修正 = 品質問題の兆候）
+                            textCorrector.setForceFullCorrectionOnce()
+                            debugLog("[UserFeedback] setForceFullCorrectionOnce: next page will use LLM regardless of skip gates")
                         }
                         dlg.dismiss()
                         correctionDialogView = null
