@@ -389,17 +389,17 @@ class AutoLearnManager private constructor(context: Context) {
             }
         } else 0f
 
-        // スキップ条件:
-        // 1. 昇格パターンが20個以上（十分な学習量）
+        // スキップ条件 (v1.1.39: 閾値20→10に引き下げ):
+        // 1. 昇格パターンが10個以上（十分な学習量）
         // 2. 高信頼度パターンの割合が50%以上
         // 3. 今回適用されたパターンの平均信頼度が0.8以上
-        val shouldSkip = promoted >= 20 &&
+        val shouldSkip = promoted >= 10 &&
                 highConfRate >= 0.5f &&
                 applyResult.appliedCount > 0 &&
                 applyResult.avgConfidence >= HIGH_CONFIDENCE
 
         val reason = when {
-            promoted < 20 -> "Not enough patterns ($promoted < 20)"
+            promoted < 10 -> "Not enough patterns ($promoted < 10)"
             highConfRate < 0.5f -> "Low high-confidence rate (${String.format("%.0f", highConfRate * 100)}% < 50%)"
             applyResult.appliedCount == 0 -> "No patterns applied to this text"
             applyResult.avgConfidence < HIGH_CONFIDENCE -> "Applied patterns avg confidence too low (${String.format("%.2f", applyResult.avgConfidence)})"
