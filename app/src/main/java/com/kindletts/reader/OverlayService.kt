@@ -80,6 +80,11 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     // v1.1.41: セッション統計（LLM使用/スキップ カウント）
     private var sessionLLMUsed = 0
     private var sessionLLMSkipped = 0
+    // v1.1.42: バックグラウンドプリフェッチ状態
+    private var prefetchedSentences: List<String>? = null  // null=未完了
+    private var prefetchedCorrectedText: String = ""       // lastRecognizedText更新用
+    private var isPrefetching = false                       // プリフェッチ実行中
+    private var prefetchGestureSent = false                 // ジェスチャー送信済み
     private var ocrExecutor: ScheduledExecutorService? = null
     private var isCapturing = false
     // v1.0.17: テキスト補正機能, v1.0.39: contextパラメータ追加
@@ -462,6 +467,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         trailingFragment = ""  // v1.1.35: 跨ページ断片をリセット
         appState.isReading = false
         appState.isPaused = false
+        resetPrefetchState()  // v1.1.42
 
         stopAutoOCR()
         textToSpeech?.stop()
@@ -476,6 +482,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
 
         isPaused = true
         appState.isPaused = true
+        resetPrefetchState()  // v1.1.42: プリフェッチをキャンセル
 
         textToSpeech?.stop()
         stopAutoOCR()
@@ -1445,6 +1452,14 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 val ocrExecuteTime = System.currentTimeMillis() - ocrExecuteStart
                 debugLog("[OCR Processing] ML Kit completed", "time: ${ocrExecuteTime}ms, blocks: ${visionText.textBlocks.size}")
 
+                // v1.1.42: プリフェッチ中はautoOCRのTTS起動を抑制（ページめくり後の誤キャプチャ防止）
+                if (isPrefetching) {
+                    debugLog("[v1.1.42 Prefetch]", "AutoOCR suppressed during prefetch")
+                    bitmap.recycle()
+                    isCapturing = false
+                    return@addOnSuccessListener
+                }
+
                 // 縦書き対応: テキストブロックを位置でソート
                 val extractStart = System.currentTimeMillis()
                 val extractedText = extractTextWithVerticalSupport(visionText)
@@ -1862,7 +1877,13 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         currentSentenceIndex++
 
         if (currentSentenceIndex < currentSentences.size) {
-            // 次の文を読み上げ (既存のmainHandlerを再利用)
+            // v1.1.42: 最終文の読み上げ開始前にプリフェッチ起動
+            val isStartingLastSentence = currentSentenceIndex == currentSentences.size - 1
+            if (isStartingLastSentence && currentSentences.size >= 3 &&
+                autoPageTurnEnabled && isReading && !isPaused && !isPrefetching && !prefetchGestureSent) {
+                debugLog("[v1.1.42 Prefetch]", "Triggering prefetch before last sentence (${currentSentences.size} sentences total)")
+                startPrefetch()
+            }
             debugLog("[TTS] Next sentence", "Scheduling next sentence after 500ms delay")
             mainHandler.postDelayed({
                 speakCurrentSentence()
@@ -1872,16 +1893,264 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
             debugLog("[TTS] Page complete", """
                 autoPageTurnEnabled: $autoPageTurnEnabled,
                 isReading: $isReading,
-                scheduling_next_page: ${autoPageTurnEnabled && isReading}
+                isPrefetching: $isPrefetching,
+                prefetchReady: ${prefetchedSentences != null}
             """.trimIndent())
 
             if (autoPageTurnEnabled && isReading) {
-                debugLog("[Auto Page Turn]", "Scheduling next page after 2000ms delay")
-                mainHandler.postDelayed({
-                    nextPage()
-                }, 2000)
+                // v1.1.42: 800ms後にページ完了処理（プリフェッチ対応、旧2000ms）
+                mainHandler.postDelayed({ finishCurrentPage() }, 800)
             }
         }
+    }
+
+    // =========================================================
+    // v1.1.42: バックグラウンドプリフェッチシステム
+    // =========================================================
+
+    /**
+     * 最終文の読み上げ開始時に呼ぶ。
+     * ページめくりジェスチャーを即座に送信し、アニメーション中にOCR+LLMを実行。
+     * 最終文が終わる頃には次ページのテキストが準備完了している。
+     */
+    private fun startPrefetch() {
+        isPrefetching = true
+        prefetchGestureSent = true
+        prefetchedSentences = null
+        prefetchedCorrectedText = ""
+        val capturedTrailingFragment = trailingFragment  // ClosureでCapture（CrossPage用）
+
+        debugLog("[v1.1.42 Prefetch]", "=== PREFETCH START === sending gesture, last sentence about to play")
+
+        // ページめくりジェスチャー送信（Kindleのアニメーション開始）
+        val gestureAction = if (pageDirection == "right_to_next") "NEXT_PAGE" else "PREVIOUS_PAGE"
+        startService(Intent(this, AutoPageTurnService::class.java).apply {
+            action = gestureAction
+            putExtra("page_direction", pageDirection)
+        })
+
+        // アニメーション完了後（1.2秒）にOCR開始
+        mainHandler.postDelayed({
+            if (!isPrefetching || !isReading || isPaused) {
+                debugLog("[v1.1.42 Prefetch]", "Cancelled before OCR (isPrefetching=$isPrefetching, isReading=$isReading, isPaused=$isPaused)")
+                isPrefetching = false
+                return@postDelayed
+            }
+            debugLog("[v1.1.42 Prefetch]", "Starting background OCR after animation wait")
+            performPrefetchOCR(capturedTrailingFragment, retryCount = 0)
+        }, 1200)
+    }
+
+    /**
+     * バックグラウンドOCR実行。完了後 prefetchedSentences に格納する。
+     * isCapturing が true なら 500ms 待機してリトライ。
+     */
+    private fun performPrefetchOCR(savedTrailingFragment: String, retryCount: Int) {
+        if (!isPrefetching || !isReading || isPaused) {
+            isPrefetching = false
+            return
+        }
+
+        // isCapturing中は待機（autoOCRと競合しない）
+        if (isCapturing) {
+            if (retryCount < 6) {
+                mainHandler.postDelayed({ performPrefetchOCR(savedTrailingFragment, retryCount + 1) }, 500)
+            } else {
+                debugLog("[v1.1.42 Prefetch]", "Capture busy after retries, giving up")
+                isPrefetching = false
+            }
+            return
+        }
+
+        isCapturing = true
+        val image = latestImage?.also { latestImage = null } ?: imageReader?.acquireLatestImage()
+
+        if (image == null) {
+            isCapturing = false
+            if (retryCount < 4) {
+                debugLog("[v1.1.42 Prefetch]", "No image, retry ${retryCount + 1}")
+                mainHandler.postDelayed({ performPrefetchOCR(savedTrailingFragment, retryCount + 1) }, 750)
+            } else {
+                debugLog("[v1.1.42 Prefetch]", "No image after retries, giving up")
+                isPrefetching = false
+            }
+            return
+        }
+
+        val bitmap = convertImageToBitmap(image)
+        if (bitmap == null) {
+            isCapturing = false
+            isPrefetching = false
+            debugLog("[v1.1.42 Prefetch]", "Bitmap conversion failed")
+            return
+        }
+
+        val startTime = System.currentTimeMillis()
+        val mlImage = InputImage.fromBitmap(bitmap, 0)
+        TextRecognition.getClient(JapaneseTextRecognizerOptions.Builder().build())
+            .process(mlImage)
+            .addOnSuccessListener { visionText ->
+                isCapturing = false
+                val extractedText = extractTextWithVerticalSupport(visionText)
+                debugLog("[v1.1.42 Prefetch]", "OCR done: ${extractedText.length} chars in ${System.currentTimeMillis() - startTime}ms")
+
+                if (extractedText.isEmpty()) {
+                    bitmap.recycle()
+                    if (retryCount < 3) {
+                        mainHandler.postDelayed({ performPrefetchOCR(savedTrailingFragment, retryCount + 1) }, 750)
+                    } else {
+                        debugLog("[v1.1.42 Prefetch]", "Empty text after retries, giving up")
+                        isPrefetching = false
+                    }
+                    return@addOnSuccessListener
+                }
+
+                // テキスト補正（前ページコンテキスト付き）
+                val prevContext = lastRecognizedText.takeLast(200).ifEmpty { null }
+                val correctedText = textCorrector.correctText(extractedText, visionText, previousContext = prevContext)
+
+                // Kindle UI要素除去
+                var cleanedText = correctedText
+                    .replace(Regex("\\d+\\s*ページ中\\s*\\d+\\s*ページの[^\\n]*?\\d+%"), "")
+                    .replace(Regex("に戻る"), "")
+                    .replace(Regex("\\bAa\\b"), "")
+                    .trim()
+
+                // CrossPage: 前ページ末尾断片を結合（savedTrailingFragmentはCapture時の値）
+                var textToSpeak = cleanedText
+                if (savedTrailingFragment.isNotEmpty()) {
+                    textToSpeak = savedTrailingFragment + textToSpeak
+                    trailingFragment = ""  // 消費済み
+                    debugLog("[v1.1.42 Prefetch CrossPage]", "Merged trailing: '${savedTrailingFragment.take(30)}'")
+                }
+
+                // 次ページ用の末尾断片を検出・保存
+                val sentenceEndChars = setOf('。', '！', '？', '.', '!', '?')
+                val trimmedText = textToSpeak.trimEnd()
+                if (trimmedText.isNotEmpty() && trimmedText.last() !in sentenceEndChars) {
+                    val lastEndIdx = trimmedText.lastIndexOfAny(sentenceEndChars.toCharArray())
+                    if (lastEndIdx >= 0) {
+                        trailingFragment = trimmedText.substring(lastEndIdx + 1).trim()
+                        textToSpeak = trimmedText.substring(0, lastEndIdx + 1)
+                        debugLog("[v1.1.42 Prefetch CrossPage]", "Next trailing: '${trailingFragment.take(30)}'")
+                    }
+                } else {
+                    trailingFragment = ""
+                }
+
+                val sentences = splitIntoSentences(textToSpeak)
+                val totalTime = System.currentTimeMillis() - startTime
+                debugLog("[v1.1.42 Prefetch]", "=== PREFETCH DONE === ${sentences.size} sentences in ${totalTime}ms")
+
+                prefetchedCorrectedText = correctedText
+                prefetchedSentences = if (sentences.isNotEmpty()) sentences else null
+                isPrefetching = false
+                bitmap.recycle()
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "[v1.1.42 Prefetch] OCR failed: ${e.message}", e)
+                isCapturing = false
+                isPrefetching = false
+                bitmap.recycle()
+            }
+    }
+
+    /**
+     * ページ完了時に呼ばれる（旧nextPage()の代わり）。
+     * プリフェッチ状態に応じて最適なパスを選択する。
+     */
+    private fun finishCurrentPage() {
+        if (!isReading) return
+        debugLog("[v1.1.42 Prefetch]", "finishCurrentPage: prefetchReady=${prefetchedSentences != null}, isPrefetching=$isPrefetching, gestureSent=$prefetchGestureSent")
+        when {
+            prefetchedSentences != null -> {
+                // ✅ ベストケース: プリフェッチ完了済み → 即座開始
+                debugLog("[v1.1.42 Prefetch]", "✅ ZERO WAIT! Applying prefetched sentences immediately")
+                applyPrefetchAndSpeak()
+            }
+            isPrefetching -> {
+                // プリフェッチ進行中 → 最大3秒待機
+                debugLog("[v1.1.42 Prefetch]", "Waiting for prefetch (max 3s)...")
+                waitForPrefetch(remainingMs = 3000)
+            }
+            prefetchGestureSent -> {
+                // ジェスチャー送信済みだがOCR/LLM失敗 → 短い遅延でOCR再試行
+                debugLog("[v1.1.42 Prefetch]", "Gesture sent but prefetch failed, short-delay OCR fallback")
+                resetPageStateForNewPage()
+                performOCRWithRetry(maxRetries = 3, initialDelay = 500)
+            }
+            else -> {
+                // プリフェッチなし（文が少ない等） → 通常フロー（delay短縮済み）
+                debugLog("[v1.1.42 Prefetch]", "No prefetch, normal nextPage()")
+                nextPage()
+            }
+        }
+    }
+
+    /** プリフェッチ完了待機（300ms間隔ポーリング、最大3秒）*/
+    private fun waitForPrefetch(remainingMs: Long) {
+        when {
+            !isReading || isPaused -> {
+                resetPrefetchState()
+            }
+            prefetchedSentences != null -> {
+                debugLog("[v1.1.42 Prefetch]", "✅ Prefetch ready after wait! Applying now.")
+                applyPrefetchAndSpeak()
+            }
+            remainingMs <= 0 -> {
+                debugLog("[v1.1.42 Prefetch]", "Timeout! Falling back. gestureSent=$prefetchGestureSent")
+                isPrefetching = false
+                if (prefetchGestureSent) {
+                    resetPageStateForNewPage()
+                    performOCRWithRetry(maxRetries = 3, initialDelay = 500)
+                } else {
+                    nextPage()
+                }
+            }
+            else -> mainHandler.postDelayed({ waitForPrefetch(remainingMs - 300) }, 300)
+        }
+    }
+
+    /** プリフェッチ結果を適用して即座にTTS開始 */
+    private fun applyPrefetchAndSpeak() {
+        val sentences = prefetchedSentences ?: return
+        debugLog("[v1.1.42 Prefetch]", "applyPrefetchAndSpeak: ${sentences.size} sentences, page ${appState.currentPage} → ${appState.currentPage + 1}")
+
+        appState.currentPage++
+        lastCorrectedPageText = lastRecognizedText
+        lastRecognizedText = prefetchedCorrectedText.ifEmpty { sentences.joinToString("") }
+        lastExtractedText = ""
+        currentSentences = emptyList()
+        currentSentenceIndex = 0
+        hasSpokenForCurrentPage = true  // プリフェッチがCrossPage処理済み
+        textToSpeech?.stop()
+
+        resetPrefetchState()
+        updateOverlayUI()
+        speakSentences(sentences)
+    }
+
+    /** ジェスチャー送信済みのフォールバック用状態リセット（appState.currentPage++ あり） */
+    private fun resetPageStateForNewPage() {
+        appState.currentPage++
+        lastCorrectedPageText = lastRecognizedText
+        lastRecognizedText = ""
+        lastExtractedText = ""
+        currentSentences = emptyList()
+        currentSentenceIndex = 0
+        hasSpokenForCurrentPage = false
+        textToSpeech?.stop()
+        resetPrefetchState()
+        updateOverlayUI()
+        debugLog("[v1.1.42 Prefetch]", "resetPageStateForNewPage: page=${appState.currentPage}")
+    }
+
+    /** プリフェッチ状態を全リセット */
+    private fun resetPrefetchState() {
+        prefetchedSentences = null
+        prefetchedCorrectedText = ""
+        isPrefetching = false
+        prefetchGestureSent = false
     }
 
     private fun nextPage() {
@@ -1919,9 +2188,9 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         startService(intent)
 
         // OCRを再実行（リトライ付き）
-        // ページ遷移アニメーション完了を確実に待つため2.5秒に延長
-        debugLog("[OCR Retry]", "Scheduling OCR retry: maxRetries=3, initialDelay=2500ms")
-        performOCRWithRetry(maxRetries = 3, initialDelay = 2500)
+        // v1.1.42: 1500msに短縮（プリフェッチなし場合のフォールバック）
+        debugLog("[OCR Retry]", "Scheduling OCR retry: maxRetries=3, initialDelay=1500ms")
+        performOCRWithRetry(maxRetries = 3, initialDelay = 1500)
     }
 
     private fun previousPage() {
@@ -1959,9 +2228,9 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         startService(intent)
 
         // OCRを再実行（リトライ付き）
-        // ページ遷移アニメーション完了を確実に待つため2.5秒に延長
-        debugLog("[OCR Retry]", "Scheduling OCR retry: maxRetries=3, initialDelay=2500ms")
-        performOCRWithRetry(maxRetries = 3, initialDelay = 2500)
+        // v1.1.42: 1500msに短縮
+        debugLog("[OCR Retry]", "Scheduling OCR retry: maxRetries=3, initialDelay=1500ms")
+        performOCRWithRetry(maxRetries = 3, initialDelay = 1500)
     }
 
     /**
