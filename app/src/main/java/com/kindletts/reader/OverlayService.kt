@@ -2198,6 +2198,13 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                             val msg = if (count > 0) "★ ${count}パターン学習しました" else "差分なし"
                             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                             debugLog("[UserFeedback] Learned $count patterns", "'${originalSentence.take(20)}' → '${corrected.take(20)}'")
+                            // v1.1.40: 今すぐ読み上げるテキストも修正テキストに差し替え
+                            if (currentSentenceIndex < currentSentences.size) {
+                                val updated = currentSentences.toMutableList()
+                                updated[currentSentenceIndex] = corrected
+                                currentSentences = updated
+                                debugLog("[UserFeedback] Replaced sentence[$currentSentenceIndex] with corrected text")
+                            }
                         }
                         dlg.dismiss()
                         correctionDialogView = null
