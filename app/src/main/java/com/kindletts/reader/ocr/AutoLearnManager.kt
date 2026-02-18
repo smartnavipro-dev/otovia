@@ -490,6 +490,38 @@ class AutoLearnManager private constructor(context: Context) {
         return result
     }
 
+    // --- Pattern Management (v1.1.38) ---
+
+    /**
+     * 全パターンを表示用にソートして返す
+     * 並び順: USER優先 → 昇格済み優先 → 信頼度降順
+     */
+    fun getAllPatternsSorted(): List<LearnedPattern> {
+        lock.read {
+            return patterns.values.sortedWith(
+                compareByDescending<LearnedPattern> { it.source == "USER" }
+                    .thenByDescending { it.count >= PROMOTION_THRESHOLD }
+                    .thenByDescending { it.confidence }
+                    .thenByDescending { it.count }
+            )
+        }
+    }
+
+    /**
+     * 指定パターンを削除
+     * @return 削除されたかどうか
+     */
+    fun deletePattern(from: String): Boolean {
+        lock.write {
+            val removed = patterns.remove(from) != null
+            if (removed) {
+                savePatterns()
+                Log.d(TAG, "[Delete] Removed pattern: '$from'")
+            }
+            return removed
+        }
+    }
+
     // --- Stats ---
 
     fun getStats(): String {

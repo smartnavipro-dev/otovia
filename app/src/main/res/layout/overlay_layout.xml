@@ -59,6 +59,20 @@
             android:src="@android:drawable/ic_media_next"
             android:contentDescription="次のページ" />
 
+        <!-- 学習パターン管理ボタン (v1.1.38) -->
+        <TextView
+            android:id="@+id/btnPatternManager"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@android:color/holo_blue_dark"
+            android:text="学"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_margin="4dp"
+            android:contentDescription="学習パターン管理" />
+
         <!-- 閉じるボタン -->
         <ImageView
             android:id="@+id/btnCloseOverlay"
