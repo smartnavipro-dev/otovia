@@ -1808,16 +1808,40 @@ class TextCorrector(private val context: android.content.Context) {
             }
         }
 
-        // v1.0.39 ステップ8: LLM補正（信頼度が低い場合のみ）
+        // v1.0.39 ステップ8: LLM補正
         // v1.1.36: 適応パイプライン - AutoLearnの信頼度が高ければLLMをスキップ
+        // v1.1.39: スマートLLMゲート - Phase3シグナルベースのクリーンページ検出
+        //   ShapeSimilarHintsはゲートから除外（カタカナが存在するだけで発火するため）
+
+        // Phase3の異常検出シグナルを集約（nilは「発火なし」）
+        val phase3HasSignals = (phase3DetectionResult?.suggestions?.isNotEmpty() == true) ||
+                               (phase3OkuriganaResult?.suggestions?.isNotEmpty() == true) ||
+                               (phase3ChoonResult?.suggestions?.isNotEmpty() == true) ||
+                               (phase3KanjiResult?.suggestions?.isNotEmpty() == true)
+
         var llmSkipped = false
-        if (ENABLE_LLM_CORRECTION && phase1Confidence < MIN_CONFIDENCE_FOR_PHASE1 && autoLearnResult != null) {
-            val skipRec = autoLearnManager.getSkipRecommendation(autoLearnResult)
-            if (skipRec.shouldSkip) {
-                Log.d(TAG, "[v1.1.36 Adaptive] ★ LLM SKIPPED: ${skipRec.reason}")
-                llmSkipped = true
-            } else {
-                Log.d(TAG, "[v1.1.36 Adaptive] LLM required: ${skipRec.reason}")
+        if (ENABLE_LLM_CORRECTION && phase1Confidence < MIN_CONFIDENCE_FOR_PHASE1) {
+            val skipRec = autoLearnResult?.let { autoLearnManager.getSkipRecommendation(it) }
+            when {
+                // 優先1: 適応スキップ（AutoLearnパターンが成熟 ≥10個）
+                skipRec?.shouldSkip == true -> {
+                    Log.d(TAG, "[v1.1.36 Adaptive] ★ LLM SKIPPED: ${skipRec.reason}")
+                    llmSkipped = true
+                }
+                // 優先2: v1.1.39 クリーンページ — Phase3異常なし & AutoLearnが高信頼度で補正済み
+                !phase3HasSignals && (autoLearnResult?.appliedCount ?: 0) > 0 -> {
+                    Log.d(TAG, "[v1.1.39 CleanPage] ★ LLM SKIPPED: no Phase3 signals, AutoLearn applied ${autoLearnResult?.appliedCount} patterns (avgConf=${String.format("%.2f", autoLearnResult?.avgConfidence ?: 0f)})")
+                    llmSkipped = true
+                }
+                // 優先3: v1.1.39 クリーンページ — Phase3異常なし & Phase1が多数パターン適用
+                !phase3HasSignals && phase1Confidence >= 0.8 -> {
+                    Log.d(TAG, "[v1.1.39 CleanPage] ★ LLM SKIPPED: no Phase3 signals, Phase1 high confidence ($phase1Confidence)")
+                    llmSkipped = true
+                }
+                else -> {
+                    val reason = skipRec?.reason ?: "AutoLearn not available"
+                    Log.d(TAG, "[v1.1.39] LLM required: phase3Signals=$phase3HasSignals, phase1Conf=$phase1Confidence, $reason")
+                }
             }
         }
 
