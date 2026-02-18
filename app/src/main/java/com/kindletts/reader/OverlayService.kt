@@ -19,6 +19,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import com.kindletts.reader.ocr.AutoLearnManager
@@ -340,13 +341,23 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 stopSelf()
             }
 
-            // v1.1.37: テキストのロングタップで修正ダイアログ表示
+            // v1.1.38: 学習パターン管理ボタン
+            val btnPatternManager = view.findViewById<TextView>(R.id.btnPatternManager)
+            btnPatternManager?.setOnClickListener {
+                debugLog("[PatternManager] Button tapped")
+                showPatternManagerDialog()
+            }
+
+            // v1.1.37: テキストのロングタップ - 読み上げ中→修正ダイアログ、待機中→パターン管理
             val overlayText = view.findViewById<TextView>(R.id.overlayText)
             overlayText?.isLongClickable = true
             overlayText?.setOnLongClickListener {
                 if (currentSpokenSentence.isNotEmpty()) {
                     debugLog("[UserFeedback] Long press detected", "sentence: ${currentSpokenSentence.take(30)}")
                     showCorrectionDialog(currentSpokenSentence)
+                } else {
+                    debugLog("[PatternManager] Long press detected (no active sentence)")
+                    showPatternManagerDialog()
                 }
                 true
             }
@@ -1989,7 +2000,148 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 isPaused -> "一時停止"
                 else -> "読み上げ中"
             }
-            statusText.text = "$status (${appState.currentPage}ページ)"
+            // v1.1.38: 昇格済み学習パターン数を表示
+            val promoted = AutoLearnManager.getInstance(this).getPromotedCount()
+            val patternBadge = if (promoted > 0) " [★$promoted]" else ""
+            statusText.text = "$status (${appState.currentPage}ページ)$patternBadge"
+        }
+    }
+
+    // v1.1.38: 学習済みパターン管理ダイアログ
+    private fun showPatternManagerDialog() {
+        val autoLearn = AutoLearnManager.getInstance(this)
+        val allPatterns = autoLearn.getAllPatternsSorted()
+        val promoted = allPatterns.filter { it.count >= 3 }
+        val context = this
+
+        mainHandler.post {
+            try {
+                val scrollView = ScrollView(context)
+                val container = LinearLayout(context).apply {
+                    orientation = LinearLayout.VERTICAL
+                    setPadding(32, 16, 32, 16)
+                }
+                scrollView.addView(container)
+
+                if (promoted.isEmpty()) {
+                    val emptyText = TextView(context).apply {
+                        text = "まだ学習済みパターンがありません\n（読み上げ中にテキストをロングタップして\n修正すると学習されます）"
+                        setTextColor(0xFF888888.toInt())
+                        textSize = 13f
+                        gravity = android.view.Gravity.CENTER
+                        setPadding(0, 48, 0, 48)
+                    }
+                    container.addView(emptyText)
+                } else {
+                    val userCount = promoted.count { it.source == "USER" }
+                    val llmCount = promoted.count { it.source != "USER" }
+                    val summaryText = TextView(context).apply {
+                        text = "昇格済み: ${promoted.size}個 (手動: $userCount, AI: $llmCount)"
+                        setTextColor(0xFF88BBFF.toInt())
+                        textSize = 12f
+                        setPadding(0, 0, 0, 16)
+                    }
+                    container.addView(summaryText)
+
+                    val divider = View(context).apply {
+                        setBackgroundColor(0xFF444444.toInt())
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT, 1
+                        ).also { it.bottomMargin = 8 }
+                    }
+                    container.addView(divider)
+
+                    for (pattern in promoted) {
+                        val row = LinearLayout(context).apply {
+                            orientation = LinearLayout.HORIZONTAL
+                            gravity = android.view.Gravity.CENTER_VERTICAL
+                            setPadding(0, 10, 0, 10)
+                        }
+
+                        // ソースバッジ: 👤=USER, 🤖=LLM
+                        val badge = TextView(context).apply {
+                            text = if (pattern.source == "USER") "👤" else "🤖"
+                            textSize = 14f
+                            setPadding(0, 0, 8, 0)
+                        }
+
+                        // パターンテキスト: 'from' → 'to'
+                        val patternText = TextView(context).apply {
+                            text = "'${pattern.from}' → '${pattern.to}'"
+                            textSize = 12f
+                            setTextColor(0xFFEEEEEE.toInt())
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            )
+                        }
+
+                        // 信頼度
+                        val confPct = (pattern.confidence * 100).toInt()
+                        val confColor = when {
+                            pattern.confidence >= 0.8f -> 0xFF88FF88.toInt()  // 緑: 高信頼
+                            pattern.confidence >= 0.5f -> 0xFFFFDD00.toInt()  // 黄: 中信頼
+                            else -> 0xFFFF8888.toInt()                         // 赤: 低信頼
+                        }
+                        val confText = TextView(context).apply {
+                            text = "$confPct%"
+                            textSize = 11f
+                            setTextColor(confColor)
+                            setPadding(8, 0, 4, 0)
+                        }
+
+                        // 削除ボタン
+                        val deleteBtn = Button(context).apply {
+                            text = "×"
+                            textSize = 11f
+                            setPadding(8, 0, 8, 0)
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            setOnClickListener {
+                                autoLearn.deletePattern(pattern.from)
+                                container.removeView(row)
+                                updateOverlayUI()  // バッジ更新
+                                Toast.makeText(context, "'${pattern.from}' を削除", Toast.LENGTH_SHORT).show()
+                                debugLog("[PatternManager] Deleted pattern", "'${pattern.from}' → '${pattern.to}'")
+                            }
+                        }
+
+                        row.addView(badge)
+                        row.addView(patternText)
+                        row.addView(confText)
+                        row.addView(deleteBtn)
+                        container.addView(row)
+
+                        // 区切り線
+                        val rowDivider = View(context).apply {
+                            setBackgroundColor(0xFF333333.toInt())
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT, 1
+                            )
+                        }
+                        container.addView(rowDivider)
+                    }
+                }
+
+                val dialog = AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog)
+                    .setTitle("学習済みパターン")
+                    .setView(scrollView)
+                    .setNeutralButton("全削除") { dlg, _ ->
+                        autoLearn.clearAll()
+                        updateOverlayUI()
+                        Toast.makeText(context, "全パターンを削除しました", Toast.LENGTH_SHORT).show()
+                        debugLog("[PatternManager] All patterns cleared by user")
+                        dlg.dismiss()
+                    }
+                    .setPositiveButton("閉じる") { dlg, _ -> dlg.dismiss() }
+                    .create()
+                dialog.window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
+                dialog.show()
+                debugLog("[PatternManager] Dialog shown", "${promoted.size} promoted patterns")
+            } catch (e: Exception) {
+                Log.e(TAG, "[PatternManager] Failed to show dialog: ${e.message}", e)
+            }
         }
     }
 
