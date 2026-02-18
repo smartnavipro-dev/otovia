@@ -1461,6 +1461,23 @@ class TextCorrector(private val context: android.content.Context) {
     // Phase 1で適用されたパターンを追跡
     private val appliedPatterns = mutableListOf<String>()
 
+    // v1.1.41: LLM使用状況の外部公開（OverlayServiceがステータス表示に使用）
+    @Volatile var lastCorrectionUsedLLM = false
+        private set
+
+    // v1.1.41: ユーザー修正後に次ページのCleanPageスキップを無効化するフラグ
+    @Volatile private var forceFullCorrectionOnce = false
+
+    /**
+     * v1.1.41: ユーザーがロングタップ修正を行った後に呼ぶ。
+     * 次回のcorrectText()でCleanPageゲート（優先2/3）をバイパスし、LLMを強制実行する。
+     * 適応スキップ（優先1: AutoLearn成熟後）は温存する。
+     */
+    fun setForceFullCorrectionOnce() {
+        forceFullCorrectionOnce = true
+        Log.d(TAG, "[v1.1.41] forceFullCorrectionOnce set: next page will bypass CleanPage gates")
+    }
+
     /**
      * v1.0.75: Phase 3検出結果からLLM用ヒントを生成
      * v1.0.76: 送り仮名、促音・長音、漢字字形の検出結果も含める
@@ -1819,31 +1836,41 @@ class TextCorrector(private val context: android.content.Context) {
                                (phase3ChoonResult?.suggestions?.isNotEmpty() == true) ||
                                (phase3KanjiResult?.suggestions?.isNotEmpty() == true)
 
+        // v1.1.41: ユーザー修正フラグを読み出してリセット（1ページ限定）
+        val isForced = forceFullCorrectionOnce.also { forceFullCorrectionOnce = false }
+        if (isForced) {
+            Log.d(TAG, "[v1.1.41] Force full correction: CleanPage gates bypassed due to user correction on previous page")
+        }
+
         var llmSkipped = false
         if (ENABLE_LLM_CORRECTION && phase1Confidence < MIN_CONFIDENCE_FOR_PHASE1) {
             val skipRec = autoLearnResult?.let { autoLearnManager.getSkipRecommendation(it) }
             when {
-                // 優先1: 適応スキップ（AutoLearnパターンが成熟 ≥10個）
+                // 優先1: 適応スキップ（AutoLearnパターンが成熟 ≥10個）— force時も有効（AutoLearnが成熟なら信頼できる）
                 skipRec?.shouldSkip == true -> {
                     Log.d(TAG, "[v1.1.36 Adaptive] ★ LLM SKIPPED: ${skipRec.reason}")
                     llmSkipped = true
                 }
                 // 優先2: v1.1.39 クリーンページ — Phase3異常なし & AutoLearnが高信頼度で補正済み
-                !phase3HasSignals && (autoLearnResult?.appliedCount ?: 0) > 0 -> {
+                // v1.1.41: isForced=trueのときは適用しない（ユーザー修正後は念のためLLMを走らせる）
+                !isForced && !phase3HasSignals && (autoLearnResult?.appliedCount ?: 0) > 0 -> {
                     Log.d(TAG, "[v1.1.39 CleanPage] ★ LLM SKIPPED: no Phase3 signals, AutoLearn applied ${autoLearnResult?.appliedCount} patterns (avgConf=${String.format("%.2f", autoLearnResult?.avgConfidence ?: 0f)})")
                     llmSkipped = true
                 }
                 // 優先3: v1.1.39 クリーンページ — Phase3異常なし & Phase1が多数パターン適用
-                !phase3HasSignals && phase1Confidence >= 0.8 -> {
+                // v1.1.41: isForced=trueのときは適用しない
+                !isForced && !phase3HasSignals && phase1Confidence >= 0.8 -> {
                     Log.d(TAG, "[v1.1.39 CleanPage] ★ LLM SKIPPED: no Phase3 signals, Phase1 high confidence ($phase1Confidence)")
                     llmSkipped = true
                 }
                 else -> {
                     val reason = skipRec?.reason ?: "AutoLearn not available"
-                    Log.d(TAG, "[v1.1.39] LLM required: phase3Signals=$phase3HasSignals, phase1Conf=$phase1Confidence, $reason")
+                    Log.d(TAG, "[v1.1.39] LLM required: phase3Signals=$phase3HasSignals, phase1Conf=$phase1Confidence, isForced=$isForced, $reason")
                 }
             }
         }
+        // v1.1.41: LLM使用有無を記録（OverlayServiceがステータス表示に使用）
+        lastCorrectionUsedLLM = !llmSkipped
 
         if (ENABLE_LLM_CORRECTION && phase1Confidence < MIN_CONFIDENCE_FOR_PHASE1 && !llmSkipped) {
             Log.d(TAG, "[v1.0.39] Phase 1 confidence low ($phase1Confidence), trying LLM correction")
