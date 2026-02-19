@@ -195,11 +195,16 @@ class AutoLearnManager private constructor(context: Context) {
                 patterns.remove(entry.key)
             }
 
-            // 上限超過時は古いパターンを削除
+            // v1.1.43: 上限超過時は非昇格→低信頼度 の優先順で削除（昇格済み高信頼度パターンを保護）
             if (patterns.size > MAX_PATTERNS) {
-                val sorted = patterns.entries.sortedBy { it.value.lastSeen }
                 val toRemove = patterns.size - MAX_PATTERNS
+                val sorted = patterns.entries.sortedWith(
+                    compareBy<Map.Entry<String, LearnedPattern>> { it.value.count >= PROMOTION_THRESHOLD }
+                        .thenBy { it.value.confidence }
+                        .thenBy { it.value.lastSeen }
+                )
                 sorted.take(toRemove).forEach { patterns.remove(it.key) }
+                Log.d(TAG, "[v1.1.43] Evicted $toRemove patterns (non-promoted first, then low-confidence)")
             }
 
             savePatterns()
