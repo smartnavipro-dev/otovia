@@ -80,11 +80,17 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     // v1.1.41: セッション統計（LLM使用/スキップ カウント）
     private var sessionLLMUsed = 0
     private var sessionLLMSkipped = 0
+    // v1.1.44: per-page補正統計（ステータスバッジ用）
+    private var lastPageLLMUsed = false
+    private var lastPageAutoLearnCount = 0
+    private var prefetchPageLLMUsed = false      // prefetchパス用の一時保存
+    private var prefetchPageAutoLearnCount = 0   // prefetchパス用の一時保存
     // v1.1.42: バックグラウンドプリフェッチ状態
     private var prefetchedSentences: List<String>? = null  // null=未完了
     private var prefetchedCorrectedText: String = ""       // lastRecognizedText更新用
     private var isPrefetching = false                       // プリフェッチ実行中
     private var prefetchGestureSent = false                 // ジェスチャー送信済み
+    private var prefetchGeneration = 0                      // v1.1.43: ステールコールバック検出用
     private var ocrExecutor: ScheduledExecutorService? = null
     private var isCapturing = false
     // v1.0.17: テキスト補正機能, v1.0.39: contextパラメータ追加
@@ -480,9 +486,18 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     private fun pauseReading() {
         debugLog("Pausing reading")
 
+        // v1.1.44: ジェスチャー送信済み状態を保存（resume後のfinishCurrentPageで正しく処理するため）
+        val gestureSentBeforePause = prefetchGestureSent
         isPaused = true
         appState.isPaused = true
-        resetPrefetchState()  // v1.1.42: プリフェッチをキャンセル
+        resetPrefetchState()  // v1.1.42: プリフェッチをキャンセル（prefetchGestureSentもクリアされる）
+
+        // v1.1.44: ページジェスチャーが送信済みだった場合は復元する
+        // （resume後に最終文が終わったとき、finishCurrentPage → resetPageStateForNewPage+OCR を使わせる）
+        if (gestureSentBeforePause) {
+            prefetchGestureSent = true
+            debugLog("[v1.1.44 Pause]", "Preserved prefetchGestureSent=true — page was already turned")
+        }
 
         textToSpeech?.stop()
         stopAutoOCR()
@@ -1491,6 +1506,9 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
 
                 // v1.1.41: セッション統計を更新
                 if (textCorrector.lastCorrectionUsedLLM) sessionLLMUsed++ else sessionLLMSkipped++
+                // v1.1.44: per-page補正統計を更新（通常OCRパス）
+                lastPageLLMUsed = textCorrector.lastCorrectionUsedLLM
+                lastPageAutoLearnCount = textCorrector.lastAutoLearnAppliedCount
                 mainHandler.post { updateOverlayUI() }
 
                 debugLog("[OCR Processing] Text correction", """
@@ -1879,7 +1897,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         if (currentSentenceIndex < currentSentences.size) {
             // v1.1.42: 最終文の読み上げ開始前にプリフェッチ起動
             val isStartingLastSentence = currentSentenceIndex == currentSentences.size - 1
-            if (isStartingLastSentence && currentSentences.size >= 3 &&
+            if (isStartingLastSentence && currentSentences.size >= 2 &&  // v1.1.45: 2文ページにも対応（旧 >= 3）
                 autoPageTurnEnabled && isReading && !isPaused && !isPrefetching && !prefetchGestureSent) {
                 debugLog("[v1.1.42 Prefetch]", "Triggering prefetch before last sentence (${currentSentences.size} sentences total)")
                 startPrefetch()
@@ -1918,9 +1936,11 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         prefetchGestureSent = true
         prefetchedSentences = null
         prefetchedCorrectedText = ""
+        prefetchGeneration++  // v1.1.43: 新しい世代開始（旧コールバックを無効化）
+        val myGeneration = prefetchGeneration
         val capturedTrailingFragment = trailingFragment  // ClosureでCapture（CrossPage用）
 
-        debugLog("[v1.1.42 Prefetch]", "=== PREFETCH START === sending gesture, last sentence about to play")
+        debugLog("[v1.1.42 Prefetch]", "=== PREFETCH START === sending gesture, last sentence about to play (gen=$myGeneration)")
 
         // ページめくりジェスチャー送信（Kindleのアニメーション開始）
         val gestureAction = if (pageDirection == "right_to_next") "NEXT_PAGE" else "PREVIOUS_PAGE"
@@ -1931,13 +1951,13 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
 
         // アニメーション完了後（1.2秒）にOCR開始
         mainHandler.postDelayed({
-            if (!isPrefetching || !isReading || isPaused) {
-                debugLog("[v1.1.42 Prefetch]", "Cancelled before OCR (isPrefetching=$isPrefetching, isReading=$isReading, isPaused=$isPaused)")
+            if (myGeneration != prefetchGeneration || !isPrefetching || !isReading || isPaused) {
+                debugLog("[v1.1.42 Prefetch]", "Cancelled before OCR (gen=$myGeneration current=$prefetchGeneration, isPrefetching=$isPrefetching)")
                 isPrefetching = false
                 return@postDelayed
             }
             debugLog("[v1.1.42 Prefetch]", "Starting background OCR after animation wait")
-            performPrefetchOCR(capturedTrailingFragment, retryCount = 0)
+            performPrefetchOCR(capturedTrailingFragment, retryCount = 0, generation = myGeneration)
         }, 1200)
     }
 
@@ -1945,8 +1965,12 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
      * バックグラウンドOCR実行。完了後 prefetchedSentences に格納する。
      * isCapturing が true なら 500ms 待機してリトライ。
      */
-    private fun performPrefetchOCR(savedTrailingFragment: String, retryCount: Int) {
-        if (!isPrefetching || !isReading || isPaused) {
+    private fun performPrefetchOCR(savedTrailingFragment: String, retryCount: Int, generation: Int) {
+        // v1.1.43: 世代チェック（タイムアウト後のステールコールバックを排除）
+        if (generation != prefetchGeneration || !isPrefetching || !isReading || isPaused) {
+            if (generation != prefetchGeneration) {
+                debugLog("[v1.1.43 Prefetch]", "Stale OCR cancelled (gen=$generation vs current=$prefetchGeneration)")
+            }
             isPrefetching = false
             return
         }
@@ -1954,7 +1978,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         // isCapturing中は待機（autoOCRと競合しない）
         if (isCapturing) {
             if (retryCount < 6) {
-                mainHandler.postDelayed({ performPrefetchOCR(savedTrailingFragment, retryCount + 1) }, 500)
+                mainHandler.postDelayed({ performPrefetchOCR(savedTrailingFragment, retryCount + 1, generation) }, 500)
             } else {
                 debugLog("[v1.1.42 Prefetch]", "Capture busy after retries, giving up")
                 isPrefetching = false
@@ -1969,7 +1993,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
             isCapturing = false
             if (retryCount < 4) {
                 debugLog("[v1.1.42 Prefetch]", "No image, retry ${retryCount + 1}")
-                mainHandler.postDelayed({ performPrefetchOCR(savedTrailingFragment, retryCount + 1) }, 750)
+                mainHandler.postDelayed({ performPrefetchOCR(savedTrailingFragment, retryCount + 1, generation) }, 750)
             } else {
                 debugLog("[v1.1.42 Prefetch]", "No image after retries, giving up")
                 isPrefetching = false
@@ -1991,13 +2015,22 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
             .process(mlImage)
             .addOnSuccessListener { visionText ->
                 isCapturing = false
+
+                // v1.1.43: OCR完了時点で世代チェック（LLM開始前に早期終了）
+                if (generation != prefetchGeneration) {
+                    debugLog("[v1.1.43 Prefetch]", "Stale OCR result discarded (gen=$generation vs current=$prefetchGeneration)")
+                    bitmap.recycle()
+                    isPrefetching = false
+                    return@addOnSuccessListener
+                }
+
                 val extractedText = extractTextWithVerticalSupport(visionText)
                 debugLog("[v1.1.42 Prefetch]", "OCR done: ${extractedText.length} chars in ${System.currentTimeMillis() - startTime}ms")
 
                 if (extractedText.isEmpty()) {
                     bitmap.recycle()
                     if (retryCount < 3) {
-                        mainHandler.postDelayed({ performPrefetchOCR(savedTrailingFragment, retryCount + 1) }, 750)
+                        mainHandler.postDelayed({ performPrefetchOCR(savedTrailingFragment, retryCount + 1, generation) }, 750)
                     } else {
                         debugLog("[v1.1.42 Prefetch]", "Empty text after retries, giving up")
                         isPrefetching = false
@@ -2008,6 +2041,14 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 // テキスト補正（前ページコンテキスト付き）
                 val prevContext = lastRecognizedText.takeLast(200).ifEmpty { null }
                 val correctedText = textCorrector.correctText(extractedText, visionText, previousContext = prevContext)
+
+                // v1.1.43: LLM完了後にも世代チェック（LLMが長時間かかった場合のステール排除）
+                if (generation != prefetchGeneration) {
+                    debugLog("[v1.1.43 Prefetch]", "Stale LLM result discarded (gen=$generation vs current=$prefetchGeneration)")
+                    bitmap.recycle()
+                    isPrefetching = false
+                    return@addOnSuccessListener
+                }
 
                 // Kindle UI要素除去
                 var cleanedText = correctedText
@@ -2040,10 +2081,13 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
 
                 val sentences = splitIntoSentences(textToSpeak)
                 val totalTime = System.currentTimeMillis() - startTime
-                debugLog("[v1.1.42 Prefetch]", "=== PREFETCH DONE === ${sentences.size} sentences in ${totalTime}ms")
+                debugLog("[v1.1.42 Prefetch]", "=== PREFETCH DONE === ${sentences.size} sentences in ${totalTime}ms (gen=$generation)")
 
                 prefetchedCorrectedText = correctedText
                 prefetchedSentences = if (sentences.isNotEmpty()) sentences else null
+                // v1.1.44: prefetchパスの補正統計を保存（applyPrefetchAndSpeakで lastPage* に移す）
+                prefetchPageLLMUsed = textCorrector.lastCorrectionUsedLLM
+                prefetchPageAutoLearnCount = textCorrector.lastAutoLearnAppliedCount
                 isPrefetching = false
                 bitmap.recycle()
             }
@@ -2069,9 +2113,9 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 applyPrefetchAndSpeak()
             }
             isPrefetching -> {
-                // プリフェッチ進行中 → 最大3秒待機
-                debugLog("[v1.1.42 Prefetch]", "Waiting for prefetch (max 3s)...")
-                waitForPrefetch(remainingMs = 3000)
+                // プリフェッチ進行中 → 最大5秒待機 (v1.1.43: 3s→5s, LLM 6.7s実測に対応)
+                debugLog("[v1.1.43 Prefetch]", "Waiting for prefetch (max 5s)...")
+                waitForPrefetch(remainingMs = 5000)
             }
             prefetchGestureSent -> {
                 // ジェスチャー送信済みだがOCR/LLM失敗 → 短い遅延でOCR再試行
@@ -2087,7 +2131,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         }
     }
 
-    /** プリフェッチ完了待機（300ms間隔ポーリング、最大3秒）*/
+    /** プリフェッチ完了待機（300ms間隔ポーリング、最大5秒）*/
     private fun waitForPrefetch(remainingMs: Long) {
         when {
             !isReading || isPaused -> {
@@ -2098,7 +2142,9 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 applyPrefetchAndSpeak()
             }
             remainingMs <= 0 -> {
-                debugLog("[v1.1.42 Prefetch]", "Timeout! Falling back. gestureSent=$prefetchGestureSent")
+                // v1.1.43: タイムアウト時に generation をインクリメントしてステールコールバックを無効化
+                prefetchGeneration++
+                debugLog("[v1.1.43 Prefetch]", "Timeout! Invalidated gen=$prefetchGeneration. Falling back. gestureSent=$prefetchGestureSent")
                 isPrefetching = false
                 if (prefetchGestureSent) {
                     resetPageStateForNewPage()
@@ -2124,6 +2170,13 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         currentSentenceIndex = 0
         hasSpokenForCurrentPage = true  // プリフェッチがCrossPage処理済み
         textToSpeech?.stop()
+
+        // v1.1.44: prefetchパスの補正統計を lastPage* に転記（ステータス表示用）
+        lastPageLLMUsed = prefetchPageLLMUsed
+        lastPageAutoLearnCount = prefetchPageAutoLearnCount
+
+        // v1.1.41: prefetchでLLMを使ったかに基づいてセッション統計を更新
+        if (lastPageLLMUsed) sessionLLMUsed++ else sessionLLMSkipped++
 
         resetPrefetchState()
         updateOverlayUI()
@@ -2287,7 +2340,14 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 // 節約率を簡潔に: "AI:3/8" = 3回使用、8回節約
                 " [AI:$sessionLLMUsed/$sessionTotal]"
             } else ""
-            statusText.text = "$status (${appState.currentPage}ページ)$patternBadge$sessionBadge"
+            // v1.1.44: 前ページのper-page補正内容バッジ
+            val corrBadge = when {
+                lastPageLLMUsed && lastPageAutoLearnCount > 0 -> " [補:LLM+学×$lastPageAutoLearnCount]"
+                lastPageLLMUsed -> " [補:LLM]"
+                lastPageAutoLearnCount > 0 -> " [補:学×$lastPageAutoLearnCount]"
+                else -> ""
+            }
+            statusText.text = "$status (${appState.currentPage}ページ)$patternBadge$sessionBadge$corrBadge"
         }
     }
 

@@ -1465,6 +1465,10 @@ class TextCorrector(private val context: android.content.Context) {
     @Volatile var lastCorrectionUsedLLM = false
         private set
 
+    // v1.1.44: AutoLearn適用数の外部公開（per-pageステータス表示用）
+    @Volatile var lastAutoLearnAppliedCount = 0
+        private set
+
     // v1.1.41: ユーザー修正後に次ページのCleanPageスキップを無効化するフラグ
     @Volatile private var forceFullCorrectionOnce = false
 
@@ -1618,6 +1622,8 @@ class TextCorrector(private val context: android.content.Context) {
                 correctedText = autoLearnResult.correctedText
             }
         }
+        // v1.1.44: AutoLearn適用数を記録（OverlayServiceのper-pageステータス表示用）
+        lastAutoLearnAppliedCount = autoLearnResult?.appliedCount ?: 0
 
         // v1.1.34 ステップ-0.3: 日本語テキスト正規化（不要スペース除去）
         val normalized = normalizeJapaneseSpaces(correctedText)
