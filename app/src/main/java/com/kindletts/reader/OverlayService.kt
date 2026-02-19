@@ -91,6 +91,10 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     private var isPrefetching = false                       // プリフェッチ実行中
     private var prefetchGestureSent = false                 // ジェスチャー送信済み
     private var prefetchGeneration = 0                      // v1.1.43: ステールコールバック検出用
+    // v1.1.46: ページ履歴（前ページ修正機能）
+    private data class PageHistoryEntry(val pageNumber: Int, val sentences: List<String>)
+    private val pageHistory = ArrayDeque<PageHistoryEntry>()
+    private val MAX_PAGE_HISTORY = 5
     private var ocrExecutor: ScheduledExecutorService? = null
     private var isCapturing = false
     // v1.0.17: テキスト補正機能, v1.0.39: contextパラメータ追加
@@ -360,6 +364,13 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
             btnPatternManager?.setOnClickListener {
                 debugLog("[PatternManager] Button tapped")
                 showPatternManagerDialog()
+            }
+            // v1.1.46: 長押し → ページ履歴ダイアログ
+            btnPatternManager?.isLongClickable = true
+            btnPatternManager?.setOnLongClickListener {
+                debugLog("[PageHistory] Long press on pattern manager button")
+                showPageHistoryDialog()
+                true
             }
 
             // v1.1.37: テキストのロングタップ - 読み上げ中→修正ダイアログ、待機中→パターン管理
@@ -2162,6 +2173,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         val sentences = prefetchedSentences ?: return
         debugLog("[v1.1.42 Prefetch]", "applyPrefetchAndSpeak: ${sentences.size} sentences, page ${appState.currentPage} → ${appState.currentPage + 1}")
 
+        savePageToHistory()  // v1.1.46: 現在ページをhistoryに保存
         appState.currentPage++
         lastCorrectedPageText = lastRecognizedText
         lastRecognizedText = prefetchedCorrectedText.ifEmpty { sentences.joinToString("") }
@@ -2206,6 +2218,14 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         prefetchGestureSent = false
     }
 
+    /** v1.1.46: 現在のページをhistoryに保存（ページ遷移前に呼ぶ） */
+    private fun savePageToHistory() {
+        if (currentSentences.isEmpty()) return
+        pageHistory.addFirst(PageHistoryEntry(appState.currentPage, currentSentences.toList()))
+        if (pageHistory.size > MAX_PAGE_HISTORY) pageHistory.removeLast()
+        debugLog("[v1.1.46 PageHistory]", "Saved page ${appState.currentPage} (${currentSentences.size} sentences), history=${pageHistory.size}")
+    }
+
     private fun nextPage() {
         val timestamp = System.currentTimeMillis()
         debugLog("=== NEXT PAGE ===", """
@@ -2217,6 +2237,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
             currentSentenceIndex: $currentSentenceIndex
         """.trimIndent())
 
+        savePageToHistory()  // v1.1.46: 現在ページをhistoryに保存
         appState.currentPage++
 
         // ✅ FIX: ページ変更時に状態をリセット（TTS継続の問題を修正）
@@ -2257,6 +2278,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
             currentSentenceIndex: $currentSentenceIndex
         """.trimIndent())
 
+        savePageToHistory()  // v1.1.46: 現在ページをhistoryに保存
         appState.currentPage--
 
         // ✅ FIX: ページ変更時に状態をリセット（TTS継続の問題を修正）
@@ -2348,6 +2370,152 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 else -> ""
             }
             statusText.text = "$status (${appState.currentPage}ページ)$patternBadge$sessionBadge$corrBadge"
+        }
+    }
+
+    // v1.1.46: ページ履歴ダイアログ（[学]ボタン長押し）
+    private fun showPageHistoryDialog() {
+        if (pageHistory.isEmpty()) {
+            mainHandler.post {
+                Toast.makeText(this, "まだ履歴がありません（ページを進めると記録されます）", Toast.LENGTH_SHORT).show()
+            }
+            return
+        }
+
+        val wasReading = isReading && !isPaused
+        if (wasReading) {
+            textToSpeech?.stop()
+            isPaused = true
+            updatePlayPauseButton()
+        }
+
+        val context = this
+        mainHandler.post {
+            try {
+                val scrollView = ScrollView(context)
+                val container = LinearLayout(context).apply {
+                    orientation = LinearLayout.VERTICAL
+                    setPadding(32, 16, 32, 16)
+                }
+                scrollView.addView(container)
+
+                for (entry in pageHistory) {
+                    // ページヘッダー
+                    val pageLabel = TextView(context).apply {
+                        text = "── ${entry.pageNumber}ページ目 ──"
+                        setTextColor(0xFF88BBFF.toInt())
+                        textSize = 12f
+                        typeface = android.graphics.Typeface.DEFAULT_BOLD
+                        setPadding(0, 20, 0, 6)
+                    }
+                    container.addView(pageLabel)
+
+                    for (sentence in entry.sentences) {
+                        val sentenceView = TextView(context).apply {
+                            text = sentence
+                            textSize = 13f
+                            setTextColor(0xFFDDDDDD.toInt())
+                            setPadding(16, 10, 16, 10)
+                            isClickable = true
+                            setOnClickListener {
+                                showHistoryCorrectionDialog(sentence)
+                            }
+                        }
+                        container.addView(sentenceView)
+
+                        val divider = View(context).apply {
+                            setBackgroundColor(0xFF2A2A2A.toInt())
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT, 1
+                            )
+                        }
+                        container.addView(divider)
+                    }
+                }
+
+                val dialog = AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog)
+                    .setTitle("ページ履歴  タップで修正・学習")
+                    .setView(scrollView)
+                    .setPositiveButton("閉じる") { dlg, _ ->
+                        dlg.dismiss()
+                        if (wasReading) {
+                            isPaused = false
+                            speakCurrentSentence()
+                            updatePlayPauseButton()
+                        }
+                    }
+                    .setOnCancelListener {
+                        if (wasReading) {
+                            isPaused = false
+                            speakCurrentSentence()
+                            updatePlayPauseButton()
+                        }
+                    }
+                    .create()
+                dialog.window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
+                dialog.show()
+                debugLog("[v1.1.46 PageHistory]", "Dialog shown: ${pageHistory.size} pages")
+            } catch (e: Exception) {
+                Log.e(TAG, "[PageHistory] Failed to show dialog: ${e.message}", e)
+            }
+        }
+    }
+
+    // v1.1.46: 履歴文の修正ダイアログ（TTS管理なし、currentSentences更新なし）
+    private fun showHistoryCorrectionDialog(originalSentence: String) {
+        val context = this
+        mainHandler.post {
+            try {
+                val layout = LinearLayout(context).apply {
+                    orientation = LinearLayout.VERTICAL
+                    setPadding(48, 32, 48, 16)
+                }
+
+                val label = TextView(context).apply {
+                    text = "選択した文:"
+                    setTextColor(0xFF888888.toInt())
+                    textSize = 12f
+                }
+                layout.addView(label)
+
+                val originalView = TextView(context).apply {
+                    text = originalSentence
+                    textSize = 14f
+                    setTextColor(0xFFFFFFFF.toInt())
+                    setPadding(0, 8, 0, 24)
+                }
+                layout.addView(originalView)
+
+                val editText = EditText(context).apply {
+                    setText(originalSentence)
+                    textSize = 14f
+                    setSelectAllOnFocus(true)
+                    hint = "正しい文を入力"
+                }
+                layout.addView(editText)
+
+                val dialog = AlertDialog.Builder(context, android.R.style.Theme_DeviceDefault_Dialog)
+                    .setTitle("テキスト修正（履歴）")
+                    .setView(layout)
+                    .setPositiveButton("学習") { dlg, _ ->
+                        val corrected = editText.text.toString().trim()
+                        if (corrected.isNotEmpty() && corrected != originalSentence) {
+                            val autoLearn = AutoLearnManager.getInstance(context)
+                            val count = autoLearn.learnFromUserCorrection(originalSentence, corrected)
+                            val msg = if (count > 0) "★ ${count}パターン学習しました" else "差分なし"
+                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                            debugLog("[v1.1.46 PageHistory]", "Learned $count patterns: '${originalSentence.take(20)}' → '${corrected.take(20)}'")
+                            textCorrector.setForceFullCorrectionOnce()
+                        }
+                        dlg.dismiss()
+                    }
+                    .setNegativeButton("キャンセル") { dlg, _ -> dlg.dismiss() }
+                    .create()
+                dialog.window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
+                dialog.show()
+            } catch (e: Exception) {
+                Log.e(TAG, "[PageHistory] Correction dialog error: ${e.message}", e)
+            }
         }
     }
 
