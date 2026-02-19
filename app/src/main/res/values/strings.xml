@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Kindle TTS Reader</string>
+    <string name="app_name">ReadVox</string>
 
     <!-- メイン画面 -->
     <string name="start_reading">読み上げ開始</string>
@@ -30,8 +30,8 @@
     <string name="error_page_turn_failed">ページめくりに失敗しました</string>
 
     <!-- 通知 -->
-    <string name="notification_reading">Kindle読み上げ中...</string>
+    <string name="notification_reading">ReadVox 読み上げ中...</string>
 
     <!-- アクセシビリティサービス -->
-    <string name="accessibility_service_description">Kindle読み上げ機能を有効にします。Kindleアプリで自動ページめくりを行います。</string>
+    <string name="accessibility_service_description">電子書籍の自動読み上げ機能を有効にします。画面OCRとTTSによる自動ページめくりを行います。</string>
 </resources>
