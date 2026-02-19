@@ -27,6 +27,7 @@ import androidx.core.app.NotificationCompat
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.japanese.JapaneseTextRecognizerOptions
+import com.kindletts.reader.ocr.QuotaManager
 import com.kindletts.reader.ocr.TextCorrector
 import org.opencv.android.OpenCVLoader
 import org.opencv.android.Utils
@@ -99,6 +100,7 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     private var isCapturing = false
     // v1.0.17: テキスト補正機能, v1.0.39: contextパラメータ追加
     private val textCorrector by lazy { TextCorrector(this) }
+    private val quotaManager by lazy { QuotaManager(this) }
 
     // 状態管理
     private data class AppState(
@@ -2356,20 +2358,10 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
             // v1.1.38: 昇格済み学習パターン数を表示
             val promoted = AutoLearnManager.getInstance(this).getPromotedCount()
             val patternBadge = if (promoted > 0) " [★$promoted]" else ""
-            // v1.1.41: セッションLLM統計（使用/節約）と今日のAPI消費数
-            val sessionTotal = sessionLLMUsed + sessionLLMSkipped
-            val sessionBadge = if (sessionTotal > 0) {
-                // 節約率を簡潔に: "AI:3/8" = 3回使用、8回節約
-                " [AI:$sessionLLMUsed/$sessionTotal]"
-            } else ""
-            // v1.1.44: 前ページのper-page補正内容バッジ
-            val corrBadge = when {
-                lastPageLLMUsed && lastPageAutoLearnCount > 0 -> " [補:LLM+学×$lastPageAutoLearnCount]"
-                lastPageLLMUsed -> " [補:LLM]"
-                lastPageAutoLearnCount > 0 -> " [補:学×$lastPageAutoLearnCount]"
-                else -> ""
-            }
-            statusText.text = "$status (${appState.currentPage}ページ)$patternBadge$sessionBadge$corrBadge"
+            // v1.1.47: クォータ残り少ない時だけ警告表示（残り20回以下）
+            val quotaRemaining = quotaManager.getRemaining()
+            val quotaBadge = if (quotaRemaining <= 20) " [クォータ残:$quotaRemaining]" else ""
+            statusText.text = "$status (${appState.currentPage}ページ)$patternBadge$quotaBadge"
         }
     }
 
