@@ -122,7 +122,7 @@ class LLMCorrector(private val context: Context) {
          * SDK 0.9.0のデシリアライゼーションバグを回避するため、REST APIを直接使用
          */
         private const val GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models"
-        private const val MODEL_NAME = "gemini-2.5-flash"  // v1.0.80: gemini-2.5-flash (最新安定版、1500 req/day) - 404エラー最終修正
+        private const val MODEL_NAME = "gemini-2.5-flash"  // v1.0.80: gemini-2.5-flash (最新安定版、250 req/day free tier 2025年12月以降)
 
         /**
          * v1.0.73: リトライ設定

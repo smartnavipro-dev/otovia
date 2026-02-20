@@ -38,7 +38,7 @@ class QuotaManager(context: Context) {
          * クォータ制限設定
          * v1.1.26: テスト用に一時的に100に引き上げ
          */
-        const val DAILY_LIMIT = 100                  // v1.1.26: テスト用（通常は20）
+        const val DAILY_LIMIT = 250                  // v1.1.45: Gemini 2.5 Flash無料枠実際の上限（2025年12月以降）
         const val RESET_INTERVAL_MS = 24 * 60 * 60 * 1000L  // 24時間
     }
 

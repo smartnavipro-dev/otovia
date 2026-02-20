@@ -513,6 +513,18 @@ class AutoLearnManager private constructor(context: Context) {
     }
 
     /**
+     * v1.1.45: ユーザー手動修正パターンのみを返す（開発者への貢献送信用）
+     * contextは含まず from/to のみ
+     */
+    fun getUserPatterns(): List<LearnedPattern> {
+        lock.read {
+            return patterns.values
+                .filter { it.source == "USER" }
+                .sortedByDescending { it.lastSeen }
+        }
+    }
+
+    /**
      * 指定パターンを削除
      * @return 削除されたかどうか
      */

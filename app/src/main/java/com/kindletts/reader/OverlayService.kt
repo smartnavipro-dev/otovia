@@ -37,6 +37,14 @@ import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.OutputStreamWriter
+import java.net.HttpURLConnection
+import java.net.URL
 
 class OverlayService : Service(), TextToSpeech.OnInitListener {
 
@@ -45,6 +53,8 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         private const val NOTIFICATION_ID = 1001
         private const val CHANNEL_ID = "KindleTTSService"
         private const val TAG = "KindleTTS_Service"
+        // v1.1.45: パターン貢献エンドポイント（Google Apps Script）
+        private const val CONTRIBUTION_ENDPOINT = "https://script.google.com/macros/s/AKfycbwBVOWRelXU79f68DcGi9C1i1Fwx4irw8dojRD002GRni9Y4AdE5MJZTC7nN8aqOaGQuA/exec"
     }
 
     // UI関連
@@ -2511,6 +2521,88 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         }
     }
 
+    /**
+     * v1.1.45: ユーザー手動修正パターンを開発者に送信
+     * from/toペアのみ送信（書籍内容・contextは含まない）
+     * バックエンド: Google Apps Script → Googleスプレッドシートに自動記録
+     */
+    private fun contributeUserPatterns(patterns: List<AutoLearnManager.LearnedPattern>) {
+        if (patterns.isEmpty()) {
+            mainHandler.post {
+                Toast.makeText(this, "送信できる手動修正パターンがありません（長押しで修正すると貯まります）", Toast.LENGTH_SHORT).show()
+            }
+            return
+        }
+
+        if (CONTRIBUTION_ENDPOINT.isEmpty()) {
+            mainHandler.post {
+                Toast.makeText(this, "この機能は現在準備中です", Toast.LENGTH_SHORT).show()
+            }
+            return
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val patternsArray = JSONArray()
+                patterns.forEach { p ->
+                    patternsArray.put(JSONObject().apply {
+                        put("from", p.from)
+                        put("to", p.to)
+                    })
+                }
+                val payload = JSONObject().apply {
+                    put("patterns", patternsArray)
+                    put("ts", System.currentTimeMillis())
+                    put("count", patterns.size)
+                    put("v", BuildConfig.VERSION_NAME)
+                }.toString()
+
+                // Apps Scriptは実行成功時に302（echoURLへのリダイレクト）を返す
+                // 302 = スクリプト実行済み = 成功なので追いかけない
+                val code = postToAppsScript(CONTRIBUTION_ENDPOINT, payload)
+                mainHandler.post {
+                    if (code in 200..299 || code == 302) {
+                        Toast.makeText(
+                            this@OverlayService,
+                            "✓ ${patterns.size}件を送信しました。ありがとうございます！",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Log.d(TAG, "[Contribute] Sent ${patterns.size} USER patterns (HTTP $code)")
+                    } else {
+                        Toast.makeText(this@OverlayService, "送信失敗 (code: $code)", Toast.LENGTH_SHORT).show()
+                        Log.w(TAG, "[Contribute] Server error: $code")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "[Contribute] Failed: ${e.message}")
+                mainHandler.post {
+                    Toast.makeText(this@OverlayService, "送信失敗。ネットワークを確認してください", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    /**
+     * v1.1.45: Google Apps ScriptへのシングルショットPOST
+     * Apps ScriptはPOSTを受け取った時点でスクリプト実行 → 302を返す
+     * 302はリダイレクトではなく「実行完了」のシグナルなので追わない
+     */
+    private fun postToAppsScript(urlStr: String, payload: String): Int {
+        val conn = URL(urlStr).openConnection() as HttpURLConnection
+        return try {
+            conn.instanceFollowRedirects = false
+            conn.requestMethod = "POST"
+            conn.setRequestProperty("Content-Type", "application/json; charset=utf-8")
+            conn.doOutput = true
+            conn.connectTimeout = 10000
+            conn.readTimeout = 10000
+            OutputStreamWriter(conn.outputStream, "UTF-8").use { it.write(payload) }
+            conn.responseCode
+        } finally {
+            conn.disconnect()
+        }
+    }
+
     // v1.1.38: 学習済みパターン管理ダイアログ
     private fun showPatternManagerDialog() {
         val autoLearn = AutoLearnManager.getInstance(this)
@@ -2631,6 +2723,10 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 val dialog = AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog)
                     .setTitle("学習済みパターン")
                     .setView(scrollView)
+                    .setNegativeButton("貢献する ↑") { dlg, _ ->
+                        dlg.dismiss()
+                        contributeUserPatterns(autoLearn.getUserPatterns())
+                    }
                     .setNeutralButton("全削除") { dlg, _ ->
                         autoLearn.clearAll()
                         updateOverlayUI()
