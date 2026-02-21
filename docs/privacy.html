@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReadVox プライバシーポリシー</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 24px 16px 64px;
+      color: #1a1a1a;
+      line-height: 1.7;
+    }
+    h1 { font-size: 1.6em; border-bottom: 2px solid #333; padding-bottom: 8px; }
+    h2 { font-size: 1.15em; margin-top: 2em; color: #222; }
+    ul { padding-left: 1.4em; }
+    li { margin-bottom: 4px; }
+    .updated { color: #666; font-size: 0.9em; }
+    .highlight { background: #f4f4f4; border-left: 3px solid #555;
+                 padding: 10px 16px; margin: 12px 0; border-radius: 0 4px 4px 0; }
+    a { color: #1a73e8; }
+    hr { border: none; border-top: 1px solid #ddd; margin: 2em 0; }
+  </style>
+</head>
+<body>
+
+<h1>ReadVox プライバシーポリシー</h1>
+<p class="updated">最終更新日：2026年2月21日</p>
+
+<div class="highlight">
+  ReadVox はユーザーの個人情報（氏名・メールアドレス・位置情報等）を一切収集しません。アカウント登録も不要です。
+</div>
+
+<h2>1. 収集する情報</h2>
+
+<h3>端末内にのみ保存する情報</h3>
+<ul>
+  <li><strong>OCR補正パターン</strong>：「認識された文字」→「正しい文字」のペアのみ。書籍の内容・文脈は保存しません。</li>
+  <li><strong>利用設定</strong>：読み上げ速度・自動ページ送りのオン/オフ等のアプリ設定。</li>
+  <li><strong>APIクォータカウント</strong>：外部API利用回数の管理（端末内のみ）。</li>
+</ul>
+<p>これらのデータは端末内のアプリデータ領域に保存され、自動的に外部へ送信されることはありません。</p>
+
+<h2>2. 使用する端末機能</h2>
+
+<h3>画面キャプチャ（MediaProjection API）</h3>
+<ul>
+  <li><strong>目的</strong>：電子書籍の画面をOCR処理し、テキストを音声で読み上げるため。</li>
+  <li>取得した画像はOCR処理後に即座に破棄します。保存・送信は行いません。</li>
+  <li>ユーザーが明示的に許可した場合のみ動作します。</li>
+</ul>
+
+<h3>アクセシビリティサービス</h3>
+<ul>
+  <li><strong>目的</strong>：読み上げ操作ボタンのオーバーレイ表示のため。</li>
+  <li>他のアプリのデータや入力内容を読み取ることはありません。</li>
+</ul>
+
+<h3>音声合成（Text-to-Speech）</h3>
+<ul>
+  <li>端末内蔵のTTSエンジンを使用します。音声データは外部に送信しません。</li>
+</ul>
+
+<h2>3. 外部サービスへの通信</h2>
+
+<h3>Gemini API（Google）</h3>
+<ul>
+  <li><strong>目的</strong>：OCRで認識したテキストの誤字補正。</li>
+  <li><strong>送信内容</strong>：OCRで読み取った書籍テキストの一部（補正処理のため）。</li>
+  <li>ユーザーが自身のAPIキーを設定した場合のみ使用されます。</li>
+  <li>Googleのプライバシーポリシー：<a href="https://policies.google.com/privacy" target="_blank">https://policies.google.com/privacy</a></li>
+</ul>
+
+<h3>パターン貢献機能（完全任意）</h3>
+<div class="highlight">
+  この機能はオプションです。「貢献する」ボタンを押した場合にのみ以下のデータが送信されます。使用しなくてもアプリは正常に動作します。
+</div>
+<ul>
+  <li><strong>送信内容</strong>：補正パターン（誤認識文字列 → 正しい文字列 のペア）、アプリバージョン、送信日時。</li>
+  <li>書籍の内容・文脈は一切送信しません。</li>
+  <li>送信先：開発者が管理するGoogleスプレッドシート。</li>
+</ul>
+
+<h2>4. データの保持と削除</h2>
+<ul>
+  <li>端末内のデータはアプリのアンインストールにより削除されます。</li>
+  <li>任意送信した補正パターンデータの削除を希望される場合は、下記お問い合わせ先までご連絡ください。</li>
+</ul>
+
+<h2>5. 第三者への提供</h2>
+<p>収集した情報を第三者に販売・提供することはありません。</p>
+
+<h2>6. 対象年齢</h2>
+<p>本アプリは13歳以上を対象としています。13歳未満の方のご利用はご遠慮ください。</p>
+
+<h2>7. 本ポリシーの変更</h2>
+<p>プライバシーポリシーを変更する場合は、本ページおよびアプリのアップデート情報でお知らせします。</p>
+
+<h2>8. お問い合わせ</h2>
+<p>
+  GitHub Issues：<a href="https://github.com/smartnavipro-dev/kindle-tts-reader/issues" target="_blank">
+  https://github.com/smartnavipro-dev/kindle-tts-reader/issues</a>
+</p>
+
+<hr>
+
+<h1>ReadVox Privacy Policy (English)</h1>
+<p class="updated">Last updated: February 21, 2026</p>
+
+<div class="highlight">
+  ReadVox does not collect any personal information (name, email address, location, etc.). No account registration is required.
+</div>
+
+<h2>1. Information We Collect</h2>
+<p>ReadVox stores the following data <strong>locally on your device only</strong>:</p>
+<ul>
+  <li><strong>OCR correction patterns</strong>: Pairs of "misrecognized text" → "corrected text". No book content or context is stored.</li>
+  <li><strong>App settings</strong>: Reading speed, auto page-turn preferences, etc.</li>
+</ul>
+<p>None of this data is automatically transmitted externally.</p>
+
+<h2>2. Device Permissions Used</h2>
+<ul>
+  <li><strong>Screen Capture (MediaProjection)</strong>: Used only to OCR e-book text for text-to-speech. Captured images are discarded immediately after OCR processing. Never stored or transmitted. Requires explicit user permission.</li>
+  <li><strong>Accessibility Service</strong>: Used only to display the reading control overlay. Does not read data from other apps.</li>
+  <li><strong>Text-to-Speech</strong>: Uses the device's built-in TTS engine. No audio data is transmitted externally.</li>
+</ul>
+
+<h2>3. Third-Party Services</h2>
+<ul>
+  <li><strong>Gemini API (Google)</strong>: Used for OCR text correction when enabled by the user with their own API key. Sends a portion of the recognized text for correction. See <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>.</li>
+  <li><strong>Pattern Contribution (Optional)</strong>: Only when the user explicitly taps "Contribute," correction pattern pairs (no book content) and app version are sent to the developer's Google Spreadsheet.</li>
+</ul>
+
+<h2>4. Data Retention and Deletion</h2>
+<p>Local data is deleted when the app is uninstalled. To request deletion of contributed pattern data, please contact us via GitHub Issues.</p>
+
+<h2>5. Children's Privacy</h2>
+<p>This app is intended for users aged 13 and older.</p>
+
+<h2>6. Changes to This Policy</h2>
+<p>We will notify users of any changes via this page and app update notes.</p>
+
+<h2>7. Contact</h2>
+<p>
+  GitHub Issues: <a href="https://github.com/smartnavipro-dev/kindle-tts-reader/issues" target="_blank">
+  https://github.com/smartnavipro-dev/kindle-tts-reader/issues</a>
+</p>
+
+</body>
+</html>
