@@ -2375,6 +2375,17 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
         }
     }
 
+    /**
+     * v1.1.49: オーバーレイ status テキストで一時メッセージを表示
+     * Toast はバックグラウンドサービスから Android 11+ で抑制されるため代替として使用
+     */
+    private fun showOverlayMessage(msg: String, durationMs: Long = 3000) {
+        overlayView?.findViewById<TextView>(R.id.overlayText)?.let { tv ->
+            tv.text = msg
+            mainHandler.postDelayed({ updateOverlayUI() }, durationMs)
+        }
+    }
+
     // v1.1.46: ページ履歴ダイアログ（[学]ボタン長押し）
     private fun showPageHistoryDialog() {
         if (pageHistory.isEmpty()) {
@@ -2522,24 +2533,23 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
     }
 
     /**
-     * v1.1.45: ユーザー手動修正パターンを開発者に送信
+     * v1.1.49: ユーザー手動修正パターンを開発者に送信
      * from/toペアのみ送信（書籍内容・contextは含まない）
-     * バックエンド: Google Apps Script → Googleスプレッドシートに自動記録
+     * バックエンド: Google Apps Script → Googleスプレッドシート raw シートに自動記録
+     * 結果表示: Toast は Android 11+ で抑制されるため showOverlayMessage() を使用
      */
     private fun contributeUserPatterns(patterns: List<AutoLearnManager.LearnedPattern>) {
         if (patterns.isEmpty()) {
-            mainHandler.post {
-                Toast.makeText(this, "送信できる手動修正パターンがありません（長押しで修正すると貯まります）", Toast.LENGTH_SHORT).show()
-            }
+            showOverlayMessage("手動修正パターンなし（長押し修正で貯まります）")
             return
         }
 
         if (CONTRIBUTION_ENDPOINT.isEmpty()) {
-            mainHandler.post {
-                Toast.makeText(this, "この機能は現在準備中です", Toast.LENGTH_SHORT).show()
-            }
+            showOverlayMessage("送信機能は準備中です")
             return
         }
+
+        showOverlayMessage("送信中... (${patterns.size}件)", 15000)
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -2562,21 +2572,17 @@ class OverlayService : Service(), TextToSpeech.OnInitListener {
                 val code = postToAppsScript(CONTRIBUTION_ENDPOINT, payload)
                 mainHandler.post {
                     if (code in 200..299 || code == 302) {
-                        Toast.makeText(
-                            this@OverlayService,
-                            "✓ ${patterns.size}件を送信しました。ありがとうございます！",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        showOverlayMessage("✓ ${patterns.size}件を送信しました！ありがとうございます", 4000)
                         Log.d(TAG, "[Contribute] Sent ${patterns.size} USER patterns (HTTP $code)")
                     } else {
-                        Toast.makeText(this@OverlayService, "送信失敗 (code: $code)", Toast.LENGTH_SHORT).show()
+                        showOverlayMessage("送信失敗 (code: $code)")
                         Log.w(TAG, "[Contribute] Server error: $code")
                     }
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "[Contribute] Failed: ${e.message}")
                 mainHandler.post {
-                    Toast.makeText(this@OverlayService, "送信失敗。ネットワークを確認してください", Toast.LENGTH_SHORT).show()
+                    showOverlayMessage("送信失敗。ネットワークを確認してください")
                 }
             }
         }
