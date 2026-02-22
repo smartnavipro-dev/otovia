@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingTop="72dp"
+        android:paddingBottom="48dp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp">
+
+        <!-- アプリ名 -->
+        <TextView
+            android:id="@+id/appNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Otovia"
+            android:textSize="52sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.04"
+            android:textColor="?attr/colorOnBackground" />
+
+        <!-- アクセントライン -->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="?attr/colorPrimary" />
+
+        <!-- 音 + via 分解 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="音"
+                android:textSize="24sp"
+                android:textColor="?attr/colorPrimary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  +  "
+                android:textSize="18sp"
+                android:textColor="?attr/colorOnBackground"
+                android:alpha="0.4" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="via"
+                android:textSize="24sp"
+                android:textStyle="italic"
+                android:textColor="?attr/colorSecondary" />
+
+        </LinearLayout>
+
+        <!-- 問いかけ（ひそやかに） -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="（聞こえましたか？）"
+            android:textSize="13sp"
+            android:textStyle="italic"
+            android:textColor="?attr/colorOnBackground"
+            android:alpha="0.32" />
+
+        <!-- セパレータ -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="20dp"
+            android:background="?attr/colorOnBackground"
+            android:alpha="0.1" />
+
+        <!-- バージョン -->
+        <TextView
+            android:id="@+id/versionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="?attr/colorOnBackground"
+            android:alpha="0.45" />
+
+        <!-- コピーライト -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="© 2026 Otovia"
+            android:textSize="12sp"
+            android:textColor="?attr/colorOnBackground"
+            android:alpha="0.3" />
+
+        <!-- OSSライセンス セパレータ -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="20dp"
+            android:background="?attr/colorOnBackground"
+            android:alpha="0.1" />
+
+        <!-- OSSライセンス タイトル -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="オープンソースライセンス"
+            android:textSize="11sp"
+            android:textAllCaps="true"
+            android:letterSpacing="0.08"
+            android:textColor="?attr/colorOnBackground"
+            android:alpha="0.4" />
+
+        <!-- ライセンス本文 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textSize="11sp"
+            android:lineSpacingMultiplier="1.6"
+            android:textColor="?attr/colorOnBackground"
+            android:alpha="0.45"
+            android:text="Apache License 2.0\n· Kuromoji © Atilika Inc.\n· OpenCV © OpenCV team\n· AndroidX libraries © Google LLC\n· Kotlinx Coroutines © JetBrains s.r.o.\n· Gson © Google LLC\n· Google AI Generative AI SDK © Google LLC\n· WorkManager, Security Crypto, Preference © Google LLC\n\nIPAdic License (modified BSD)\n· IPAdic morphological dictionary\n  © Nara Institute of Science and Technology\n\nUniDic License (modified BSD)\n· UniDic morphological dictionary © NINJAL\n\nGoogle Terms of Service\n· ML Kit Text Recognition © Google LLC" />
+
+    </LinearLayout>
+
+</ScrollView>

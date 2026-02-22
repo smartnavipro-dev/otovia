@@ -3,31 +3,37 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+// local.properties から機密情報を読み込む（このファイルは .gitignore 対象）
+def localProps = new Properties()
+def localPropsFile = rootProject.file('local.properties')
+if (localPropsFile.exists()) {
+    localPropsFile.withInputStream { localProps.load(it) }
+}
+
 android {
-    namespace 'com.kindletts.reader'
+    namespace 'com.otovia.app'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.kotoha.app"
+        applicationId "com.otovia.app"
         minSdk 21
         targetSdk 34
-        versionCode 118
-        versionName "1.1.27"
+        versionCode 119
+        versionName "1.1.52"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        // v1.0.40: Gemini API Key configuration
-        // Set your API key in local.properties: GEMINI_API_KEY=your_key_here
-        def geminiApiKey = project.findProperty("GEMINI_API_KEY") ?: "YOUR_API_KEY_HERE"
+        // v1.0.40: Gemini API Key — local.properties に設定: GEMINI_API_KEY=your_key_here
+        def geminiApiKey = localProps['GEMINI_API_KEY'] ?: "YOUR_API_KEY_HERE"
         buildConfigField "String", "GEMINI_API_KEY", "\"${geminiApiKey}\""
     }
 
     signingConfigs {
         release {
             storeFile file('../kindle-tts-release.jks')
-            storePassword 'kindle123'
-            keyAlias 'kindle-tts-key'
-            keyPassword 'kindle123'
+            storePassword localProps['SIGNING_STORE_PASSWORD'] ?: ""
+            keyAlias localProps['SIGNING_KEY_ALIAS'] ?: ""
+            keyPassword localProps['SIGNING_KEY_PASSWORD'] ?: ""
         }
     }
 
@@ -87,9 +93,6 @@ dependencies {
     implementation 'com.google.ai.client.generativeai:generativeai:0.9.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
-    // Permission handling
-    implementation 'androidx.activity:activity-ktx:1.8.1'
-    
     // v1.0.84: WorkManager for quota reset notifications
     implementation 'androidx.work:work-runtime-ktx:2.9.0'
 

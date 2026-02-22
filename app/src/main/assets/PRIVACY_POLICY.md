@@ -1,14 +1,14 @@
 # Privacy Policy
 
-**Last Updated**: December 18, 2025
+**Last Updated**: February 22, 2026
 **Effective Date**: December 18, 2025
-**Applicable Version**: v1.1.0 and later
+**Applicable Version**: v1.1.52 and later
 
 ---
 
 ## 1. Introduction
 
-Kindle TTS Reader (the "App") is an accessibility tool designed to enhance the reading experience for all users, including those with visual impairments.
+Otovia (the "App") is an accessibility tool designed to enhance the reading experience for all users, including those with visual impairments.
 
 This Privacy Policy explains what information the App collects and how it is used.
 
@@ -18,10 +18,10 @@ This Privacy Policy explains what information the App collects and how it is use
 
 ## 2. Contact Information
 
-- **App Name**: Kindle TTS Reader
+- **App Name**: Otovia
 - **Developer**: SmartNaviPro Development
 - **Contact**: privacy@smartnavipro.dev
-- **GitHub**: https://github.com/smartnavipro-dev/kindle-tts-reader
+- **GitHub**: https://github.com/smartnavipro-dev/otovia
 
 ---
 
@@ -100,7 +100,7 @@ Collected information is used exclusively for:
 All learning data is stored **exclusively on your Android device**:
 
 ```
-Location: /data/data/com.kindletts.reader/shared_prefs/
+Location: /data/data/com.otovia.app/shared_prefs/
 Filename: user_corrections_encrypted.xml
 ```
 
@@ -303,7 +303,7 @@ For privacy-related questions, data deletion requests, or other inquiries:
 
 - **Privacy Contact**: privacy@smartnavipro.dev
 - **General Inquiries**: contact@smartnavipro.dev
-- **GitHub Issues**: https://github.com/smartnavipro-dev/kindle-tts-reader/issues
+- **GitHub Issues**: https://github.com/smartnavipro-dev/otovia/issues
 
 ### Response Time
 
@@ -337,7 +337,7 @@ The App is an independent accessibility tool separate from Amazon Kindle.
 
 This Privacy Policy applies to:
 
-- ✅ Kindle TTS Reader Android app (v1.1.0+)
+- ✅ Otovia Android app (v1.1.0+)
 - ✅ Official GitHub repository
 - ❌ Modified versions distributed by third parties
 
@@ -359,7 +359,7 @@ Disputes related to the App shall be subject to the exclusive jurisdiction of th
 
 ---
 
-**Last Updated**: December 18, 2025
+**Last Updated**: February 22, 2026
 **Effective Date**: December 18, 2025 (upon v1.1.0 release)
 **License**: MIT License
 

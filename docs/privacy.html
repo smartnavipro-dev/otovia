@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kotoha プライバシーポリシー</title>
+  <title>Otovia プライバシーポリシー</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", sans-serif;
@@ -26,11 +26,11 @@
 </head>
 <body>
 
-<h1>Kotoha プライバシーポリシー</h1>
-<p class="updated">最終更新日：2026年2月21日</p>
+<h1>Otovia プライバシーポリシー</h1>
+<p class="updated">最終更新日：2026年2月22日</p>
 
 <div class="highlight">
-  Kotoha はユーザーの個人情報（氏名・メールアドレス・位置情報等）を一切収集しません。アカウント登録も不要です。
+  Otovia はユーザーの個人情報（氏名・メールアドレス・位置情報等）を一切収集しません。アカウント登録も不要です。
 </div>
 
 <h2>1. 収集する情報</h2>
@@ -54,8 +54,9 @@
 
 <h3>アクセシビリティサービス</h3>
 <ul>
-  <li><strong>目的</strong>：読み上げ操作ボタンのオーバーレイ表示のため。</li>
+  <li><strong>目的</strong>：読み上げ中の自動ページめくりのため。視覚的な読書が困難な方の補助を目的としています。</li>
   <li>他のアプリのデータや入力内容を読み取ることはありません。</li>
+  <li>ページめくり操作（スワイプジェスチャー）のみを実行します。</li>
 </ul>
 
 <h3>音声合成（Text-to-Speech）</h3>
@@ -68,8 +69,8 @@
 <h3>Gemini API（Google）</h3>
 <ul>
   <li><strong>目的</strong>：OCRで認識したテキストの誤字補正。</li>
-  <li><strong>送信内容</strong>：OCRで読み取った書籍テキストの一部（補正処理のため）。</li>
-  <li>ユーザーが自身のAPIキーを設定した場合のみ使用されます。</li>
+  <li><strong>送信内容</strong>：OCRで読み取った書籍テキストの一部（補正処理のため）。個人を特定できる情報は含まれません。</li>
+  <li>読み上げ機能を使用する際に自動的に利用されます。アプリにビルド済みのAPIキーを使用します。</li>
   <li>Googleのプライバシーポリシー：<a href="https://policies.google.com/privacy" target="_blank">https://policies.google.com/privacy</a></li>
 </ul>
 
@@ -100,21 +101,21 @@
 
 <h2>8. お問い合わせ</h2>
 <p>
-  GitHub Issues：<a href="https://github.com/smartnavipro-dev/kindle-tts-reader/issues" target="_blank">
-  https://github.com/smartnavipro-dev/kindle-tts-reader/issues</a>
+  GitHub Issues：<a href="https://github.com/smartnavipro-dev/otovia/issues" target="_blank">
+  https://github.com/smartnavipro-dev/otovia/issues</a>
 </p>
 
 <hr>
 
-<h1>Kotoha Privacy Policy (English)</h1>
-<p class="updated">Last updated: February 21, 2026</p>
+<h1>Otovia Privacy Policy (English)</h1>
+<p class="updated">Last updated: February 22, 2026</p>
 
 <div class="highlight">
-  Kotoha does not collect any personal information (name, email address, location, etc.). No account registration is required.
+  Otovia does not collect any personal information (name, email address, location, etc.). No account registration is required.
 </div>
 
 <h2>1. Information We Collect</h2>
-<p>Kotoha stores the following data <strong>locally on your device only</strong>:</p>
+<p>Otovia stores the following data <strong>locally on your device only</strong>:</p>
 <ul>
   <li><strong>OCR correction patterns</strong>: Pairs of "misrecognized text" → "corrected text". No book content or context is stored.</li>
   <li><strong>App settings</strong>: Reading speed, auto page-turn preferences, etc.</li>
@@ -124,13 +125,13 @@
 <h2>2. Device Permissions Used</h2>
 <ul>
   <li><strong>Screen Capture (MediaProjection)</strong>: Used only to OCR e-book text for text-to-speech. Captured images are discarded immediately after OCR processing. Never stored or transmitted. Requires explicit user permission.</li>
-  <li><strong>Accessibility Service</strong>: Used only to display the reading control overlay. Does not read data from other apps.</li>
+  <li><strong>Accessibility Service</strong>: Used only for automatic page turning during text-to-speech playback. Designed to assist users with reading difficulties. Does not read data from other apps. Only performs swipe gestures for page navigation.</li>
   <li><strong>Text-to-Speech</strong>: Uses the device's built-in TTS engine. No audio data is transmitted externally.</li>
 </ul>
 
 <h2>3. Third-Party Services</h2>
 <ul>
-  <li><strong>Gemini API (Google)</strong>: Used for OCR text correction when enabled by the user with their own API key. Sends a portion of the recognized text for correction. See <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>.</li>
+  <li><strong>Gemini API (Google)</strong>: Used automatically during text-to-speech playback for OCR text correction. Sends a portion of the recognized text (no personally identifiable information). Uses a built-in API key. See <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>.</li>
   <li><strong>Pattern Contribution (Optional)</strong>: Only when the user explicitly taps "Contribute," correction pattern pairs (no book content) and app version are sent to the developer's Google Spreadsheet.</li>
 </ul>
 
@@ -145,8 +146,8 @@
 
 <h2>7. Contact</h2>
 <p>
-  GitHub Issues: <a href="https://github.com/smartnavipro-dev/kindle-tts-reader/issues" target="_blank">
-  https://github.com/smartnavipro-dev/kindle-tts-reader/issues</a>
+  GitHub Issues: <a href="https://github.com/smartnavipro-dev/otovia/issues" target="_blank">
+  https://github.com/smartnavipro-dev/otovia/issues</a>
 </p>
 
 </body>

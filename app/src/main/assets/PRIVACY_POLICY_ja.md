@@ -1,6 +1,6 @@
 # プライバシーポリシー
 
-**最終更新日**: 2025年12月18日
+**最終更新日**: 2026年02月22日
 **発効日**: 2025年12月18日
 **適用バージョン**: v1.1.0以降
 
@@ -8,7 +8,7 @@
 
 ## 1. はじめに
 
-Kindle TTS Reader（以下「本アプリ」）は、視覚障害者を含むすべてのユーザーの読書体験向上を目的としたアクセシビリティツールです。
+Otovia（以下「本アプリ」）は、視覚障害者を含むすべてのユーザーの読書体験向上を目的としたアクセシビリティツールです。
 
 本プライバシーポリシーは、本アプリがどのような情報を収集し、どのように利用するかを説明します。
 
@@ -18,10 +18,10 @@ Kindle TTS Reader（以下「本アプリ」）は、視覚障害者を含むす
 
 ## 2. 運営者情報
 
-- **アプリ名**: Kindle TTS Reader
+- **アプリ名**: Otovia
 - **開発者**: SmartNaviPro Development
 - **連絡先**: privacy@smartnavipro.dev
-- **GitHub**: https://github.com/smartnavipro-dev/kindle-tts-reader
+- **GitHub**: https://github.com/smartnavipro-dev/otovia
 
 ---
 
@@ -88,7 +88,7 @@ Kindle TTS Reader（以下「本アプリ」）は、視覚障害者を含むす
 
 - ❌ 広告配信には使用しません
 - ❌ 第三者への提供は行いません
-- ❌ 外部サーバーへの送信は行いません
+- ⚠️ 外部サーバーへの送信: OCR補正目的でGemini APIのみに送信（詳細はセクション3.2・6.2参照）
 - ❌ 商用目的での利用は行いません
 
 ---
@@ -100,7 +100,7 @@ Kindle TTS Reader（以下「本アプリ」）は、視覚障害者を含むす
 すべての学習データは、**あなたのAndroidデバイス内にのみ保存**されます。
 
 ```
-保存場所: /data/data/com.kindletts.reader/shared_prefs/
+保存場所: /data/data/com.otovia.app/shared_prefs/
 ファイル名: user_corrections_encrypted.xml
 ```
 
@@ -292,6 +292,7 @@ EU域内のユーザーについては、GDPRに準拠します：
 | バージョン | 日付 | 変更内容 |
 |-----------|------|---------|
 | v1.0 | 2025-12-18 | 初版作成（v1.1.0対応） |
+| v1.1 | 2026-02-21 | アプリ名を Otovia に変更（旧: Kindle TTS Reader） |
 
 ---
 
@@ -303,7 +304,7 @@ EU域内のユーザーについては、GDPRに準拠します：
 
 - **プライバシー担当**: privacy@smartnavipro.dev
 - **一般お問い合わせ**: contact@smartnavipro.dev
-- **GitHub Issues**: https://github.com/smartnavipro-dev/kindle-tts-reader/issues
+- **GitHub Issues**: https://github.com/smartnavipro-dev/otovia/issues
 
 ### 対応時間
 
@@ -337,7 +338,7 @@ EU域内のユーザーについては、GDPRに準拠します：
 
 本プライバシーポリシーは、以下に適用されます：
 
-- ✅ Kindle TTS Reader Android アプリ（v1.1.0以降）
+- ✅ Otovia Android アプリ（v1.1.0以降）
 - ✅ 公式GitHubリポジトリ
 - ❌ 第三者が配布する改変版アプリ
 
@@ -359,7 +360,7 @@ EU域内のユーザーについては、GDPRに準拠します：
 
 ---
 
-**最終更新**: 2025年12月18日
+**最終更新**: 2026年02月22日
 **発効日**: 2025年12月18日（v1.1.0リリース時）
 **ライセンス**: MIT License
 
