@@ -101,6 +101,20 @@ gradlewrappergradle-wrapper.jar# Claude Code settings
 # Build logs
 build_*.log
 
-# Test screenshots  
+# Test screenshots
 screenshots/*.png
 screenshots/*.jpg
+
+# Development test logs & artifacts
+test_log_*.txt
+test_v*.txt
+test_v*.png
+day0_baseline_result.md
+ocr_improvement_feasibility_analysis.md
+overlay_service_refactoring_plan*.md
+parameter_optimization_*.md
+v1.1.13_improvements.md
+v1.1.15_test_results.md
+build_check.bat
+analyze_log.sh
+"store-assets/screenshots$f"
