@@ -77,6 +77,12 @@ Thumbs.db
 *.swp
 *~
 
+# Windows reserved device names
+nul
+con
+prn
+aux
+
 # Log files
 *.log
 
