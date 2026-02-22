@@ -1,409 +1,140 @@
-# 📱 Kindle TTS Reader
+# Otovia
 
 <div align="center">
 
-![Kindle TTS Reader Logo](https://via.placeholder.com/200x200/4CAF50/white?text=Kindle+TTS)
-
-**An Android app that automatically reads Kindle books aloud using OCR + TTS + Auto page turning**
+**電子書籍を、声の旅へ。**
+*Turn any e-book into an audio journey.*
 
 [![Android](https://img.shields.io/badge/Platform-Android%205.0%2B-green.svg)](https://android.com)
 [![Kotlin](https://img.shields.io/badge/Language-Kotlin-blue.svg)](https://kotlinlang.org)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![APK](https://img.shields.io/badge/Download-APK-red.svg)](https://github.com/smartnavipro-dev/kindle-tts-reader/releases)
-
-[🇯🇵 日本語 README](README_ja.md) | [📱 Download APK](https://github.com/smartnavipro-dev/kindle-tts-reader/releases/latest) | [📋 Documentation](docs/)
+[![Version](https://img.shields.io/badge/Version-1.1.52-blue.svg)]()
 
 </div>
 
 ---
 
-## 🎯 **What is Kindle TTS Reader?**
+## 概要
 
-Kindle TTS Reader transforms your reading experience by automatically reading Kindle books aloud. Simply open a book in the Kindle app, start our app, and enjoy hands-free reading with automatic page turning.
+Otoviaは、画面に表示されたテキストをAIが自動でキャプチャ・補正・読み上げるAndroidアクセシビリティアプリです。
 
-### **🌟 Key Features**
+通勤中・家事中・運動中——目を使えない時間も、本は読める。
 
-- **🔍 OCR Text Recognition** - Extract text from Kindle app using Google ML Kit
-- **🤖 AI-Powered Text Correction** - Gemini 2.5 Flash LLM for high-accuracy OCR correction
-- **🧠 Local Learning System** - Privacy-first pattern learning stored on your device (v1.1.0+)
-- **🔒 Privacy Controls** - Full GDPR-compliant data management with encryption
-- **🔊 Text-to-Speech** - Natural voice synthesis in Japanese and English
-- **📱 Screen Capture** - Real-time screen analysis using MediaProjection API
-- **👆 Auto Page Turn** - Automatic page navigation using AccessibilityService
-- **💫 Overlay UI** - Floating controls over other apps
-- **⚙️ Settings Screen** - Manage learning features and privacy preferences
-- **⚡ Smart Caching** - LRU cache for improved performance and reduced API calls
+**アプリ名の由来**: 音（oto）+ via（道）。隠れた "auto"（自動）が入っています。
 
 ---
 
-## 🎬 **Demo**
+## 機能
 
-### **Screenshots**
-<div align="center">
-  <img src="screenshots/main_screen.png" width="200" alt="Main Screen">
-  <img src="screenshots/permissions.png" width="200" alt="Permissions">
-  <img src="screenshots/overlay.png" width="200" alt="Overlay UI">
-  <img src="screenshots/settings.png" width="200" alt="Settings">
-</div>
-
-### **Video Demo**
-[![Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://youtube.com/watch?v=YOUR_VIDEO_ID)
+| 機能 | 説明 |
+|------|------|
+| **どのアプリでも動く** | 画面にテキストが表示されていれば対応（Kindle / Kinoppy / BookWalker / honto / Chrome 等） |
+| **AI誤字補正** | Gemini AIがOCR認識ミスをリアルタイムで補正 |
+| **自動ページめくり** | 読み上げ完了時にスワイプジェスチャーで自動ページ遷移 |
+| **先読みプリフェッチ** | 次ページを事前処理してページ間の沈黙をゼロに |
+| **AutoLearn** | ユーザー修正から学習し、同じ誤字を繰り返さない |
+| **フローティングコントローラー** | 画面を見ずに操作可能なオーバーレイUI |
 
 ---
 
-## 📋 **Requirements**
+## アーキテクチャ
 
-- **Android 5.0+** (API level 21)
-- **Kindle App** installed from Google Play Store
-- **2GB+ RAM** recommended
-- **50MB** storage space
+```
+画面キャプチャ → ML Kit OCR → AI補正（Gemini）→ TTS読み上げ → 自動ページめくり
+                                     ↕
+                              AutoLearn（端末内学習）
+```
+
+**主要コンポーネント:**
+- `OverlayService` — 画面キャプチャ・OCR・TTS・プリフェッチのメインパイプライン
+- `TextCorrector` — Phase1パターン補正 + Phase3形態素解析 + LLM補正
+- `LLMCorrector` — Gemini 2.5 Flash API統合
+- `AutoLearnManager` — ユーザー修正からの自動学習・パターン昇格
+- `AutoPageTurnService` — アクセシビリティサービスによる自動ページめくり
 
 ---
 
-## 🚀 **Installation**
+## ビルド方法
 
-### **Method 1: Download APK (Recommended)**
-1. Go to [Releases](https://github.com/smartnavipro-dev/kindle-tts-reader/releases/latest)
-2. Download `kindle-tts-reader-v1.1.0-release.apk` (83MB)
-3. Enable "Unknown Sources" in Android settings
-4. Install the APK
+### 必要条件
 
-### **Method 2: Build from Source**
+- JDK 17
+- Android SDK 34
+- Android Studio Hedgehog 以降（任意）
+
+### セットアップ
+
+1. リポジトリをクローン:
 ```bash
-git clone https://github.com/smartnavipro-dev/kindle-tts-reader.git
-cd kindle-tts-reader
-./gradlew assembleDebug
+git clone https://github.com/smartnavipro-dev/otovia.git
+cd otovia
 ```
 
----
+2. `local.properties` を作成し以下を設定（このファイルは `.gitignore` 対象）:
+```properties
+sdk.dir=/path/to/Android/Sdk
+GEMINI_API_KEY=your_gemini_api_key_here
+SIGNING_STORE_PASSWORD=your_keystore_password
+SIGNING_KEY_ALIAS=your_key_alias
+SIGNING_KEY_PASSWORD=your_key_password
+```
 
-## 🔑 **Gemini API Configuration (Optional)**
-
-### **What is Gemini API?**
-Kindle TTS Reader uses Google's Gemini 2.5 Flash AI model to improve OCR accuracy. When ML Kit's confidence is below 0.7, the app sends the text (not images) to Gemini for correction.
-
-### **Getting Your API Key**
-
-1. Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
-2. Click "Create API Key"
-3. Copy your API key
-
-### **Setting the API Key**
-
-**For Pre-built APK:**
-The APK is already built with a default API key. It will work out-of-the-box.
-
-**For Building from Source:**
+3. ビルド:
 ```bash
-# Create local.properties in project root
-echo "GEMINI_API_KEY=your_api_key_here" >> local.properties
-
-# Build the release APK
-./gradlew assembleRelease -PGEMINI_API_KEY="your_api_key_here"
+./gradlew bundleRelease   # AAB（Play Store用）
+./gradlew assembleRelease # APK
 ```
 
-### **💰 Cost Information**
+### Gemini APIキーの取得
 
-**Pricing (as of 2025):**
-- Input: $0.30 per million tokens
-- Output: $2.50 per million tokens
-- **Typical cost: ~$0.0003 per correction** (0.03¢)
-
-**Free Tier:**
-- 500 requests per day
-- 250,000 tokens per minute
-- Perfect for personal use
-
-**Monthly Estimate:**
-- 3,000 corrections/month ≈ **$0.90** (90¢)
-- Most corrections are cached, reducing API calls
-
-**Important Notes:**
-- You're only charged for actual tokens used, not the `maxOutputTokens` limit (4000)
-- LLM correction only happens when OCR confidence < 0.7
-- Cached results are reused, minimizing API calls
-- Monitor usage at [Google AI Studio](https://aistudio.google.com)
+1. [Google AI Studio](https://aistudio.google.com/app/apikey) にアクセス
+2. 「APIキーを作成」
+3. `local.properties` の `GEMINI_API_KEY` に設定
 
 ---
 
-## 🛠️ **Setup & Usage**
+## 権限
 
-### **Step 1: Grant Permissions**
-1. **Overlay Permission**: Allow app to display over other apps
-2. **Accessibility Permission**: Enable auto page turning service
-3. **Screen Capture Permission**: Grant when prompted
-
-### **Step 2: Start Reading**
-1. Open Kindle app and select a book
-2. Launch Kindle TTS Reader
-3. Tap "Start Reading" button
-4. Enjoy automatic reading with page turning!
-
-### **Detailed Setup Guide**
-📖 [Complete Setup Instructions](docs/SETUP_GUIDE.md)
+| 権限 | 用途 |
+|------|------|
+| 画面キャプチャ（MediaProjection） | OCRによるテキスト認識 |
+| アクセシビリティサービス | 自動ページめくり（視覚的読書困難者の補助） |
+| オーバーレイ表示（SYSTEM_ALERT_WINDOW） | フローティングコントローラー |
+| フォアグラウンドサービス | 読み上げ中のサービス継続 |
+| 通知（POST_NOTIFICATIONS） | 読み上げ中のコントロール表示 |
+| インターネット | Gemini API（OCR補正）のみ |
 
 ---
 
-## ⚙️ **Technical Architecture**
+## プライバシー
 
-### **Core Components**
-- **MainActivity**: Main UI and permission management
-- **SettingsActivity**: Privacy controls and learning feature management (v1.1.0+)
-- **OverlayService**: Screen capture + OCR + TTS pipeline
-- **AutoPageTurnService**: Accessibility-based gesture automation
-- **LocalCorrectionManager**: Privacy-first local learning engine (v1.1.0+)
+- 取得した画面情報はOCR処理後に即座に破棄
+- 外部送信はGemini API（OCR補正目的のみ）
+- 個人情報の収集なし・アカウント登録不要
+- AutoLearnのパターンデータはAES256-GCMで暗号化して端末内に保存
 
-### **Technology Stack**
-- **Language**: Kotlin 100%
-- **UI Framework**: Material Design 3
-- **OCR Engine**: Google ML Kit Text Recognition (Japanese)
-- **AI Model**: Google Gemini 2.5 Flash (LLM-based text correction)
-- **Text Processing**: Kuromoji (morphological analysis)
-- **TTS Engine**: Android TextToSpeech API
-- **Screen Capture**: MediaProjection API
-- **Gestures**: AccessibilityService API
-- **Security**: AndroidX Security Crypto (AES256-GCM encryption) (v1.1.0+)
-- **Data Storage**: EncryptedSharedPreferences with Android Keystore (v1.1.0+)
-
-### **Architecture Diagram**
-```
-┌─────────────┐    ┌──────────────┐    ┌─────────────┐
-│   Kindle    │───▶│    Screen    │───▶│   ML Kit    │
-│    App      │    │   Capture    │    │     OCR     │
-└─────────────┘    └──────────────┘    └─────────────┘
-                                               │
-                                               ▼
-                            ┌──────────────────────────────┐
-                            │    Confidence Check (0.7)    │
-                            └──────────────────────────────┘
-                                    │              │
-                          HighConf  │              │  LowConf
-                                    ▼              ▼
-                            ┌─────────────┐  ┌──────────────┐
-                            │   Phase 1   │  │  Gemini 2.5  │
-                            │   Pattern   │  │  Flash API   │
-                            │ Correction  │  │  (LLM Corr.) │
-                            └─────────────┘  └──────────────┘
-                                    │              │
-                                    └──────┬───────┘
-                                           ▼
-                            ┌──────────────────────────────┐
-                            │      Corrected Text          │
-                            │      + LRU Cache             │
-                            └──────────────────────────────┘
-                                           │
-                                           ▼
-┌─────────────┐    ┌──────────────┐    ┌─────────────┐
-│    Auto     │◀───│   Android    │◀───│   Text      │
-│ Page Turn   │    │     TTS      │    │  Processing │
-└─────────────┘    └──────────────┘    └─────────────┘
-```
+詳細: [プライバシーポリシー](docs/privacy.html)
 
 ---
 
-## 🧪 **Testing & Quality**
+## OSSライセンス
 
-### **Quality Metrics**
-- **Code Quality**: 98/100
-- **Test Coverage**: 95%+
-- **API Compatibility**: Android 5.0 - 14
-- **Performance**: Optimized for minimal battery usage
+本アプリが使用するオープンソースライブラリ:
 
-### **Static Analysis**
-```bash
-./gradlew lintDebug          # Android Lint
-./gradlew test              # Unit Tests
-./gradlew connectedAndroidTest  # Integration Tests
-```
-
----
-
-## 🔒 **Privacy & Security**
-
-### **Privacy First**
-- ✅ **No data collection** - Zero personal information stored
-- ✅ **Local OCR processing** - ML Kit works completely offline
-- ✅ **Temporary screen data** - Images processed in memory only
-- ✅ **Local Learning (v1.1.0+)** - All learning data stored on device with AES256-GCM encryption
-  - Learning patterns never leave your device
-  - Full GDPR-compliant data management
-  - One-tap deletion of all learning data
-  - User consent required before activation
-- ⚠️ **Optional AI Enhancement** - Gemini API used for text correction (requires API key)
-  - Only OCR text is sent, not images or learning data
-  - Only sent when OCR confidence is below threshold (0.7)
-  - Cached results reduce API calls
-  - You control the API key and can disable LLM correction
-
-### **Security Features**
-- ✅ **Minimal permissions** - Only essential permissions requested
-- ✅ **Source code available** - Full transparency
-- ✅ **Regular security updates** - Maintained actively
-- ✅ **Hardware-protected keys** - Android Keystore for encryption keys (v1.1.0+)
-- ✅ **Privacy policies** - Comprehensive documentation in English and Japanese (v1.1.0+)
+| ライブラリ | ライセンス |
+|-----------|-----------|
+| [Kuromoji](https://github.com/atilika/kuromoji) | Apache 2.0 |
+| [OpenCV](https://opencv.org/) | Apache 2.0 |
+| [AndroidX](https://developer.android.com/jetpack/androidx) | Apache 2.0 |
+| [Kotlinx Coroutines](https://github.com/Kotlin/kotlinx.coroutines) | Apache 2.0 |
+| [Gson](https://github.com/google/gson) | Apache 2.0 |
+| [Google AI Generative AI SDK](https://github.com/google/generative-ai-android) | Apache 2.0 |
+| IPAdic morphological dictionary | IPAdic License (modified BSD) |
+| UniDic morphological dictionary | UniDic License (modified BSD) |
+| [ML Kit Text Recognition](https://developers.google.com/ml-kit) | Google Terms of Service |
 
 ---
 
-## 🤝 **Contributing**
+## お問い合わせ
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md).
-
-### **Development Setup**
-```bash
-# Clone the repository
-git clone https://github.com/smartnavipro-dev/kindle-tts-reader.git
-
-# Open in Android Studio
-cd kindle-tts-reader
-./gradlew build
-
-# Run tests
-./gradlew test
-```
-
-### **Areas for Contribution**
-- 🌍 **Localization**: More language support
-- 🎨 **UI/UX**: Design improvements
-- 🔧 **Features**: New functionality
-- 🐛 **Bug fixes**: Issue resolution
-- 📝 **Documentation**: Guides and tutorials
-
----
-
-## 📊 **Project Stats**
-
-![GitHub stars](https://img.shields.io/github/stars/smartnavipro-dev/kindle-tts-reader?style=social)
-![GitHub forks](https://img.shields.io/github/forks/smartnavipro-dev/kindle-tts-reader?style=social)
-![GitHub issues](https://img.shields.io/github/issues/smartnavipro-dev/kindle-tts-reader)
-![GitHub license](https://img.shields.io/github/license/smartnavipro-dev/kindle-tts-reader)
-
-- **Lines of Code**: ~1,200 (Kotlin)
-- **Commits**: 50+
-- **Contributors**: Open for contributions
-- **Download**: 1,000+ (target)
-
----
-
-## 🗺️ **Roadmap**
-
-### **Version 1.1** ✅ (Released 2025-12-18)
-- [x] Local learning system with privacy-first design
-- [x] Settings screen with granular controls
-- [x] AES256-GCM encrypted data storage
-- [x] Comprehensive privacy policies (EN/JA)
-- [x] GDPR-compliant consent management
-
-### **Version 1.2** (Q1 2026)
-- [ ] Multiple language UI support (Spanish, French, German)
-- [ ] Reading statistics dashboard
-- [ ] Custom TTS voice options
-- [ ] Export/import learning patterns
-
-### **Version 2.0** (Future)
-- [ ] ePub format support
-- [ ] PDF reading capability
-- [ ] Cloud backup & sync (optional)
-- [ ] Wear OS companion app
-
----
-
-## ❓ **FAQ**
-
-<details>
-<summary><strong>Does this work with all Kindle books?</strong></summary>
-
-Yes, it works with any text displayed in the Kindle app. However, books with DRM protection or unusual formatting may have varying OCR accuracy.
-</details>
-
-<details>
-<summary><strong>Is this legal to use?</strong></summary>
-
-Yes, this app only processes visual content from your own device screen for personal accessibility purposes. It doesn't circumvent DRM or distribute copyrighted content.
-</details>
-
-<details>
-<summary><strong>Does it work in other languages?</strong></summary>
-
-Currently supports Japanese and English OCR/TTS. Additional language support is planned for future versions.
-</details>
-
-<details>
-<summary><strong>How much battery does it use?</strong></summary>
-
-Optimized for minimal battery usage. Typical usage consumes about 10-15% battery per hour of reading.
-</details>
-
-<details>
-<summary><strong>Do I need a Gemini API key to use the app?</strong></summary>
-
-The pre-built APK comes with a default API key and works immediately. However, if you're building from source or want to use your own quota, you'll need to get a free API key from Google AI Studio.
-</details>
-
-<details>
-<summary><strong>How much does Gemini API cost?</strong></summary>
-
-The free tier provides 500 requests/day, which is more than enough for personal reading. Paid usage costs about $0.0003 per correction (~0.03¢). For typical usage of 3,000 corrections/month, expect around $0.90 (90¢) per month. Most corrections are cached, so actual API calls are minimized.
-</details>
-
-<details>
-<summary><strong>Is my reading data sent to Google?</strong></summary>
-
-Only the OCR-extracted text (not images or personal data) is sent to Gemini API when OCR confidence is below 0.7. You can monitor all API calls in the app logs. No reading history or personal information is collected or stored.
-</details>
-
-<details>
-<summary><strong>Can I use the app without the Gemini API?</strong></summary>
-
-Not currently. The app requires Gemini API for text correction to achieve high accuracy. Future versions may add an offline-only mode with reduced accuracy.
-</details>
-
-<details>
-<summary><strong>What is the local learning feature? (v1.1.0+)</strong></summary>
-
-The local learning system improves OCR accuracy by learning from your corrections. All learning data is stored on your device with AES256-GCM encryption and never sent to external servers. You can enable/disable this feature anytime in Settings, and delete all learning data with one tap.
-</details>
-
-<details>
-<summary><strong>Is the learning data encrypted?</strong></summary>
-
-Yes! All learning patterns are encrypted using AES256-GCM with hardware-protected keys stored in Android Keystore. The data is excluded from cloud backups and can only be accessed by the app on your device.
-</details>
-
----
-
-## 🙏 **Acknowledgments**
-
-- **Google ML Kit** - Exceptional OCR capabilities
-- **Google Gemini 2.5 Flash** - Advanced AI-powered text correction
-- **Google DeepMind** - Revolutionary language models
-- **Atilika Kuromoji** - Japanese morphological analysis
-- **Android Accessibility APIs** - Enabling automated interactions
-- **Material Design** - Beautiful UI components
-- **Kotlin Community** - Amazing language and ecosystem
-
----
-
-## 📄 **License**
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 📞 **Support**
-
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/smartnavipro-dev/kindle-tts-reader/issues)
-- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/smartnavipro-dev/kindle-tts-reader/discussions)
-- 📧 **Contact**: contact@smartnavipro.dev
-- 🐦 **Twitter**: [@smartnavipro](https://twitter.com/smartnavipro)
-
----
-
-<div align="center">
-
-**⭐ Star this repo if you find it useful! ⭐**
-
-Made with ❤️ by [SmartNaviPro Development](https://github.com/smartnavipro-dev)
-
-[🔝 Back to Top](#-kindle-tts-reader)
-
-</div>
+- **GitHub Issues**: https://github.com/smartnavipro-dev/otovia/issues
+- **Contact**: contact@smartnavipro.dev
