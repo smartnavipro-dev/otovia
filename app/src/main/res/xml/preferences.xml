@@ -47,4 +47,17 @@
 
     </PreferenceCategory>
 
+    <!-- アプリについて -->
+    <PreferenceCategory
+        android:key="about_category"
+        android:title="@string/settings_about_category">
+
+        <Preference
+            android:key="about"
+            android:title="@string/settings_about_title"
+            android:summary="@string/settings_about_summary"
+            android:icon="@android:drawable/ic_menu_info_details" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>
