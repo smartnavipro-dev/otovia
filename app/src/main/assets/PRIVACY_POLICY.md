@@ -12,7 +12,7 @@ Otovia (the "App") is an accessibility tool designed to enhance the reading expe
 
 This Privacy Policy explains what information the App collects and how it is used.
 
-**Important**: The App **stores all data exclusively on your device** and does not send any information to external servers.
+**Important**: The App **stores all learning data exclusively on your device**. For OCR correction, recognized OCR text is sent to Gemini API (Google). See Section 3.2 for details.
 
 ---
 

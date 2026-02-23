@@ -89,7 +89,7 @@ class PrivacyPolicyActivity : AppCompatActivity() {
             Log.e(TAG, "Failed to load privacy policy", e)
             textView.text = getString(R.string.privacy_policy_title) + "\n\n" +
                     "Failed to load privacy policy. Please check the documentation at:\n" +
-                    "https://github.com/smartnavipro-dev/otovia/blob/main/docs/privacy.html"
+                    "https://smartnavipro-dev.github.io/otovia/privacy.html"
         }
     }
 
